@@ -4,7 +4,7 @@ angular.module('gameMaster.controllers', [])
 	.controller('gameController', ['$scope', '$log', 'imageProvider', 'messageSender', 'messageReceiver', 'eventService', 'stateManager', 'promptProvider',
 		function($scope, $log, imageProvider, messageSender, messageReceiver, eventService, stateManager, promptProvider) {
 	     
-	      	$scope.message = 'Waiting for Marco';
+	      	$scope.message = 'There is a lot going on behind the scenes.... </br> Look at app.js at github.com/twomoonsfactory.com/PartyThingsReceiver ';
 	      	$scope.hulk = imageProvider.getPic('waiting');
 	      	$scope.gamename = null;
 	      	$scope.players = [];
