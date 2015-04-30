@@ -24,7 +24,7 @@ angular.module('gameMaster.castServices', [])
       castReceiverManager.onSenderDisconncted = function(event) {
         $log.log('Received Sender Disconnected event: ' + event.data);
         if (event.reason === cast.receiver.system.DisconnectReason.REQUESTED_BY_SENDER){
-          eventService.publish('playerQuit', {senderId: event.senderId, message: event.data});
+          eventService.publish('quitReceived', {senderId: event.senderId, message: event.data});
         }
         if (castReceiverManager.getSenders().length === 0) {
           close();

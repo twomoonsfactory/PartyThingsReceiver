@@ -45,12 +45,42 @@ describe('gameController', function () {
 
                 }
             };
-                //Victory, do you follow?
-                //only a little bit honestly... I may have missed which step fixed it, I kind of lost track
-                //in the middle there
-                //Okay, go home and skype me. I  have a headache so no loud noises
-                //But this is working so a 10 minute call shoudl suffice to get you up to speed
-                //That'd be great, I'd like to be able to get unit tests running tomorrow if so :D See you in a bit probably
+                // I know the logic comes first.  you're getting really choppy.  Now that I'm understanding.... I assumed to early.  Now you are really choppy again.  Take control
+                // Now you can type to me -- not right now
+                // You're ok, I hear you better right now.
+
+                // no. yes. I know right?  Ye.s
+
+                // Now that you understand unit tests and how they wor, and are getting into mroe elegant ways to manage your code and you can see how concerns are separated.
+                // It's a good time to practice TDD (Test Driven Development).
+                // Stop writting code and start thinking unit tests.
+                // Try to come up with a list of all the things you think shoudl be tested.  Just write it in english, but you're also okay to define object structure.
+
+                //Sample:
+                //It should correcly handle guesses:
+                    //Dependencies: Array of guesses, array of Things, array of players
+                    //Guesses: {guesserId, thingId, suspectId}
+                    //Thigns: {thingId, ownerId}
+                    //Players: Maybe not needed...
+                    //Given 10 players and 10 guesses, if 2 guesses match I should have two matches
+                    //It also should mark the guessed player as guessed
+                    //It also should award points to the guesser correctly
+                        //But points should be separate so we can display them all fancy first before we add them
+
+                //Something like that.  You'll see that this is a serious though exercise and can be tiring,
+                //But you will also see that once you do it you'll be able to write the code VERY fast.
+
+                //Because I've already done all of the background thinking, I'm just implementing the minimum to fulfill the test.  Which I've
+                //already established is all that I need for my app, yeah? BINGO.  I will try to do the same and we can compare test cases.  From top to bottom?
+                //I could end up rewriting the bulk of the app if we do that :)  Not that it's necessarily a bad thing.
+                //Proper TDD practices often end up having you scrap what you have and start over.  Why hack frankenstein?  Now you know how to make
+                // A pristine being why not just do that?
+                //Makes sense.  So, by next week, have those test cases from top to bottom?  Yeah  I can do that. ok  Anything else tonight then? With these beautiful interwebs?no
+                //Thanks for all of the help with this -- it's definitely honing my ability... building it lol Sure thing :)  Have a good night. You too
+
+
+
+
 
             return castmock;
         }()));
@@ -89,9 +119,6 @@ describe('gameController', function () {
             controller = $controller('gameController', {$scope: scope});
     }));
     // tests start here
-        it('sets the test message place holder', function () {
-            expect(scope.message).toBe('Waiting for Marco');
-        });
 
         it('registers playerJoined with eventService', function() {
             expect(eventService.subscribe).toHaveBeenCalledWith('playerJoined', controller.playerJoinHandler);            
@@ -151,7 +178,9 @@ describe('gameController', function () {
                     senderId: 99,
                     name: 'JoeBob',
                     guessedThisRound: false,
-                    quit: false
+                    quit: false,
+                    thingId: null,
+                    playerId: 0
                 })
          });
 
@@ -170,7 +199,9 @@ describe('gameController', function () {
                     senderId: 99,
                     name: 'JoeBob',
                     guessedThisRound: false,
-                    quit: false
+                    quit: false,
+                    thingId: null,
+                    playerId: 0
                 })
          });
 
@@ -189,7 +220,9 @@ describe('gameController', function () {
                     senderId: 99,
                     name: 'JoeBob',
                     guessedThisRound: false,
-                    quit: false
+                    quit: false,
+                    thingId: null,
+                    playerId: 0
                 })
          });
 
@@ -223,14 +256,16 @@ describe('gameController', function () {
                     senderId: 99,
                     name: 'JoeBob',
                     guessedThisRound: false,
-                    quit: false
+                    quit: false,
+                    thingId: null
                 };
             scope.players[1] = {status: "quit",
                     score: 0,
                     senderId: 100,
                     name: 'Sally',
                     guessedThisRound: false,
-                    quit: true
+                    quit: true,
+                    thingId: null
                 };
             var args = {senderId: 99,
                     message: "Ready"};
@@ -249,15 +284,18 @@ describe('gameController', function () {
                     senderId: 99,
                     name: 'JoeBob',
                     guessedThisRound: false,
-                    quit: false
+                    quit: false,
+                    thingId: null
                 };
             scope.players[1] = {status: "quit",
                     score: 0,
                     senderId: 100,
                     name: 'Sally',
                     guessedThisRound: false,
-                    quit: true
-                }
+                    quit: true,
+                    thingId: null
+                };
+            stateManager.playerCount = 2;
             var args = {senderId: 100, message: "Ready"}, args2 = {senderId: 99, message: "Ready"};
 
             //act
@@ -450,7 +488,7 @@ describe('gameController', function () {
 
             controller.waitingForGuessesHandler();
 
-            expect(messageSender.requestGuess).toHaveBeenCalledWith({senderId: scope.players[0].senderId, message: JSON.stringify(scope.things)});
+            expect(messageSender.requestGuess).toHaveBeenCalledWith({senderId: scope.players[0].senderId, message: scope.things});
             expect(messageSender.requestGuess.calls.count()).toEqual(2);
         });
       
@@ -481,81 +519,81 @@ describe('gameController', function () {
             beforeEach(function(){
                 scope.players = players;
             });
-                it('processes guesses correctly', function(){
-                    //NOTE: I would change things to generate an Id when they're received (a simple int counter is fine)
-                    // And store that as the id, and then change things to be a hash.
-                    // so scope.things = {};
-                    // then you can do the dynamic id lookup:  scope.things[guess.thingId];
-                    scope.things[0] = {writer: "Sally", thing:"thing1", guessedThisTurn: false, guesser: [], turnsUnguessed: 0, randomPosition: 1};
-                    scope.things[1] = {writer: "JoeBob", thing:"thing2", guessedThisTurn: false, guesser: [], turnsUnguessed: 0, randomPosition: 2};
-                    stateManager.playerCount = 2;                    
-                    var guess1 = {senderId: 99, message: {thing: "thing1", writer: "Sally"}};
-                    var guess2 = {senderId: 100, message: {thing: "thing1", writer: "JoeBob"}};
-                    stateManager.currentguesses = [];
-                    stateManager.currentguesses.push(guess1);
-                    stateManager.currentguesses.push(guess2);
+                // it('processes guesses correctly', function(){
+                //     //NOTE: I would change things to generate an Id when they're received (a simple int counter is fine)
+                //     // And store that as the id, and then change things to be a hash.
+                //     // so scope.things = {};
+                //     // then you can do the dynamic id lookup:  scope.things[guess.thingId];
+                //     scope.things[0] = {writer: "Sally", thing:"thing1", guessedThisTurn: false, guesser: [], turnsUnguessed: 0, randomPosition: 1};
+                //     scope.things[1] = {writer: "JoeBob", thing:"thing2", guessedThisTurn: false, guesser: [], turnsUnguessed: 0, randomPosition: 2};
+                //     stateManager.playerCount = 2;                    
+                //     var guess1 = {senderId: 99, message: {thing: "thing1", writer: "Sally"}};
+                //     var guess2 = {senderId: 100, message: {thing: "thing1", writer: "JoeBob"}};
+                //     stateManager.currentguesses = [];
+                //     stateManager.currentguesses.push(guess1);
+                //     stateManager.currentguesses.push(guess2);
 
-                    controller.processGuesses();                    
+                //     controller.processGuesses();                    
 
-                    expect(scope.things[0].guessedThisTurn).toBe(true);
-                    expect(scope.things[1].guessedThisTurn).toBe(false);
-                    expect(scope.wrongGuesses).toBeDefined;
-                    expect(scope.wrongGuesses[0]).toBe({thing:'thing1', writer:'JoeBob', guesser: ['JoeBob']});
-                    expect(stateManager.state).toBe("roundResults");
-                });
+                //     expect(scope.things[0].guessedThisTurn).toBe(true);
+                //     expect(scope.things[1].guessedThisTurn).toBe(false);
+                //     expect(scope.wrongGuesses).toBeDefined;
+                //     expect(scope.wrongGuesses[0]).toBe({thing:'thing1', writer:'JoeBob', guesser: ['JoeBob']});
+                //     expect(stateManager.state).toBe("roundResults");
+                // });
 
-                it('doesnt process guesses until all received', function(){
-                    scope.things[0] = {writer: "Sally", thing:"thing1", guessedThisTurn: false, guesser: [], turnsUnguessed: 0, randomPosition: 1};
-                    scope.things[1] = {writer: "JoeBob", thing:"thing2", guessedThisTurn: false, guesser: [], turnsUnguessed: 0, randomPosition: 2};
-                    stateManager.playerCount = 2;
-                    var guess1 = {senderId: 99, message: JSON.stringify({thing: "thing1", writer: "Sally"})};
-                    var guess2 = {senderId: 100, message: JSON.stringify({thing: "thing1", writer: "JoeBob"})};
+                // it('doesnt process guesses until all received', function(){
+                //     scope.things[0] = {writer: "Sally", thing:"thing1", guessedThisTurn: false, guesser: [], turnsUnguessed: 0, randomPosition: 1};
+                //     scope.things[1] = {writer: "JoeBob", thing:"thing2", guessedThisTurn: false, guesser: [], turnsUnguessed: 0, randomPosition: 2};
+                //     stateManager.playerCount = 2;
+                //     var guess1 = {senderId: 99, message: JSON.stringify({thing: "thing1", writer: "Sally"})};
+                //     var guess2 = {senderId: 100, message: JSON.stringify({thing: "thing1", writer: "JoeBob"})};
 
-                    spyOn(controller, 'processGuesses').and.callFake();
+                //     spyOn(controller, 'processGuesses').and.callFake();
 
 
-                    controller.guessReceivedHandler(guess1);
+                //     controller.guessReceivedHandler(guess1);
 
-                    expect(controller.processGuesses).not.toHaveBeenCalled();
-                });
+                //     expect(controller.processGuesses).not.toHaveBeenCalled();
+                // });
 
-                it('processes guesses after all received', function(){
-                    scope.things[0] = {writer: "Sally", thing:"thing1", guessedThisTurn: false, guesser: [], turnsUnguessed: 0, randomPosition: 1};
-                    scope.things[1] = {writer: "JoeBob", thing:"thing2", guessedThisTurn: false, guesser: [], turnsUnguessed: 0, randomPosition: 2};
-                    stateManager.playerCount = 2;
-                    var guess1 = {senderId: 99, message: JSON.stringify({thing: "thing1", writer: "Sally"})};
-                    var guess2 = {senderId: 100, message: JSON.stringify({thing: "thing1", writer: "JoeBob"})};
+                // it('processes guesses after all received', function(){
+                //     scope.things[0] = {writer: "Sally", thing:"thing1", guessedThisTurn: false, guesser: [], turnsUnguessed: 0, randomPosition: 1};
+                //     scope.things[1] = {writer: "JoeBob", thing:"thing2", guessedThisTurn: false, guesser: [], turnsUnguessed: 0, randomPosition: 2};
+                //     stateManager.playerCount = 2;
+                //     var guess1 = {senderId: 99, message: JSON.stringify({thing: "thing1", writer: "Sally"})};
+                //     var guess2 = {senderId: 100, message: JSON.stringify({thing: "thing1", writer: "JoeBob"})};
 
-                    spyOn(controller, 'processGuesses').and.callFake(function(){});
+                //     spyOn(controller, 'processGuesses').and.callFake(function(){});
 
-                    controller.guessReceivedHandler(guess1);
-                    controller.guessReceivedHandler(guess2);
+                //     controller.guessReceivedHandler(guess1);
+                //     controller.guessReceivedHandler(guess2);
 
-                    expect(controller.processGuesses).toHaveBeenCalled();
-                });
+                //     expect(controller.processGuesses).toHaveBeenCalled();
+                // });
 
-                it('stores guesses', function(){
-                    scope.things[0] = {writer: "Sally", thing:"thing1", guessedThisTurn: false, guesser: [], turnsUnguessed: 0, randomPosition: 1};                    
-                    stateManager.playerCount = 2;
-                    var guess1 = {senderId: 99, message: JSON.stringify({thing: "thing1", writer: "Sally"})};                   
-                    spyOn(controller, 'processGuesses').and.callFake(function(){});
+            //     it('stores guesses', function(){
+            //         scope.things[0] = {writer: "Sally", thing:"thing1", guessedThisTurn: false, guesser: [], turnsUnguessed: 0, randomPosition: 1};                    
+            //         stateManager.playerCount = 2;
+            //         var guess1 = {senderId: 99, message: JSON.stringify({thing: "thing1", writer: "Sally"})};                   
+            //         spyOn(controller, 'processGuesses').and.callFake(function(){});
 
-                    controller.guessReceivedHandler(guess1);
+            //         controller.guessReceivedHandler(guess1);
 
-                    expect(stateManager.currentguesses[0]).toBe(guess1);
-                });
+            //         expect(stateManager.currentguesses[0]).toBe(guess1);
+            //     });
 
-                 it('cleans up after processing ', function(){
-                    scope.things[0] = {writer: "Sally", thing:"thing1", guessedThisTurn: false, guesser: [], turnsUnguessed: 0, randomPosition: 1};                    
-                    stateManager.playerCount = 2;
-                    var guess1 = {senderId: 99, message: JSON.stringify({thing: "thing1", writer: "Sally"})};                   
-                    spyOn(controller, 'processGuesses').and.callFake(function(){});
-                    spyOn(controller, 'cleanout').and.callFake(function(){});
+            //      it('cleans up after processing ', function(){
+            //         scope.things[0] = {writer: "Sally", thing:"thing1", guessedThisTurn: false, guesser: [], turnsUnguessed: 0, randomPosition: 1};                    
+            //         stateManager.playerCount = 2;
+            //         var guess1 = {senderId: 99, message: JSON.stringify({thing: "thing1", writer: "Sally"})};                   
+            //         spyOn(controller, 'processGuesses').and.callFake(function(){});
+            //         spyOn(controller, 'cleanout').and.callFake(function(){});
 
-                    controller.guessReceivedHandler(guess1);
-                    controller.guessReceivedHandler(guess1);
+            //         controller.guessReceivedHandler(guess1);
+            //         controller.guessReceivedHandler(guess1);
 
-                    expect(controller.cleanout).toHaveBeenCalled();
-                });
+            //         expect(controller.cleanout).toHaveBeenCalled();
+            //     });
             });
 });
