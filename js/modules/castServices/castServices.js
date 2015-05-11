@@ -1,6 +1,6 @@
-angular.module('gameMaster.castServices', [])
+angular.module('castServices', [])
   .constant('cast', window.cast)
-    .factory('castMessageBus', function(cast, messagetypes, eventService, $log) {
+    .factory('castMessageBus', function(cast, messagetypes, eventService, gameEvents, $log) {
 
       // start up chromecast
       cast.receiver.logger.setLevelValue(0);
@@ -17,14 +17,14 @@ angular.module('gameMaster.castServices', [])
       castReceiverManager.onSenderConnected = function(event) {
         $log.log('Received Sender Connected event: ' + event.data);
         $log.log(castReceiverManager.getSender(event.data).userAgent);
-        eventService.publish('playerJoined', {senderId: event.senderId, message: event.data});
+        eventService.publish(gameEvents.playerJoined, {senderId: event.senderId, message: event.data});
       };
 
       // 'senderdisconnected' event handler
       castReceiverManager.onSenderDisconncted = function(event) {
         $log.log('Received Sender Disconnected event: ' + event.data);
         if (event.reason === cast.receiver.system.DisconnectReason.REQUESTED_BY_SENDER){
-          eventService.publish('quitReceived', {senderId: event.senderId, message: event.data});
+          eventService.publish(gameEvents.quitReceived, {senderId: event.senderId, message: event.data});
         }
         if (castReceiverManager.getSenders().length === 0) {
           close();
@@ -103,39 +103,35 @@ angular.module('gameMaster.castServices', [])
       castMessageBus.quit.send(event.senderId, JSON.stringify({message: event.message}));
     };
   })
-  .service('messageReceiver', function(castMessageBus, eventService, $log){
+  .service('messageReceiver', function(castMessageBus, eventService, gameEvents, $log){
     
     //gamename received
     castMessageBus.gamename.onMessage = function(event){
-      eventService.publish("gamenameReceived", {senderId: event.senderId, message: angular.fromJson(event.data)});
+      eventService.publish(gameEvents.gamenameReceived, {senderId: event.senderId, message: angular.fromJson(event.data)});
     };
     //playername received
     castMessageBus.playername.onMessage = function(event){
-      eventService.publish("playernameReceived", {senderId: event.senderId, message: angular.fromJson(event.data)});
+      eventService.publish(gameEvents.playernameReceived, {senderId: event.senderId, message: angular.fromJson(event.data)});
     };
     //ready response received
     castMessageBus.ready.onMessage = function(event){
-      eventService.publish("readyReceived", {senderId: event.senderId, message: angular.fromJson(event.data)});
+      eventService.publish(gameEvents.readyReceived, {senderId: event.senderId, message: angular.fromJson(event.data)});
     };
     //prompt received
     castMessageBus.prompt.onMessage = function(event){
-      eventService.publish("voteReceived", {senderId: event.senderId, message: angular.fromJson(event.data)});
+      eventService.publish(gameEvents.voteReceived, {senderId: event.senderId, message: angular.fromJson(event.data)});
     };
     //thing received
     castMessageBus.thing.onMessage = function(event){
-      eventService.publish("thingReceived", {senderId: event.senderId, message: angular.fromJson(event.data)});
+      eventService.publish(gameEvents.thingReceived, {senderId: event.senderId, message: angular.fromJson(event.data)});
     };
     //guess received
     castMessageBus.guess.onMessage = function(event){
-      eventService.publish("guessReceived", {senderId: event.senderId, message: angular.fromJson(event.data)});
-    };
-    //end received
-    castMessageBus.end.onMessage = function(event){
-      eventService.publish("endReceived", {senderId: event.senderId, message: angular.fromJson(event.data)});
+      eventService.publish(gameEvents.guessReceived, {senderId: event.senderId, message: angular.fromJson(event.data)});
     };
     //quit received
     castMessageBus.quit.onMessage = function(event){
-      eventService.publish("quitReceived", {senderId: event.senderId, message: angular.fromJson(event.data)});
+      eventService.publish(gameEvents.quitReceived, {senderId: event.senderId, message: angular.fromJson(event.data)});
     };
   })
-  .constant('messagetypes', ['gamename','playername','ready','prompt','standby','thing','guess','result','end', 'quit']);
+  .constant('messagetypes', ['gamename','playername','ready','prompt','standby','thing','guess','result','quit']);

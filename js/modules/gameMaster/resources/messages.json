@@ -1,0 +1,22 @@
+{
+	"messages": {
+		"nameGame" : "Welcome to the party!  Please enter your name, and name your game!",
+		"namePlayer" : "Welcome to {GNAME}! Please enter your name!",
+		"waitingToStart" : "Hi {PNAME}, thanks for joining {GNAME}, we're waiting for more players to join.",
+		"standBy" : "Hi {PNAME}, thanks for joinging {GNAME}, please wait for the next round.",
+		"standingByReadyRequest" : "{PNAME}, thanks for waiting, here we go!",
+		"readyRequest" : "{PNAME}, are you ready to play?",
+		"readyConfirm" : "You're ready {PNAME}, tell everyone else to get their act together!",
+		"lastReadyConfirm" : "About time {PNAME}, the game's about to start!",
+		"promptRequest" : "OK {PNAME}, what do you want to write about?",
+		"promptConfirm" : "Thanks {PNAME}, you voted for {PROMPT}.",
+		"responseRequest" : "Your prompt is {PROMPT} -- now write about it!",
+		"responseConfirm" : "Awesome {PNAME}! You wrote: '{RESP}', guessing will start when everyone has submitted!",
+		"guessRequest" : "It's time to guess!",
+		"guessConfirm" : "Alright, you guessed that {PNAME} wrote {RESP}.",
+		"guessRemain" : "Here is what's left...",
+		"winner" : "Way to go {PNAME}, you won with {POINTS} points!",
+		"endGame" : "I like this game, another!",
+		"quit" : "OK {PNAME}, we're sorry to see you to."
+	}
+}
