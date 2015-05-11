@@ -3,7 +3,7 @@ angular.module('gameMaster')
 		nameGame : "nameGame",
 		namePlayer : "namePlayer",
 		waitingToStart : "waitingToStart",
-		standBy : "standBy".
+		standBy : "standBy",
 		standingByReadyRequest : "standingByReadyRequest",
 		readyRequest : "readyRequest",
 		readyConfirm : "readyConfirm",
@@ -15,6 +15,6 @@ angular.module('gameMaster')
 		guessConfirm : "guessConfirm",
 		guessRemain : "guessRemain",
 		winner : "winner",
-		endGame : "endGame".
+		endGame : "endGame",
 		quit : "quit"
 	});

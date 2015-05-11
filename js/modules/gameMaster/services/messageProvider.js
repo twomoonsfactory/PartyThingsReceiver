@@ -22,7 +22,7 @@ angular.module('gameMaster')
 		//        .points : numeric points (if needed)
 		this.getMessage = function(args){
 			var feedback;
-			if(_.contains(self.messages, args.messageName){
+			if(_.contains(self.messages, args.messageName)){
 				feedback = self.messages[args.messageName];
 				feedback = feedback.indexOf("{PNAME}") >= 0 ? feedback.stringReplace("{PNAME}", args.pname) : feedback;
 				feedback = feedback.indexOf("{GNAME}") >= 0 ? feedback.stringReplace("{GNAME}", args.gname) : feedback;

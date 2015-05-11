@@ -100,7 +100,7 @@ angular.module('gameMaster')
         //handles guesses -- iterates through rounds of guessing until there are no unguessed players or only one unguessed player.
         this.guessReceiver = function(args){
           var guesser = playerHandler.findPlayer(args.senderId)
-          guessHandler.newGuess({guesser: guesser.playerId, data: args.message);
+          guessHandler.newGuess({guesser: guesser.playerId, data: args.message});
           guesser.setState(playerStates.ready);
           messageSender.requestGuess({senderId: guesser.senderId, message: messageProvider.getMessage({messageName: messageNames.guessConfirm, pname: playerHandler.players[args.message.playerId].playerName, resp: responseHandler.things[args.message.thingId].thing})});
           playerHandler.actedPlayersCount++;   
@@ -153,13 +153,12 @@ angular.module('gameMaster')
                 endMessage+= messageProvider.getMessage({messageName: messageNames.endGame});
               messageSender.sendEnd({senderId: player.senderId, message: endMessage});
               player.setState(playerStates.readyRequested);
-            }
-          }
-        stateManager.setState(gameStates.WaitingForReady);
-        //at this point (adjustable since I know we haven't discussed exactly how to handle it) either the player submits playerStates.ready on the readyReceived channel
-        //or submits a quit request.
-      }
-      eventService.subscribe(gameStates.GameEnd, this.endGame);
+              }
+          stateManager.setState(gameStates.WaitingForReady);
+          //at this point (adjustable since I know we haven't discussed exactly how to handle it) either the player submits playerStates.ready on the readyReceived channel
+          //or submits a quit request.
+        }
+        eventService.subscribe(gameStates.GameEnd, this.endGame);
     }]);
 
     

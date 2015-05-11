@@ -33,7 +33,7 @@ angular.module('gameMaster')
   this.playerNamed = function(args){
     self.players[self.playerCounter]= new player(args.message.playerName, args.senderId, self.playerCounter);
     if(stateManager.checkState(gameStates.WaitingForStart)){
-      messageSender.requestPlayerName({senderId: args.senderId, message: messageProvider.getMessage({messageName: messageNames.waitingToStart, pname: args.message.playerName, gname: stateManager.gameName}));
+      messageSender.requestPlayerName({senderId: args.senderId, message: messageProvider.getMessage({messageName: messageNames.waitingToStart, pname: args.message.playerName, gname: stateManager.gameName})});
       self.players[self.playerCounter].setState(playerStates.waiting);
     }
     else if(stateManager.checkState(gameStates.WaitingForReady)){
@@ -44,7 +44,7 @@ angular.module('gameMaster')
       messageSender.requestReady({senderId: args.senderId, message: messageProvider.getMessage({messageName: messageNames.standBy, pname: args.message.playerName, gname: stateManager.gameName})});
       self.players[self.playerCounter].setState(playerStates.standingBy);
     }
-    if(playerHandler.activePlayers=>self.minimumPlayers){
+    if(playerHandler.activePlayers>=self.minimumPlayers){
       stateManager.setState(gameStates.WaitingForReady);
     }
     self.activePlayers++;
@@ -109,8 +109,7 @@ angular.module('gameMaster')
   this.freshRound = function(){
     _.each(self.players, function(player){
         player.freshRound();
-      }
-    });
+      });
   }
   eventService.subscribe(gameEvents.RoundEnd, this.freshRound);
 
@@ -118,8 +117,7 @@ angular.module('gameMaster')
   this.freshGame = function(){
     _.each(self.players, function(player){
         player.freshGame();
-      }
-    });
+      });
   }
   eventService.subscribe(gameEvents.GameEnd, this.freshGame);
 

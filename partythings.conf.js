@@ -1,5 +1,5 @@
 // Karma configuration
-// Generated on Tue Apr 07 2015 19:30:23 GMT-0600 (Mountain Daylight Time)
+// Generated on Sun May 10 2015 21:03:14 GMT-0600 (Mountain Daylight Time)
 
 module.exports = function(config) {
   config.set({
@@ -18,8 +18,13 @@ module.exports = function(config) {
       'node_modules/angular/angular.js',
       'node_modules/angular-mocks/angular-mocks.js',
       'node_modules/underscore/underscore.js',
-      'js/*.js',
-      '*.spec.js'
+      'js/modules/castServices/castServices.js',
+      'js/modules/gameMaster/app.js',
+      'js/modules/gameMaster/constants/*.js',
+      'js/modules/gameMaster/controllers/*.js',
+      'js/modules/gameMaster/factories/*.js',
+      'js/modules/gameMaster/services/*.js',
+      'index.spec.js'
     ],
 
 
@@ -59,7 +64,7 @@ module.exports = function(config) {
 
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-    browsers: ['Chrome'],
+    browsers: ['Chrome', 'PhantomJS'],
 
 
     // Continuous Integration mode

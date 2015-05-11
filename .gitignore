@@ -1,0 +1,9 @@
+#external dependencies
+node_modules
+
+#old project info
+OldApp.js
+Written**
+
+#sublime project files
+*sublime*

@@ -1,5 +1,3 @@
-
-
 angular.module('gameMaster')
 	//establishes the response object
 	.factory('response', ['responseHander', function(responseHandler){

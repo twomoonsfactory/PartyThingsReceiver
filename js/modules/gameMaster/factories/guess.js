@@ -1,4 +1,4 @@
-angular.module('gameMasger')
+angular.module('gameMaster')
 	.factory('guess', [function(){
 		//guesser and writer are strings, responseId is an int
 		var guess = function(guesser, writer, responseId){

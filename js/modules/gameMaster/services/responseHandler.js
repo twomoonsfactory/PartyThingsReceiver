@@ -50,7 +50,7 @@ angular.module('gameMaster')
             });
             playerHandler.playerGuessed({playerId:response.playerId});
             //saved guessed responses to drop from the "responses" array after iterating through.
-            guessedresponses.push(response.responseId));
+            guessedresponses.push(response.responseId);
           }
           else{
             //assigns bonus points for the player(s) unguessed this round

@@ -1,4 +1,4 @@
-angular.module('gamemaster')
+angular.module('gameMaster')
     //manages the state of the game
     .service('stateManager', ['eventService', 'gameStates', '$log', function(eventService, gameStates, $log){
       var self = this;

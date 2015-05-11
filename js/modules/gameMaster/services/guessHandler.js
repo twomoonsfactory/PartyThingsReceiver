@@ -1,10 +1,10 @@
-angular.module('gamemaster')
+angular.module('gameMaster')
 //hadles the guesses
     .service('guessHandler', ['$log', 'eventService', ' gameStates', 'responseHandler', function($log, eventService, gameStates, responseHandler){
       var self = this;
       this.guesses = [];
       this.newGuess = function(args){
-        self.guesses.push(new guess(args.guesser,args.data.playerId,args.data.responseId}));
+        self.guesses.push(new guess(args.guesser,args.data.playerId,args.data.responseId));
       }
       this.tallyGuesses = function(){
         _.each(self.guesses, function(guess){
