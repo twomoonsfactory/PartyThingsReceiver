@@ -1,6 +1,6 @@
 angular.module('gameMaster')
 	//establishes the response object
-	.factory('response', ['responseHander', function(responseHandler){
+	.factory('response', [function(){
 		//constructor
 		var response = function(response, responseId, playerId){
 			this.response = response;
