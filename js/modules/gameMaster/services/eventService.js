@@ -10,7 +10,7 @@ angular.module('gameMaster')
         	$log.log('Invalid eventId subscribed: ' + eventId);
         }
         else{
-	        if(!self.subs[eventId]){
+	        if(!self.subs.eventId){
 	          self.subs[eventId] = [];
 	        }
 	        self.subs[eventId].push(subscriber);
@@ -18,7 +18,7 @@ angular.module('gameMaster')
       };
       //publishes a specific event, calling the arguments, if any.
       this.publish = function(eventId, args){
-        if(!self.subs[eventId]){
+        if(!self.subs.eventId){
           $log.log('Invalid eventId published: ' + eventId);
         }
         else{

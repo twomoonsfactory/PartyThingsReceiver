@@ -8,7 +8,7 @@ describe('gameDriver service', function(){
 
     //mock the application before testing
     beforeEach(angular.mock.module('gameMaster'));
-    beforeEach(angular.mock.module('castServices'));
+
     beforeEach(function() {
       module(function($provide) {
         $provide.constant('cast', (function(){
@@ -69,7 +69,6 @@ describe('gameDriver service', function(){
         stateManager = $injector.get('stateManager');
         playerHandler = $injector.get('playerHandler');
         thingHandler = $injector.get('thingHandler');
-        messageProvider = $injector.get('messageProvider')
         
         spyOn(eventService, 'subscribe').and.callThrough();
         spyOn(eventService, 'publish').and.callThrough();

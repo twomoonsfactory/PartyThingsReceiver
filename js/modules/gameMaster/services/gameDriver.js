@@ -153,11 +153,10 @@ angular.module('gameMaster')
                 endMessage+= messageProvider.getMessage({messageName: messageNames.endGame});
               messageSender.sendEnd({senderId: player.senderId, message: endMessage});
               player.setState(playerStates.readyRequested);
-            } 
+              }
           stateManager.setState(gameStates.WaitingForReady);
           //at this point (adjustable since I know we haven't discussed exactly how to handle it) either the player submits playerStates.ready on the readyReceived channel
           //or submits a quit request.
-          });
         }
         eventService.subscribe(gameStates.GameEnd, this.endGame);
     }]);

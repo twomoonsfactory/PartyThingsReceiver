@@ -5,9 +5,12 @@ angular.module('gameMaster')
 			this.guesser = guesser;
 			this.writer = writer;
 			this.responseId = responseId;
-		};
+		}
 		guess.prototype.isWriter = function(writerToCheck){
-			return writerToCheck === this.writer;
-		};
+			if(writerToCheck === this.writer)
+				return true;
+			else
+				return false;
+		}
 		return guess;
 	}]);
