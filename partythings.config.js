@@ -21,7 +21,7 @@ module.exports = function(config) {
       'js/modules/castServices/castServices.js',
       'js/modules/gameMaster/app.js',
       'js/modules/gameMaster/**/*.js',
-      'tests/*.spec.js'
+      'tests/**/*.spec.js'
     ],
 
 

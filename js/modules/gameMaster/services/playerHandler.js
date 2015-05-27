@@ -1,7 +1,7 @@
 angular.module('gameMaster')
 //player handler keeps track of player information
-.service('playerHandler', ['eventService', 'player', 'messageSender', 'stateManager', 'gameEvents', 'gameStates', 'playerStates', '$log',
- function(eventService, player, messageSender, stateManager, gameEvents, gameStates, playerStates, $log){
+.service('playerHandler', ['eventService', 'player', 'messageSender', 'stateManager', 'gameEvents', 'gameStates', 'playerStates', 'messageNames', 'messageProvider', '$log',
+ function(eventService, player, messageSender, stateManager, gameEvents, gameStates, playerStates, messageNames, messageProvider, $log){
   var self = this;
   this.players = [];          //contains all players of the game
   this.playerCounter = 0;     //keeps players assigned sequentially
@@ -21,7 +21,7 @@ angular.module('gameMaster')
   }
   eventService.subscribe(gameEvents.playerJoined, this.addPlayer);
 
-  //this is where the game is names and the first player is created
+  //this is where the game is named and the first player is created
   this.gameNamed = function(args){
     stateManager.gameName = args.message.gamename;
     self.playerNamed(args);
@@ -41,23 +41,24 @@ angular.module('gameMaster')
       self.players[self.playerCounter].setState(playerStates.readyRequested);
     }
     else{
-      messageSender.requestReady({senderId: args.senderId, message: messageProvider.getMessage({messageName: messageNames.standBy, pname: args.message.playerName, gname: stateManager.gameName})});
+      messageSender.sendStandby({senderId: args.senderId, message: messageProvider.getMessage({messageName: messageNames.standby, pname: args.message.playerName, gname: stateManager.gameName})});
       self.players[self.playerCounter].setState(playerStates.standingBy);
     }
-    if(playerHandler.activePlayers>=self.minimumPlayers){
+    if(self.activePlayers>=self.minimumPlayers){
       stateManager.setState(gameStates.WaitingForReady);
     }
+    self.playerCounter++;
     self.activePlayers++;
   }
-  eventService.subscribe(gameEventgameEvents.playernameReceived, this.playerNamed);
+  eventService.subscribe(gameEvents.playernameReceived, this.playerNamed);
 
   //returns unguessed, still playing players
   this.getElegiblePlayers = function(){
     var elegiblePlayers = [];
     _.each(self.players, function(player){
-      if(player.checkState(playerStates.ready) && !player.guessed){
-        elegiblePlayers.push = {playerName: player.playerName, playerId: player.playerId};
-      }
+      if(player.checkState(playerStates.ready) && !player.guessed)
+        elegiblePlayers.push({playerName: player.playerName, playerId: player.playerId});
+      
     });
     return elegiblePlayers;
   }
@@ -75,34 +76,28 @@ angular.module('gameMaster')
   //returns true if there are more than 1 unguessed players
   this.unguessedPlayers = function(){
     var results = _.countBy(self.players, function(player){
-      if(player.guessed === true)
-        return guessed;
-      else
-        return unguessed;
+      return player.guessed === true ? 'guessed' : 'unguessed';
     })
-    if(results.guessed > 1)
-      return true;
-    else
-      return false;
+    return results.unguessed > 1 ? true : false;
   }
 
   //returns the highest score
   this.highScore = function(){
     var highScore = 0;
     _.each(self.players, function(player){
-      if(player.score > highScore)
-        highScore = player.score;
-      return highScore;
+      highScore = player.score > highScore ? player.score : highScore;
     });
+    return highScore;
   }
 
   //returns the player names of the winning player(s)
   this.getWinners = function(){
     var winners = _.filter(self.players, function(player){
-      if(player.score===self.highScore){
+      if(player.score===self.highScore()){
         return player.playerName;
       }
     });
+    return winners;
   }
 
   //at the end of round, sets all players to unguessed
@@ -127,10 +122,10 @@ angular.module('gameMaster')
     var quitter = self.findPlayer(args.senderId);
     if(quitter.checkState(playerStates.ready))
       self.actedPlayersCount--;
-    playerHandler.activePlayers--;
+    self.activePlayers--;
     //logic to remove quit player from on screen display here
     quitter.setState(playerStates.quit);
-    messageSender({senderId: quitter.senderId, message: messageProvider.getMessage({messageName: messageNames.quit, pname: quitter.playerName})});
+    messageSender.sendQuit({senderId: quitter.senderId, message: messageProvider.getMessage({messageName: messageNames.quit, pname: quitter.playerName})});
   }
   eventService.subscribe(gameEvents.quitReceived, this.playerQuit);
 
@@ -142,8 +137,8 @@ angular.module('gameMaster')
     self.actedPlayersCount = 0;
   }
 
-  this.findPlayer = function(senderId){
-    var foundPlayer = _.findWhere(self.players, function(player){return player.senderId===args.senderId;});
+  this.findPlayer = function(args){
+    var foundPlayer = _.find(self.players, function(player){return player.senderId===args;});
     return foundPlayer;
   }
 }]);

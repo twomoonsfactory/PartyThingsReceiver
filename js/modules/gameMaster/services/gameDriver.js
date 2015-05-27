@@ -1,19 +1,19 @@
 angular.module('gameMaster')
     
     //contains the game logic 
-    .service('gameDriver', ['eventService', 'gameEvents', 'stateManager', 'gameStates', 'messageSender', 'messageProvider', 'messageNames', 'playerHandler', 'playerStates', 'responseHandler', '$log', function(eventService, gameEvents, stateManager, gameStates, messageSender, messageProvider, messageNames, playerHandler, playerStates, responseHandler, $log){
-        
-        this.winningScore = 50;     //the score that, when reached, ends the game.   
+    .service('gameDriver', ['eventService', 'gameEvents', 'stateManager', 'gameStates', 'messageSender', 'messageProvider', 'messageNames', 'playerHandler', 'playerStates', 'responseHandler', 'promptProvider', 'guessHandler', '$log', function(eventService, gameEvents, stateManager, gameStates, messageSender, messageProvider, messageNames, playerHandler, playerStates, responseHandler, promptProvider, guessHandler, $log){
+        var self = this;
+        self.winningScore = 50;     //the score that, when reached, ends the game.   
         //takes over after the minimum number of players have joined and named themselves, requests them to indicate readiness
         //will skip players already sent this message as necessary (players carried over from previous games, etc)
         this.readyUp = function(){
           _.each(playerHandler.players, function(player){
             if(player.state!==playerStates.quit&&player.state!==playerStates.readyRequested){
-              messageSender({senderId: player.senderId, message: messageProvider.getMessage({messageName: messageNames.readyRequest, pname: player.playerName})});
+              messageSender.requestReady({senderId: player.senderId, message: messageProvider.getMessage({messageName: messageNames.readyRequest, pname: player.playerName})});
               player.setState(playerStates.readyRequested);
             }
           });
-          playerHandler.rese;
+          playerHandler.resetPlayerActedCount();
         }
         eventService.subscribe(gameStates.WaitingForReady, this.readyUp);
 
@@ -23,10 +23,10 @@ angular.module('gameMaster')
           readyPlayer.setState(playerStates.ready);
           playerHandler.playerActed();
           if(playerHandler.actedPlayersCount < playerHandler.activePlayers){
-            messageSender({senderId: readyPlayer.senderId, message: messageProvider.getMessage({messageName: messageNames.readyConfirm, pname: readyPlayer.playerName})});          
+            messageSender.requestReady({senderId: readyPlayer.senderId, message: messageProvider.getMessage({messageName: messageNames.readyConfirm, pname: readyPlayer.playerName})});          
           }
           else{
-            messageSender({senderId: readyPlayer.senderId, message: messageProvider.getMessage({messageName: messageNames.lastReadyConfirm, pname: readyPlayer.playerName})});
+            messageSender.requestReady({senderId: readyPlayer.senderId, message: messageProvider.getMessage({messageName: messageNames.lastReadyConfirm, pname: readyPlayer.playerName})});
             stateManager.setState(gameStates.ReadyToStart);
             //sets statecount back to 0
             playerHandler.resetPlayerActedCount();
@@ -38,7 +38,7 @@ angular.module('gameMaster')
         this.sendPrompts = function(){
           _.each(playerHandler.players, function(player){
             if(player.checkState(playerStates.ready)){
-              messageSender({senderId: player.senderId, message: {message: messageProvider.getMessage({messageName: messageNames.promptRequest, pname: player.playerName}), things: promptProvider.currentprompts}});
+              messageSender.requestPrompt({senderId: player.senderId, message: {message: messageProvider.getMessage({messageName: messageNames.promptRequest, pname: player.playerName}), prompts: promptProvider.currentprompts}});
               player.setState(playerStates.voting);
             }
           });
@@ -50,68 +50,70 @@ angular.module('gameMaster')
         this.voteReceived = function(args){
           var votingPlayer = playerHandler.findPlayer(args.senderId);
           votingPlayer.setState(playerStates.ready);
-          promptProvider.promptVote(args.message.promptindex);
-          messageSender({senderId:votingPlayer.senderId, message: messageProvider.getMessage({messageName: messageNames.promptConfirm, pname: player.playerName, prompt: promptProvider.prompt})});
+          promptProvider.promptVote(args.message.promptIndex);
+          messageSender.requestPrompt({senderId:votingPlayer.senderId, message: messageProvider.getMessage({messageName: messageNames.promptConfirm, pname: votingPlayer.playerName, prompt: promptProvider.prompt})});
           playerHandler.playerActed();
           if(playerHandler.actedPlayersCount===playerHandler.activePlayers){
             promptProvider.tallyVotes();
             playerHandler.resetPlayerActedCount;
-            stateManager.setState(gameStates.promptChosen);
+            stateManager.setState(gameStates.PromptChosen);
           }
         }
         eventService.subscribe(gameEvents.voteReceived, this.voteReceived);
 
         //sends winning prompt to users for their responses
-        this.requestThings = function(){
+        this.requestResponse = function(){
           _.each(playerHandler.players, function(player){
             if(player.checkState(playerStates.ready)){
-              messageSender.requestThing({senderId:player.senderId, message: messageProvider.getMessage({messageName: messageNames.responseRequest, prompt: promptProvider.prompt})});
+              messageSender.requestResponse({senderId:player.senderId, message: messageProvider.getMessage({messageName: messageNames.responseRequest, prompt: promptProvider.prompt})});
               player.setState(playerStates.writing);
             }
           });
         }
-        eventService.subscribe(gameStates.promptChosen, this.requestThings);
+        eventService.subscribe(gameStates.PromptChosen, this.requestResponse);
 
         //manages incoming things, sending the new thing to the responseHandler, until all players have submitted their "things"
-        this.receivedThings = function(args){
-          var thingWriter = playerHandler.findPlayer(args.senderId);
-          responseHandler.newThing({thing: args.message.thing, playerId:thingWriter.playerId});
-          thingWriter.setState(playerStates.ready);
-          messageSender({senderId:thingWriter.senderId, message: messageProvider.getMessage({messageName: messageNames.responseConfirm, pname: thingWriter.playerName, resp: args.message.thing})});
+        this.receivedResponse = function(args){
+          var responseWriter = playerHandler.findPlayer(args.senderId);
+          responseHandler.newResponse({response: args.message.response, playerId:responseWriter.playerId});
+          responseWriter.setState(playerStates.ready);
+          messageSender.requestResponse({senderId:responseWriter.senderId, message: messageProvider.getMessage({messageName: messageNames.responseConfirm, pname: responseWriter.playerName, resp: args.message.thing})});
           playerHandler.playerActed();
           if(playerHandler.actedPlayersCount===playerHandler.activePlayers){
             playerHandler.resetPlayerActedCount();
-            stateManager.setState(gameEvents.ThingsReceived);
+            stateManager.setState(gameStates.ResponsesReceived);
           }
         }
-        eventService.subscribe(gameEvents.thingReceived, this.receivedThings);
+        eventService.subscribe(gameEvents.thingReceived, this.receivedResponse);
 
         //starts the guessing round, sending each active player a list of elegible things and another of elegible players
         this.startGuessing = function(){
           _.each(playerHandler.players, function(player){
             if(player.checkState(playerStates.ready)){
-              messageSender.requestGuess({senderId: player.senderId,message:{message: messageProvider.getMessage({messageName:messageNames.guessRequest}), things: responseHandler.getThings(), elegiblePlayers: playerHandler.getElegiblePlayers()}});
+              messageSender.requestGuess({senderId: player.senderId,message:{message: messageProvider.getMessage({messageName:messageNames.guessRequest}), things: responseHandler.getResponses(), elegiblePlayers: playerHandler.getElegiblePlayers()}});
               player.setState(playerStates.guessing);
             }
           });
         }
-        eventService.subscribe(gameEvents.ThingsReceived, this.startGuessing);
+        eventService.subscribe(gameEvents.ResponsesReceived, this.startGuessing);
 
         //handles guesses -- iterates through rounds of guessing until there are no unguessed players or only one unguessed player.
         this.guessReceiver = function(args){
           var guesser = playerHandler.findPlayer(args.senderId)
-          guessHandler.newGuess({guesser: guesser.playerId, data: args.message});
+          guessHandler.newGuess({guesser: guesser.playerId, playerId: args.message.playerId, responseId: args.message.responseId});
           guesser.setState(playerStates.ready);
-          messageSender.requestGuess({senderId: guesser.senderId, message: messageProvider.getMessage({messageName: messageNames.guessConfirm, pname: playerHandler.players[args.message.playerId].playerName, resp: responseHandler.things[args.message.thingId].thing})});
+          messageSender.requestGuess({senderId: guesser.senderId, message: messageProvider.getMessage({messageName: messageNames.guessConfirm, pname: playerHandler.players[args.message.playerId].playerName, resp: responseHandler.responses[args.message.responseId].response})});
           playerHandler.actedPlayersCount++;   
           if(playerHandler.actedPlayersCount===playerHandler.activePlayers){
             playerHandler.actedPlayersCount = 0;
             guessHandler.tallyGuesses();
             if(playerHandler.unguessedPlayers()){
-              if(player.checkState(playerStates.ready)){
-               messageSender.requestGuess({senderId: player.senderId,message:{message: messageProvider.getMessage({messageName: messageNames.guessRemain}), things: responseHandler.getThings(), elegiblePlayers: playerHandler.getElegiblePlayers()}});
-                player.setState(playerStates.guessing);
-              }
+              _.each(playerHandler.players, function(player){
+                if(player.checkState(playerStates.ready)){
+                 messageSender.requestGuess({senderId: player.senderId,message:{message: messageProvider.getMessage({messageName: messageNames.guessRemain}), things: responseHandler.getResponses(), elegiblePlayers: playerHandler.getElegiblePlayers()}});
+                  player.setState(playerStates.guessing);
+                }
+              });
             }
             else   
               stateManager.setState(gameStates.RoundEnd);
@@ -134,7 +136,7 @@ angular.module('gameMaster')
                 playerHandler.activePlayers ++;
               }
             });
-            stateManager.setState(gameEvents.readyReceived);
+            stateManager.setState(gameStates.ReadyToStart);
           }
         }
         eventService.subscribe(gameStates.RoundEnd, this.nextRound);
@@ -143,14 +145,13 @@ angular.module('gameMaster')
         this.endGame = function(){
           var winners = playerHandler.getWinners();
           //Logic to display winners.
-          _.each(this.players, function(player){
+          _.each(playerHandler.players, function(player){
             var endMessage = "";
             if(player.checkState(playerStates.ready)){
-              if(_.contains(winners, player.playerName)){
+              if(_.contains(winners, player)){
                 endMessage += messageProvider.getMessage({messageName: messageNames.winner, pname: player.playerName, score: playerHandler.highScore()});
               }
-              else
-                endMessage+= messageProvider.getMessage({messageName: messageNames.endGame});
+              endMessage+= messageProvider.getMessage({messageName: messageNames.endGame});
               messageSender.sendEnd({senderId: player.senderId, message: endMessage});
               player.setState(playerStates.readyRequested);
             } 

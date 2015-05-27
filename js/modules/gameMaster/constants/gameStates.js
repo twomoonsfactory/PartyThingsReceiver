@@ -5,7 +5,7 @@ angular.module('gameMaster')
 		WaitingForReady: "WaitingForReady",
 		PlayersReady: "PlayersReady",
 		PromptChosen: "PromptChosen",
-		ThingsReceived: "ThingsReceived",
+		ResponsesReceived: "ResponsesReceived",
 		RoundEnd: "RoundEnd",
 		GameEnd: "GameEnd"
 	});

@@ -1,17 +1,21 @@
 angular.module('gameMaster')
 	//parses system stored messages for storage, and will return with variables inserted on call
-	.service('messageprovider', ['$log', function($log){
+	.service('messageProvider', ['$log', '$http', function($log, $http){
 		var self = this;
 
-		self.messages = {};
-		$http.get("../resources/messages.json")
-			.success(function(data){
-				self.messages = data.messages;
-				$log.log("Messages loaded in...");
-			})
-			.error(function(data){
-				$log.log("error reading messages");
-			});
+		self.messages = [];
+		this.loadMessages = function(){
+			$http.get("../resources/messages.json")
+				.success(function(data){
+					self.messages = data.messages;
+					$log.log("Messages loaded in...");
+				})
+				.error(function(data){
+					$log.log("error reading messages");
+				});
+		}
+
+		self.loadMessages();
 
 		//grabs message requested, doing a string replace to input
 		//arguments as needed
@@ -22,13 +26,13 @@ angular.module('gameMaster')
 		//        .points : numeric points (if needed)
 		this.getMessage = function(args){
 			var feedback;
-			if(_.contains(self.messages, args.messageName)){
-				feedback = self.messages[args.messageName];
-				feedback = feedback.indexOf("{PNAME}") >= 0 ? feedback.stringReplace("{PNAME}", args.pname) : feedback;
-				feedback = feedback.indexOf("{GNAME}") >= 0 ? feedback.stringReplace("{GNAME}", args.gname) : feedback;
-				feedback = feedback.indexOf("{PROMPT}") >= 0 ? feedback.stringReplace("{PROMPT}", args.prompt) : feedback;
-				feedback = feedback.indexOf("{RESP}") >= 0 ? feedback.stringReplace("{RESP}", args.resp) : feedback;
-				feedback = feedback.indexOf("{POINTS}") >= 0 ? feedback.stringReplace("{POINTS}", args.points.toString()) : feedback;
+			if(_.findWhere(self.messages, {messageName: args.messageName})){
+				feedback = _.findWhere(self.messages, {messageName: args.messageName}).message;
+				feedback = feedback.indexOf("{PNAME}") >= 0 ? feedback.replace("{PNAME}", args.pname) : feedback;
+				feedback = feedback.indexOf("{GNAME}") >= 0 ? feedback.replace("{GNAME}", args.gname) : feedback;
+				feedback = feedback.indexOf("{PROMPT}") >= 0 ? feedback.replace("{PROMPT}", args.prompt) : feedback;
+				feedback = feedback.indexOf("{RESP}") >= 0 ? feedback.replace("{RESP}", args.resp) : feedback;
+				feedback = feedback.indexOf("{POINTS}") >= 0 ? feedback.replace("{POINTS}", args.points.toString()) : feedback;
 			}
 			else{
 				$log.log("Message: " + args.messageName + "does not exist");

@@ -1,11 +1,11 @@
 angular.module('gameMaster')
 //response handler keeps track of submitted response information and the game's random entry
-    .service('responseHandler', ['eventService', 'gameStates', '$log', function(eventService, gameStates, $log){
+    .service('responseHandler', ['eventService', 'response', 'gameStates', 'playerHandler', 'responseProvider', '$log', function(eventService, response, gameStates, playerHandler, responseProvider, $log){
       var self = this;
       self.responses = [];
       self.responseCounter = 1;
       this.newResponse = function(args){
-        self.responses[this.responseCounter] = new response(args.response, this.responseCounter, args.playerId);
+        self.responses[self.responseCounter] = new response(args.response, self.responseCounter, args.playerId);
         self.responseCounter++;
       }
       //returns list of responses to send to players
@@ -50,11 +50,12 @@ angular.module('gameMaster')
             });
             playerHandler.playerGuessed({playerId:response.playerId});
             //saved guessed responses to drop from the "responses" array after iterating through.
-            guessedresponses.push(response.responseId);
+            guessedResponses.push(response.responseId);
           }
           else{
             //assigns bonus points for the player(s) unguessed this round
-            playerHandler.assignPoints({playerId:response.playerId, points: 5});
+            if(response.playerId!==-1)
+              playerHandler.assignPoints({playerId:response.playerId, points: 5});
           }
         });
         if(!playerHandler.unguessedPlayers){
@@ -72,7 +73,7 @@ angular.module('gameMaster')
       //starts fresh at the beginning of the game, or at the start of a new round
       this.freshResponses = function(){
         self.responses = [];
-        self.responses[0] = new response(computerResponse.getResponse(), -1, -1);
+        self.responses[0] = new response(responseProvider.getResponse(), -1, -1);
         self.responseCounter = 1;
       }
       eventService.subscribe(gameStates.RoundEnd, this.freshResponses);

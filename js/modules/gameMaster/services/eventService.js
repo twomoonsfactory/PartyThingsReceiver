@@ -22,9 +22,9 @@ angular.module('gameMaster')
           $log.log('Invalid eventId published: ' + eventId);
         }
         else{
-          for(var i = 0; i > self.subs[eventId].length; i ++){
-            self.subs[eventId][i](args);
-          }
+          _.each(self.subs[eventId], function(subscriber){
+            subscriber(args);
+          });
         }
       }
 	}]);

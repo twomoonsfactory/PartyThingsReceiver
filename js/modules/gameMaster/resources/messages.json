@@ -1,22 +1,22 @@
 {
-	"messages": {
-		"nameGame" : "Welcome to the party!  Please enter your name, and name your game!",
-		"namePlayer" : "Welcome to {GNAME}! Please enter your name!",
-		"waitingToStart" : "Hi {PNAME}, thanks for joining {GNAME}, we're waiting for more players to join.",
-		"standBy" : "Hi {PNAME}, thanks for joinging {GNAME}, please wait for the next round.",
-		"standingByReadyRequest" : "{PNAME}, thanks for waiting, here we go!",
-		"readyRequest" : "{PNAME}, are you ready to play?",
-		"readyConfirm" : "You're ready {PNAME}, tell everyone else to get their act together!",
-		"lastReadyConfirm" : "About time {PNAME}, the game's about to start!",
-		"promptRequest" : "OK {PNAME}, what do you want to write about?",
-		"promptConfirm" : "Thanks {PNAME}, you voted for {PROMPT}.",
-		"responseRequest" : "Your prompt is {PROMPT} -- now write about it!",
-		"responseConfirm" : "Awesome {PNAME}! You wrote: '{RESP}', guessing will start when everyone has submitted!",
-		"guessRequest" : "It's time to guess!",
-		"guessConfirm" : "Alright, you guessed that {PNAME} wrote {RESP}.",
-		"guessRemain" : "Here is what's left...",
-		"winner" : "Way to go {PNAME}, you won with {POINTS} points!",
-		"endGame" : "I like this game, another!",
-		"quit" : "OK {PNAME}, we're sorry to see you to."
-	}
+	"messages": [
+		{"messageName" : "nameGame", "message" : "Welcome to the party!  Please enter your name, and name your game!"},
+		{"messageName" : "namePlayer", "message" : "Welcome to {GNAME}! Please enter your name!"},
+		{"messageName" : "waitingToStart", "message" : "Hi {PNAME}, thanks for joining {GNAME}, we're waiting for more players to join."},
+		{"messageName" : "standby", "message" : "Hi {PNAME}, thanks for joinging {GNAME}, please wait for the next round."},
+		{"messageName" : "standingByReadyRequest", "message" : "{PNAME}, thanks for waiting, here we go!"},
+		{"messageName" : "readyRequest", "message" : "{PNAME}, are you ready to play?"},
+		{"messageName" : "readyConfirm", "message" : "You're ready {PNAME}, tell everyone else to get their act together!"},
+		{"messageName" : "lastReadyConfirm", "message" : "About time {PNAME}, the game's about to start!"},
+		{"messageName" : "promptRequest", "message" : "OK {PNAME}, what do you want to write about?"},
+		{"messageName" : "promptConfirm", "message" : "Thanks {PNAME}, you voted for {PROMPT}."},
+		{"messageName" : "responseRequest", "message" : "Your prompt is {PROMPT} -- now write about it!"},
+		{"messageName" : "responseConfirm", "message" : "Awesome {PNAME}! You wrote: '{RESP}', guessing will start when everyone has submitted!"},
+		{"messageName" : "guessRequest", "message" : "It's time to guess!"},
+		{"messageName" : "guessConfirm", "message" : "Alright, you guessed that {PNAME} wrote {RESP}."},
+		{"messageName" : "guessRemain", "message" : "Here is what's left..."},
+		{"messageName" : "winner", "message" : "Way to go {PNAME}, you won with {POINTS} points! "},
+		{"messageName" : "endGame", "message" : "I like this game, another!"},
+		{"messageName" : "quit", "message" : "OK {PNAME}, we're sorry to see you to."}
+	]
 }

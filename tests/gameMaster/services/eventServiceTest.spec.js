@@ -53,14 +53,20 @@ describe('eventService', function(){
 
 	describe('publisher', function(){
 		it('calls subscribed functions on a published event', function(){
-			eventService.subs = {};
 			eventService.subscribe(newEvent, test.functionWasCalled);
 			eventService.subscribe(otherEvent, test.quickFunction);
 			eventService.subscribe(newEvent, test.quickFunction);
 
-			eventService.publish(newEvent, '');
+			eventService.publish(newEvent, {args: 'args'});
 			expect(test.functionWasCalled.calls.count()).toEqual(1);
 			expect(test.quickFunction.calls.count()).toEqual(1);
+		});
+		it('does not call invalid published events and logs the error', function(){
+			eventService.subscribe(otherEvent, test.quickFunction);
+
+			eventService.publish(newEvent, {args: 'args'});
+			expect(test.functionWasCalled).not.toHaveBeenCalled();
+			expect($log.log).toHaveBeenCalled();
 		});
 	});
 });

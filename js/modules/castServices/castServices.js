@@ -79,7 +79,7 @@ angular.module('castServices', [])
     }
 
     //request thing from player
-    this.requestThing = function(event) {
+    this.requestResponse = function(event) {
       castMessageBus.thing.send(event.senderId, JSON.stringify({message: event.message}));
     };
 
