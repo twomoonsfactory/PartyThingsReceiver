@@ -16,5 +16,5 @@ angular.module('gameMaster')
 			//default to welcome
 			.otherwise({
 				redirectTo: '/welcome'
-			}); // test
+			});
 	});
