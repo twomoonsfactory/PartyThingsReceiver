@@ -1,0 +1,19 @@
+    
+<div id="header">
+  <span id="banner">Party Things!</span>
+  <br />
+  <span id="sub-banner">Join the Party</span>
+</div>
+
+<div id="content">	
+  <div id="main">
+    <span id="main-event">This is where the game happens</span>
+    <button type="button" ng-click="changeView('/welcome')">Main</button>
+  </div>
+  <div ng-controller="playerController" id="players">
+    <span id="player-banner">Players</span>
+    <div class="playerSlip" ng-repeat="player in players">
+      <player-display info="player"></player-display>
+    </div>
+  </div>
+</div> 
