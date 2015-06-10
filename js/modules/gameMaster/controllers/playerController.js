@@ -1,5 +1,5 @@
 angular.module('gameMaster')
-	.controller('gameController', ['$scope', function($scope){
+	.controller('playerController', ['$scope', function($scope){
 		var incoming = {playerName: "Incoming Player", score: 0};
       	$scope.players = [
       		{

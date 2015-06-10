@@ -1,16 +1,16 @@
-angular.module('gameMaster')
-	.config(function($routeProvider){
+angular.module('gameMaster')	
+	.config(function($routeProvider, $locationProvider){
 		$routeProvider
+
 			//welcome page
 			.when('/welcome', {
-				templateUrl: '../../../../pages/welcome.html',
-				controller: 'gameController'
+				templateUrl: '../../fragments/welcome.html'
 			})
 
 			//gameplay page
 			.when('/gameplay',{
-				templateUrl: '../../../../pages/gameplay.html',
-				controller: 'gameController'
+				templateUrl: '../../fragments/gameplay.html',
+				controller: 'GameController'
 			})
 
 			//default to welcome
