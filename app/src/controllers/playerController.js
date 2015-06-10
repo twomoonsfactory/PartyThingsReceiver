@@ -1,4 +1,4 @@
-angular.module('gameMaster')
+module.exports = angular.module('gameMaster')
 	.controller('playerController', ['$scope', function($scope){
 		var incoming = {playerName: "Incoming Player", score: 0};
       	$scope.players = [

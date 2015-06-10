@@ -1,0 +1,2 @@
+require('./gameController');
+require('./playerController');

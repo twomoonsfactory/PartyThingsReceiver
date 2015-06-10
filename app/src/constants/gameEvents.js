@@ -1,4 +1,4 @@
-angular.module('gameMaster')
+module.exports = angular.module('gameMaster')
 	.constant('gameEvents', {
 		playerJoined: "playerJoined",
 		readyReceived: "readyReceived",

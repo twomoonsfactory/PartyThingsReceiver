@@ -1,4 +1,4 @@
-angular.module('gameMaster')
+module.exports = angular.module('gameMaster')
 	.directive('playerDisplay', function(){
 		return {
 			restrict: 'E',

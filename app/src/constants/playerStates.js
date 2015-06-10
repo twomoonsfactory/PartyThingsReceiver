@@ -1,4 +1,4 @@
-angular.module('gameMaster')
+module.exports = angular.module('gameMaster')
 	.constant('playerStates', {
 		ready: "ready",
 		quit: "quit",
