@@ -7,15 +7,9 @@ html, body {
 h1{
 	font-family:Impact;
 }
-#container{
-	height:100%;
-	width:100%;
-	background-color: #5C005C;
-}
-#header{
+.header{
 	background-color: #500000;
 	color: #00C000;
-	position:absolute;
 	top:0;
 	margin:auto;
 	text-align:center;

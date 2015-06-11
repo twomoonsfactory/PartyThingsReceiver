@@ -21,6 +21,7 @@ module.exports = function(eventService, player, messageSender, stateManager, gam
   //this is where the game is named and the first player is created
   this.gameNamed = function(args){
     stateManager.gameName = args.message.gamename;
+    eventService.publish(gameEvents.gameNamed, args.message.gamename)
     self.playerNamed(args);
   }
   eventService.subscribe(gameEvents.gamenameReceived, this.gameNamed);

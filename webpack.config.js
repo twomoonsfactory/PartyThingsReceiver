@@ -1,6 +1,6 @@
 'use strict';
-var webpack = require('webpack'),
-path = require('path');
+var webpack = require('webpack');
+var path = require('path');
 //paths
 var app = path.join(__dirname + '/app');
 	module.exports = {
@@ -16,5 +16,16 @@ var app = path.join(__dirname + '/app');
 
 				{test: /\.css$/, loader: "style!css"}
 			]
-		}
+		},
+		plugins: [
+			new webpack.ProvidePlugin({
+            	$: "jquery",
+            	jquery: "jQuery",
+            	jQuery: "jQuery",
+            	"windows.jQuery": "jquery"
+        	}),
+			new webpack.ProvidePlugin({
+    			"_": "underscore"
+  			}) 
+		]
 	};

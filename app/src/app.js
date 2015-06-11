@@ -5,14 +5,12 @@ module.exports = angular.module('gameMaster', ['ngRoute', require('./castService
 
 		//welcome page
 		.when('/welcome', {
-			templateUrl: '../views/welcome.html',
-			controller: 'gameController'
+			templateUrl: '../views/welcome.html'
 		})
 
 		//gameplay page
 		.when('/gameplay',{
-			templateUrl: '../views/gameplay.html',
-			controller: 'gameController'
+			templateUrl: '../views/gameplay.html'
 		})
 
 		//default to welcome
@@ -47,6 +45,7 @@ module.exports = angular.module('gameMaster', ['ngRoute', require('./castService
 		thingReceived: "thingReceived",
 		guessReceived: "guessReceived",
 		gamenameReceived: "gamenameReceived",
+		gameNamed: "gameNamed",
 		playernameReceived: "playernameReceived",
 		quitReceived: "quitReceived"
 	})
