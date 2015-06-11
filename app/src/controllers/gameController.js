@@ -54,7 +54,8 @@ module.exports = function($scope, $log, $location, eventService, gameEvents, pla
   	}
   	//adds a new player to the display
   	$scope.addPlayer = function(player){
-  		$scope.players.splice(_.indexOf($scope.players, incoming), 1);
+  		if(_.contains($scope.players, incoming))
+  			$scope.players.splice(_.indexOf($scope.players, incoming), 1);
   		$scope.players.push(player);
   	};
   	//drops a player from the display
