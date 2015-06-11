@@ -1,6 +1,4 @@
-angular.module('gameMaster')
-	//establishes the response object
-	.factory('response', [function(){
+module.exports = function(){
 		//constructor
 		var response = function(response, responseId, playerId){
 			this.response = response;
@@ -19,4 +17,4 @@ angular.module('gameMaster')
 		};
 
 		return response;
-	}]);
+	};

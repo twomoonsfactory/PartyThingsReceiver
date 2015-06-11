@@ -1,6 +1,4 @@
-angular.module('gameMaster')
-//hadles the guesses
-.service('guessHandler', ['eventService', 'guess', 'gameStates', 'responseHandler', function(eventService, guess, gameStates, responseHandler){
+module.exports = function(eventService, guess, gameStates, responseHandler){
   var self = this;
   this.guesses = [];
   this.newGuess = function(args){
@@ -21,4 +19,4 @@ angular.module('gameMaster')
     self.guesses = [];
   }
   eventService.subscribe(gameStates.RoundEnd, this.wipeGuesses);
-}]);
+};

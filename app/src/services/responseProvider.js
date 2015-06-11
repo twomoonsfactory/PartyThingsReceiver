@@ -1,6 +1,4 @@
-angular.module('gameMaster')
-      //provides random "thing" for the computer player
-      .service('responseProvider', ['$log', '$http', 'eventService', 'gameStates', function($log, $http, eventService, gameStates){
+module.exports = function($log, $http, eventService, gameStates){
         var self = this;
         self.responses = [];
         this.loadResponses = function(){
@@ -18,4 +16,4 @@ angular.module('gameMaster')
         this.getResponse = function(){
           return _.sample(self.responses, 1)[0];
         }
-      }]);
+      };

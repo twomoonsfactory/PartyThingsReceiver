@@ -1,6 +1,4 @@
-angular.module('gameMaster')
-	//parses system stored messages for storage, and will return with variables inserted on call
-	.service('messageProvider', ['$log', '$http', function($log, $http){
+module.exports = function($log, $http){
 		var self = this;
 
 		self.messages = [];
@@ -40,4 +38,4 @@ angular.module('gameMaster')
 			}
 			return feedback;
 		}
-	}]);
+	};

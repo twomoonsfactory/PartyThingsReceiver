@@ -1,4 +1,4 @@
-angular.module('castServices', [])
+module.exports = angular.module('castServices', [])
   .constant('cast', window.cast)
     .factory('castMessageBus', function(cast, messagetypes, eventService, gameEvents, $log) {
 

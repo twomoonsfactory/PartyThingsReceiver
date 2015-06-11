@@ -1,5 +1,4 @@
-angular.module('gameMaster')
-	.factory('guess', [function(){
+module.exports = function(){
 		//guesser and writer are strings, responseId is an int
 		var guess = function(guesser, writer, responseId){
 			this.guesser = guesser;
@@ -10,4 +9,4 @@ angular.module('gameMaster')
 			return writerToCheck === this.writer;
 		};
 		return guess;
-	}]);
+	};

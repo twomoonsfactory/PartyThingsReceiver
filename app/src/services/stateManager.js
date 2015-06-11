@@ -1,6 +1,4 @@
-angular.module('gameMaster')
-    //manages the state of the game
-    .service('stateManager', ['eventService', 'gameStates', '$log', function(eventService, gameStates, $log){
+module.exports = function(eventService, gameStates, $log){
       var self = this;
       self.gameName = "";         //holds game name
       self.state = null;          //the current state of the game
@@ -24,4 +22,4 @@ angular.module('gameMaster')
       this.checkState = function(stateToCheck){
         return self.state === stateToCheck;
       }
-    }]);
+    };

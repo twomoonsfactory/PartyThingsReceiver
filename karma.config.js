@@ -1,39 +1,15 @@
-// Karma configuration
-// Generated on Tue Apr 07 2015 19:30:23 GMT-0600 (Mountain Daylight Time)
+    // Karma configuration
 
 module.exports = function(config) {
-  config.set({
-
-    // base path that will be used to resolve all patterns (eg. files, exclude)
+    config.set({
+        // ... normal karma configuration
+// base path that will be used to resolve all patterns (eg. files, exclude)
     basePath: '',
 
 
     // frameworks to use
     // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
     frameworks: ['jasmine'],
-
-
-    // list of files / patterns to load in the browser
-    files: [
-      'node_modules/angular/angular.js',
-      'node_modules/angular-mocks/angular-mocks.js',
-      'node_modules/underscore/underscore.js',
-      'app/index.js',
-      'app/src/**/*.js',
-      'app/src/**/*.spec.js'
-    ],
-
-
-    // list of files to exclude
-    exclude: [
-    ],
-
-
-    // preprocess matching files before serving them to the browser
-    // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
-    preprocessors: {
-    },
-
 
     // test results reporter to use
     // possible values: 'dots', 'progress'
@@ -65,6 +41,36 @@ module.exports = function(config) {
 
     // Continuous Integration mode
     // if true, Karma captures browsers, runs the tests and exits
-    singleRun: false
-  });
+    singleRun: false,
+    
+        files: [
+            // all files ending in "_test"
+            'app/src/**/*.js'
+            // each file acts as entry point for the webpack configuration
+        ],
+
+        preprocessors: {
+            // add webpack as preprocessor
+            'app/src/**/*.js': ['webpack']
+        },
+
+        webpack: {
+            // karma watches the test entry points
+            // (you don't need to specify the entry option)
+            // webpack watches dependencies
+
+            // webpack configuration
+        },
+
+        webpackMiddleware: {
+            // webpack-dev-middleware configuration
+            // i. e.
+            noInfo: true
+        },
+
+        plugins: [
+            require("karma-webpack")
+        ]
+
+    });
 };

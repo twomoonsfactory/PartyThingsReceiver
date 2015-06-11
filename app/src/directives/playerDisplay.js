@@ -1,10 +1,9 @@
-module.exports = angular.module('gameMaster')
-	.directive('playerDisplay', function(){
+module.exports = function(){
 		return {
 			restrict: 'E',
 			scope: {
 				display: '=info'
 			},
-			templateUrl: 'js/modules/gameMaster/directives/playerDisplay.html'
+			templateUrl: 'src/directives/playerDisplay.html'
 		};
-	});
+	};

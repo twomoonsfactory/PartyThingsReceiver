@@ -1,6 +1,4 @@
-angular.module('gameMaster')
-	//establishes the player object
-	.factory('player', ['playerStates', '$log', function(playerStates, $log){
+module.exports = function(playerStates, $log){
 		var player = function(playerName, senderId, playerId){
 			this.playerName = playerName;
 			this.senderId = senderId;
@@ -40,4 +38,4 @@ angular.module('gameMaster')
 		};
 
 		return player;
-	}]);
+	};

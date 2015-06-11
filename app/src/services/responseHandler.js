@@ -1,6 +1,4 @@
-angular.module('gameMaster')
-//response handler keeps track of submitted response information and the game's random entry
-    .service('responseHandler', ['eventService', 'response', 'gameStates', 'playerHandler', 'responseProvider', '$log', function(eventService, response, gameStates, playerHandler, responseProvider, $log){
+module.exports = function(eventService, response, gameStates, playerHandler, responseProvider, $log){
       var self = this;
       self.responses = [];
       self.responseCounter = 1;
@@ -78,4 +76,4 @@ angular.module('gameMaster')
       }
       eventService.subscribe(gameStates.RoundEnd, this.freshResponses);
       eventService.subscribe(gameStates.ReadyToStart, this.freshResponses);
-    }]);
+    };

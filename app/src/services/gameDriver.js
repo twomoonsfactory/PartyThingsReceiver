@@ -1,7 +1,4 @@
-angular.module('gameMaster')
-    
-    //contains the game logic 
-    .service('gameDriver', ['eventService', 'gameEvents', 'stateManager', 'gameStates', 'messageSender', 'messageProvider', 'messageNames', 'playerHandler', 'playerStates', 'responseHandler', 'promptProvider', 'guessHandler', '$log', function(eventService, gameEvents, stateManager, gameStates, messageSender, messageProvider, messageNames, playerHandler, playerStates, responseHandler, promptProvider, guessHandler, $log){
+module.exports = function(eventService, gameEvents, stateManager, gameStates, messageSender, messageProvider, messageNames, playerHandler, playerStates, responseHandler, promptProvider, guessHandler, $log){
         var self = this;
         self.winningScore = 50;     //the score that, when reached, ends the game.   
         //takes over after the minimum number of players have joined and named themselves, requests them to indicate readiness
@@ -161,6 +158,6 @@ angular.module('gameMaster')
           });
         }
         eventService.subscribe(gameStates.GameEnd, this.endGame);
-    }]);
+    };
 
     

@@ -1,6 +1,4 @@
-angular.module('gameMaster')
-    //sub-pub observer service
-    .service('eventService',['$log', 'gameEvents', 'gameStates', function($log, gameEvents, gameStates){
+module.exports = function($log, gameEvents, gameStates){
       var self = this;
       self.subs = {};
       //takes subscriptions, functions to be called on a specific event being published.
@@ -27,4 +25,4 @@ angular.module('gameMaster')
           });
         }
       }
-	}]);
+	};

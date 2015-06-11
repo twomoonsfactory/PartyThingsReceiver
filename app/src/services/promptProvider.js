@@ -1,5 +1,4 @@
-angular.module('gameMaster')
-    .service('promptProvider', ['$log', 'eventService', 'gameStates', '$http', function($log, eventService, gameStates, $http){
+module.exports = function($log, eventService, gameStates, $http){
       //stores prompt list locally, will send three at random on call
       var self = this;
       self.prompts = [];
@@ -43,4 +42,4 @@ angular.module('gameMaster')
         else
           this.prompt = self.currentprompts[_.random(0,2)];
       }
-    }]);
+    };

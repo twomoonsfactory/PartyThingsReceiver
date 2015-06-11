@@ -19,10 +19,7 @@ module.exports = function(config) {
       'node_modules/angular-route/angular-route.js',
       'node_modules/angular-mocks/angular-mocks.js',
       'node_modules/underscore/underscore.js',
-      'js/modules/castServices/castServices.js',
-      'js/modules/gameMaster/app.js',
-      'js/modules/gameMaster/**/*.js',
-      'tests/**/*.spec.js'
+      'app/src/**/*.spec.js'
     ],
 
 

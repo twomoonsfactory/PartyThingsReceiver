@@ -1,7 +1,4 @@
-angular.module('gameMaster')
-//player handler keeps track of player information
-.service('playerHandler', ['eventService', 'player', 'messageSender', 'stateManager', 'gameEvents', 'gameStates', 'playerStates', 'messageNames', 'messageProvider', '$log',
- function(eventService, player, messageSender, stateManager, gameEvents, gameStates, playerStates, messageNames, messageProvider, $log){
+module.exports = function(eventService, player, messageSender, stateManager, gameEvents, gameStates, playerStates, messageNames, messageProvider, $log){
   var self = this;
   this.players = [];          //contains all players of the game
   this.playerCounter = 0;     //keeps players assigned sequentially
@@ -141,4 +138,4 @@ angular.module('gameMaster')
     var foundPlayer = _.find(self.players, function(player){return player.senderId===args;});
     return foundPlayer;
   }
-}]);
+};

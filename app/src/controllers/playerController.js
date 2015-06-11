@@ -1,5 +1,4 @@
-module.exports = angular.module('gameMaster')
-	.controller('playerController', ['$scope', function($scope){
+module.exports = function($scope, player, eventService, gameEvents){
 		var incoming = {playerName: "Incoming Player", score: 0};
       	$scope.players = [
       		{
@@ -40,9 +39,22 @@ module.exports = angular.module('gameMaster')
       	$scope.dropPlayer = function(player){
       		$scope.players.splice(_.indexOf($scope.players, player), 1);
       	};
+
+            $scope.morePoints = function(){
+                  $scope.players[3].addPoints(5);
+            }
+
+            this.newPlayer = function(args){
+                  $scope.players[3] = new player(args.message.playerName, 1512, 5);
+            }
+            eventService.subscribe(gameEvents.playernameReceived, this.newPlayer);
+
+            $scope.addPlayer = function(){
+                  eventService.publish(gameEvents.playernameReceived, {message:{playerName: "Franklin"}});
+            }
       	//highlight a player with pending action
 
       	//remove highlight
 
       	//sort players by score
-	}]);
+	};
