@@ -1,40 +1,58 @@
-
+<div class='container-fluid' player-names playerData='players'>
 	<div class='top row'>
-		<div class='col-lg-2 odd'>
+		<div class='col-lg-6'>
+		<div class='filler row'>
+			<div class='col-lg-3 odd'>
+			</div>
+			<div class='col-lg-3 even playername-placeholder'>
+			</div>
+			<div class='col-lg-3 odd'>
+				<button ng-click="changeView('/gameplay')">
+				Play {{gamename}}
+				</button>
+			</div>
+			<div class='col-lg-3 even playername-placeholder'>
+			</div>
 		</div>
-		<div class='col-lg-2 even'>
 		</div>
-		<div class='col-lg-2 odd'>
-			<button ng-click="changeView('/gameplay')">
-			Play {{gamename}}
-			</button>
+		<div class='col-lg-6'>
+		<div class='filler row'>
+			<div class='col-lg-3 odd playername-placeholder'>
+			</div>
+			<div class='col-lg-3 even'>
+			</div>
+			<div class='col-lg-3 odd playername-placeholder'>
+			</div>
+			<div class='col-lg-3 even'>
+			</div>
 		</div>
-		<div class='col-lg-2 even'>
-		</div>
-		<div class='col-lg-2 odd'>
-		</div>
-		<div class='col-lg-2 even'>
 		</div>
 	</div>
 	<div class='mid row'>
 		<div class='col-lg-4'>
 			<div class='third row'>
-				<div class='col-lg-6 even'>
+				<div class='col-lg-4 even playername-placeholder'>
 				</div>
-				<div class='col-lg-6 odd'>
+				<div class='col-lg-4 odd'>
 				</div>	
+				<div class='col-lg-4 even playername-placeholder'>
+				</div>
 			</div>
 			<div class='third row'>
-				<div class='col-lg-6 odd'>
+				<div class='col-lg-4 odd'>
 				</div>
-				<div class='col-lg-6 even'>
+				<div class='col-lg-4 even playername-placeholder'>
 				</div>	
+				<div class='col-lg-4 odd playername-placeholder'>
+				</div>
 			</div>
 			<div class='third row'>
-				<div class='col-lg-6 even'>
+				<div class='col-lg-4 even playername-placeholder'>
 				</div>
-				<div class='col-lg-6 odd'>
+				<div class='col-lg-4 odd'>
 				</div>	
+				<div class='col-lg-4 even playername-placeholder'>
+				</div>
 			</div>
 		</div>
 		<div class='col-lg-4 sign'>
@@ -43,37 +61,57 @@
 		</div>
 		<div class='col-lg-4'>
 			<div class='third row'>
-				<div class='col-lg-6 even'>
+				<div class='col-lg-4 even playername-placeholder'>
 				</div>
-				<div class='col-lg-6 odd'>
+				<div class='col-lg-4 odd playername-placeholder'>
 				</div>	
+				<div class='col-lg-4 even playername-placeholder'>
+				</div>
 			</div>
 			<div class='third row'>
-				<div class='col-lg-6 odd'>
+				<div class='col-lg-4 odd playername-placeholder'>
 				</div>
-				<div class='col-lg-6 even'>
+				<div class='col-lg-4 even'>
 				</div>	
+				<div class='col-lg-4 odd'>
+				</div>
 			</div>
 			<div class='third row'>
-				<div class='col-lg-6 even'>
+				<div class='col-lg-4 even playername-placeholder'>
 				</div>
-				<div class='col-lg-6 odd'>
+				<div class='col-lg-4 odd'>
 				</div>	
+				<div class='col-lg-4 even playername-placeholder'>
+				</div>
 			</div>
 		</div>
 	</div>
 	<div class='bot row'>
-		<div class='col-lg-2 odd'>
+		<div class='col-lg-6'>
+		<div class='filler row'>
+			<div class='col-lg-3 odd'>
+			</div>
+			<div class='col-lg-3 even playername-placeholder'>
+			</div>
+			<div class='col-lg-3 odd'>
+			</div>
+			<div class='col-lg-3 even playername-placeholder'>
+				<button ng-click="insertPlayer()">insert</button>
+			</div>
 		</div>
-		<div class='col-lg-2 even'>
 		</div>
-		<div class='col-lg-2 odd'>
+		<div class='col-lg-6'>
+		<div class='filler row'>
+			<div class='col-lg-3 odd playername-placeholder'>
+			</div>
+			<div class='col-lg-3 even'>
+			</div>
+			<div class='col-lg-3 odd playername-placeholder'>
+			</div>
+			<div class='col-lg-3 even'>
+			</div>
 		</div>
-		<div class='col-lg-2 even'>
-		</div>
-		<div class='col-lg-2 odd'>
-		</div>
-		<div class='col-lg-2 even'>
 		</div>
 	</div>
 	</div>
+</div>

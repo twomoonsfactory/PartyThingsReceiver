@@ -23,6 +23,7 @@ module.exports = angular.module('gameMaster', ['ngRoute', require('./castService
 	.controller('playerController', require('./controllers/playerController.js'))
 	//directives
 	.directive('playerDisplay', require('./directives/playerDisplay.js'))
+	.directive('playerNames', require('./directives/playerNames.js'))
 	//factories
 	.factory('guess', require('./factories/guess.js'))
 	.factory('player', require('./factories/player.js'))

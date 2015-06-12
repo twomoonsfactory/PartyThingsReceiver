@@ -75,11 +75,6 @@ module.exports = function($scope, $log, $location, eventService, gameEvents, pla
     $scope.plusPlayer = function(){
           eventService.publish(gameEvents.playernameReceived, {message:{playerName: "Franklin"}});
     }
-	this.updateGameName = function(args){
-		$scope.gameName = args;
-	}
-	eventService.subscribe(gameEvents.gameNamed, this.updateGameName);
-    
       	//highlight a player with pending action
 
       	//remove highlight
