@@ -1,0 +1,68 @@
+<div class='container-fluid tall' player-names player-data='players'>
+	<div class='filler row'>
+		<div class='col-lg-4'>
+			<div class="banner row">
+				<div class="filler col-lg-12">
+					<h3>Players Joined</h3>
+				</div>
+			</div>
+			<div class="welcomeplayer row">
+				<div class='welcomeplayercol col-lg-6'>
+					<table>
+						<tr ng-repeat="player in joinedPlayers|limitTo:10:10">
+							<td>{{player.playerName}}</td>
+						</tr>
+					</table>
+				</div>
+				<div class='welcomeplayercol col-lg-6'>
+					<table>
+						<tr ng-repeat="player in joinedPlayers|limitTo:10">
+							<td>{{player.playerName}}</td>
+						</tr>
+					</table>
+				</div>
+			</div>
+		</div>
+		<div class='col-lg-4'>
+			<div class='top row'>
+			</div>
+			<div class='mid row'>
+				<div class='col-lg-12 sign'>
+					<h1>Welcome to {{gameName}}!</h1>
+					<button ng-click="nameIt()">NameIt</button>
+					<button ng-click="incomingPlayer()">PendPlayer</button>
+				    <button ng-click="plusPlayer()">AddPlayer</button>
+				    <button ng-click="removePlayer()">RoseQuit</button>
+				    <button ng-click="readyPlayer()">Ready</button>
+				    <h3>{{message}}</h3>
+				</div>
+			</div>
+			<div class='bot row'>
+			</div>
+		</div>
+		<div class='col-lg-4'>
+			<div class="banner row">
+				<div class="filler col-lg-12">
+					<h3>Players Ready</h3>
+				</div>
+			</div>
+			<div class="welcomeplayer row">
+				<div class='welcomeplayercol col-lg-6'>
+					<table>
+						<tr ng-repeat="player in readyPlayers|limitTo:10">
+							<td>{{player.playerName}}</td>
+						</tr>
+					</table>
+				</div>
+				<div class='welcomeplayercol col-lg-6'>
+					<table>
+						<tr ng-repeat="player in readyPlayers|limitTo:10:10">
+							<td>{{player.playerName}}</td>
+						</tr>
+					</table>
+				</div>
+			</div>
+
+		</div>
+	</div>
+</div>
