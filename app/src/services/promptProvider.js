@@ -1,4 +1,4 @@
-module.exports = function($log, eventService, gameStates, $http){
+module.exports = function($log, eventService, gameEvents, gameStates, $http){
       //stores prompt list locally, will send three at random on call
       var self = this;
       self.prompts = [];
@@ -6,7 +6,7 @@ module.exports = function($log, eventService, gameStates, $http){
       self.prompt = "";
       self.votes = [0,0,0];
       this.loadPrompts = function(){
-        $http.get("../resources/prompts.json")
+        $http.get("../src/resources/prompts.json")
           .success(function(data){
             self.prompts = data;
             $log.log("Prompts loaded in...");
@@ -15,10 +15,11 @@ module.exports = function($log, eventService, gameStates, $http){
             $log.log("error reading prompts");
           });
       }
-      eventService.subscribe(gameStates.WaitingForStart, this.loadPrompts);
+      eventService.subscribe(gameEvents.welcomeLoaded, this.loadPrompts);
 
       this.getPrompts = function(){
          self.currentprompts = _.sample(self.prompts, 3);
+         eventService.publish(gameEvents.promptsLoaded, self.currentprompts);
       }
       eventService.subscribe(gameStates.WaitingForReady, this.getPrompts);
       eventService.subscribe(gameStates.RoundEnd, this.getPrompts);

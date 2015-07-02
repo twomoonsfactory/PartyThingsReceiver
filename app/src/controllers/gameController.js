@@ -1,40 +1,18 @@
-module.exports = function($scope, $log, $location, eventService, gameEvents, player) {
- 	$scope.message = "Foo";
-  	$scope.gamename = "Foo";
-  	$scope.players = [
-  		{
-  			playerName: "Joe",
-  			senderId: 123,
-  			score: 5,
-  			state: "writing",
-  			playerId: 1,
-  			guessed: false
-  		},
-  		{
-  			playerName: "Bob",
-  			senderId: 135,
-  			score: 10,
-  			state: "ready",
-  			playerId: 2,
-  			guessed: false
-  		},
-  		{
-  			playerName: "Samantha",
-  			senderId: 52412,
-  			score: 33,
-  			state: "writing",
-  			playerId: 3,
-  			guessed: false
-  		}
-		];
+module.exports = function($scope, $log, $location, gameStates, eventService, gameEvents, player, playerHandler, stateManager) {
+ 	$scope.gameMessage = "Bar";
+ 	$scope.gameHeader = "Foo";
+  	$scope.gameName = stateManager.gameName;
+  	$scope.ownerName = stateManager.ownerName;
+  	$scope.players = playerHandler.players;		
   	$scope.things = [];
   	$scope.infoDisplay = null;
   	$scope.prompts;
-  	$scope.owner = "the";
   	var incoming = {playerName: "Incoming Player", score: 0};
-  	$scope.changeView = function(view){
-  		$location.path(view);
-  	}
+  	// $scope.getState = function(){
+  	// 	$scope.players = playerHandler.players;
+  	// 	$scope.gameName = stateManager.gameName;
+  	// }
+  	// eventService.subscribe(gameStates.ReadyToStart, $scope.getState);
   	$scope.nameGame = function(args){
   		$scope.gamename = args;
   	}
@@ -43,41 +21,56 @@ module.exports = function($scope, $log, $location, eventService, gameEvents, pla
   		$scope.owner = args.message.playerName + '\'s';
   	}
   	eventService.subscribe(gameEvents.gamenameReceived, $scope.addOwner);
-  	$scope.nameIt = function(){
-  		eventService.publish(gameEvents.gameNamed, "IT WORKS");
-  		eventService.publish(gameEvents.gamenameReceived, {message:{playerName: "Chuck"}});
-  	}
+
   	//adds "pending player"
   	$scope.pendPlayer = function(){
   		if(!_.contains($scope.players, incoming))
   			$scope.players.push(incoming);
   	}
-  	//adds a new player to the display
-  	$scope.addPlayer = function(player){
-  		if(_.contains($scope.players, incoming))
-  			$scope.players.splice(_.indexOf($scope.players, incoming), 1);
-  		$scope.players.push(player);
-  	};
-  	//drops a player from the display
-  	$scope.dropPlayer = function(player){
-  		$scope.players.splice(_.indexOf($scope.players, player), 1);
-  	};
+  	eventService.subscribe(gameEvents.playerJoined, $scope.pendPlayer);
+  	//updates player list
+  	$scope.updatePlayers = function(newPlayers){
+  		$scope.players = newPlayers;
+  	}
+	eventService.subscribe(gameEvents.playersUpdated, $scope.updatePlayers);
 
-    $scope.morePoints = function(){
-          $scope.players[3].addPoints(5);
+  	//pulls prompts for display
+    $scope.grabPrompts = function(args){
+    	$scope.prompts=args;
     }
-
-    this.newPlayer = function(args){
-          $scope.addPlayer(new player(args.message.playerName, 1512, 5));
-    }
-    eventService.subscribe(gameEvents.playernameReceived, this.newPlayer);
-
-    $scope.plusPlayer = function(){
-          eventService.publish(gameEvents.playernameReceived, {message:{playerName: "Franklin"}});
-    }
+    eventService.subscribe(gameEvents.promptsLoaded, $scope.grabPrompts);
       	//highlight a player with pending action
 
       	//remove highlight
 
       	//sort players by score
+
+
+      	//TEST VIA BUTTON
+  	$scope.nameIt = function(){
+  		eventService.publish(gameEvents.playerJoined, {senderId:5});
+  		eventService.publish(gameEvents.gamenameReceived, {senderId:13049823,message:{gamename:"Chuck's Palace",playerName: "Chuck"}});
+  	}
+  	$scope.count = 0;
+	$scope.plusPlayer = function(){
+		var list = [{senderId:52,message:{playerName:"Franky"}},
+					{senderId:15,message:{playerName:"Rose"}},
+					{senderId:025234,message:{playerName:"N3tSlayùù│A"}},
+					{senderId:157,message:{playerName:"Billy"}},
+					{senderId:0972343,message:{playerName:"Geraldine"}}];
+		eventService.publish(gameEvents.playernameReceived, list[$scope.count]);
+		$scope.count++;
+    }
+    $scope.incomingPlayer = function(){
+    	eventService.publish(gameEvents.playerJoined, {});
+    }
+    $scope.morePoints = function(){
+        $scope.players[3].addPoints(5);
+    }
+    $scope.removePlayer = function(){
+    	eventService.publish(gameEvents.quitReceived, {senderId:15});
+    }
+  	$scope.changeView = function(view){
+  		$location.path(view);
+  	}
 };

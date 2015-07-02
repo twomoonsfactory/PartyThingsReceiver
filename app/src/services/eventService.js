@@ -18,7 +18,10 @@ module.exports = function($log, gameEvents, gameStates){
       //publishes a specific event, calling the arguments, if any.
       this.publish = function(eventId, args){
         if(!self.subs[eventId]){
-          $log.log('Invalid eventId published: ' + eventId);
+          if(_.contains(gameEvents,eventId)||_.contains(gameStates,eventId))
+            $log.log('No subscribers');
+          else
+            $log.log('Invalid eventId published: ' + eventId);
         }
         else{
           _.each(self.subs[eventId], function(subscriber){

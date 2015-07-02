@@ -19,8 +19,6 @@ var app = path.join(__dirname + '/app');
 		},
 		plugins: [
 			new webpack.ProvidePlugin({
-            	$: "jquery",
-            	jquery: "jQuery",
             	jQuery: "jQuery",
             	"windows.jQuery": "jquery"
         	}),

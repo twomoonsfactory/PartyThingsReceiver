@@ -1,8 +1,50 @@
 module.exports = angular.module('castServices', [])
-  .constant('cast', window.cast)
+  // THIS IS REAL
+  //.constant('cast', window.cast)
+  //THIS IS NOT
+    .constant('cast', (function(){
+
+            var castmock = {};
+
+            castmock.testCore = {
+                receivedStrings: []
+            };
+
+            castmock.receiverManager = {                
+                getCastMessageBus: function(string){
+                    castmock.testCore.receivedStrings.push(string);
+                    return {
+                        getNamespace: function(){
+                            return 'aNamespace';
+                        },
+                        send: function(){
+                          
+                        }
+                    }
+                },
+                start: function(status){
+                            castmock.testCore.startStatus = status;
+                }
+            };
+
+            castmock.receiver = {                
+                logger: {
+                    setLevelValue: function(levelValue){
+                        castmock.testCore.levelValue = levelValue;
+                    }
+                },
+                CastReceiverManager: {
+                    getInstance: function(){
+                        return castmock.receiverManager;
+                    },
+
+                }
+            };
+            return castmock;
+        }()))
     .factory('castMessageBus', function(cast, messagetypes, eventService, gameEvents, $log) {
 
-      // start up chromecast
+      // start up chromecast uncomment next line for production
       cast.receiver.logger.setLevelValue(0);
       var castReceiverManager = cast.receiver.CastReceiverManager.getInstance();
       $log.log('Starting Receiver Manager');

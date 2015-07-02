@@ -1,23 +1,40 @@
-
-<div class="row">
-  <div class='col-lg-12 header'>
-    <span id="banner">{{gamename}}</span>
-    <br />
-    <span id="sub-banner">Join {{owner}} party!</span><button ng-click="nameIt()">nameIt</button>
-  </div>
-</div>
-<div class="row fill">
-    <div class='col-lg-8 fill'>
-      <span id="main-event">This is where the game happens</span>
-      <button type="button" ng-click="changeView('/welcome')">Main</button>
-    </div>
-    <div class='col-lg-4 fill'>
-      <button ng-click="pendPlayer()">PendPlayer</button>
-      <button ng-click="plusPlayer()">AddPlayer</button>
-      <button ng-click="morePoints()">5 points</button><br />
-      <span id="player-banner">Players</span>
-      <div class="playerSlip" ng-repeat="player in players">
-        <player-display info="player"></player-display>
+<div class='container-fluid tall'>
+  <div class="filler row">
+      <div class='col-lg-8 fill'>
+        <div class='banner sign row'>
+          <div class='filler col-lg-12'>
+            <h2>{{gameHeader}}</h2>
+          </div>
+        </div>
+        <div class='filler row'>
+          <div class='filler col-lg-12'>
+            {{gameMessage}}
+          </div>
+        </div>
       </div>
-    </div>
+      <div class='col-lg-4 filler'>
+        <div class='banner sign row'>
+          <div class='col-lg-12 filler'>
+            <h3>{{gameName}}</h3>
+            <h4>{{ownerName}}'s Game</h4>
+          </div>
+        </div>
+        <div class='wide row subbanner'>
+          <div class='col-lg-12 filler'>
+            Players
+          </div>
+        </div>
+        <div class='wide playerlist row'>
+          <div class='col-lg-12 filler'>
+            <button ng-click="incomingPlayer()">PendPlayer</button>
+            <button ng-click="plusPlayer()">AddPlayer</button>
+            <button ng-click="morePoints()">5 points</button>
+            <button ng-click="removePlayer()">RoseQuit</button><br />
+            <div class="playerSlip" ng-repeat="player in players">
+            <player-display info="player"></player-display>
+            </div>
+          </div>
+        </div>
+      </div>
+  </div>  
 </div>

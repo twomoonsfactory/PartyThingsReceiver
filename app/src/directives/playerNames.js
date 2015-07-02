@@ -8,8 +8,8 @@ module.exports = function(){
 			var holders = _.shuffle(elem[0].getElementsByClassName('playername-placeholder'));
 			var displayedPlayers = [];
 			function resolvePlaceholders(){
-				var toAdd = _.difference(playerData, displayedPlayers);
-				var toDrop = _.difference(displayedPlayers, playerData);
+				var toAdd = _.difference(scope.playerData, displayedPlayers);
+				var toDrop = _.difference(displayedPlayers, scope.playerData);
 				_.forEach(toAdd, function(newPlayer){
 					playerMap[newPlayer.playerName] = holders [0];
 					holders.splice(0,1);
@@ -25,7 +25,7 @@ module.exports = function(){
 				});
 			};
 
-			scope.$watchCollection(scope.playerData, function(){
+			scope.$watchCollection("playerData", function(){
 				resolvePlaceholders();
 			});
 		}

@@ -21,7 +21,7 @@ module.exports = function(eventService, player, messageSender, stateManager, gam
   //this is where the game is named and the first player is created
   this.gameNamed = function(args){
     stateManager.gameName = args.message.gamename;
-    eventService.publish(gameEvents.gameNamed, args.message.gamename)
+    eventService.publish(gameEvents.gameNamed, {gameName: args.message.gamename, ownerName: args.message.playerName});
     self.playerNamed(args);
   }
   eventService.subscribe(gameEvents.gamenameReceived, this.gameNamed);
@@ -42,11 +42,12 @@ module.exports = function(eventService, player, messageSender, stateManager, gam
       messageSender.sendStandby({senderId: args.senderId, message: messageProvider.getMessage({messageName: messageNames.standby, pname: args.message.playerName, gname: stateManager.gameName})});
       self.players[self.playerCounter].setState(playerStates.standingBy);
     }
+    eventService.publish(gameEvents.playersUpdated, self.players);
+    self.playerCounter++;
+    self.activePlayers++;
     if(self.activePlayers>=self.minimumPlayers){
       stateManager.setState(gameStates.WaitingForReady);
     }
-    self.playerCounter++;
-    self.activePlayers++;
   }
   eventService.subscribe(gameEvents.playernameReceived, this.playerNamed);
 
@@ -104,7 +105,7 @@ module.exports = function(eventService, player, messageSender, stateManager, gam
         player.freshRound();
       });
   }
-  eventService.subscribe(gameEvents.RoundEnd, this.freshRound);
+  eventService.subscribe(gameStates.RoundEnd, this.freshRound);
 
   //at the end of game, sets all scores to zero, all players to unguessed
   this.freshGame = function(){
@@ -112,7 +113,7 @@ module.exports = function(eventService, player, messageSender, stateManager, gam
         player.freshGame();
       });
   }
-  eventService.subscribe(gameEvents.GameEnd, this.freshGame);
+  eventService.subscribe(gameStates.GameEnd, this.freshGame);
 
   //allows the players to quit at any point without seriously disrupting gameplay.  Will still allow for submitted things to be guessed
   //for points, etc.
@@ -124,6 +125,7 @@ module.exports = function(eventService, player, messageSender, stateManager, gam
     //logic to remove quit player from on screen display here
     quitter.setState(playerStates.quit);
     messageSender.sendQuit({senderId: quitter.senderId, message: messageProvider.getMessage({messageName: messageNames.quit, pname: quitter.playerName})});
+    eventService.publish(gameEvents.playerUpdated, "");
   }
   eventService.subscribe(gameEvents.quitReceived, this.playerQuit);
 
@@ -139,4 +141,9 @@ module.exports = function(eventService, player, messageSender, stateManager, gam
     var foundPlayer = _.find(self.players, function(player){return player.senderId===args;});
     return foundPlayer;
   }
+
+  this.playerUpdated = function(){
+    eventService.publish(gameEvents.playersUpdated, self.players);
+  }
+  eventService.subscribe(gameEvents.playerUpdated, this.playerUpdated);
 };

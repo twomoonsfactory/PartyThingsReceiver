@@ -2,7 +2,7 @@ module.exports = function($log, $http, eventService, gameStates){
         var self = this;
         self.responses = [];
         this.loadResponses = function(){
-          $http.get("../resources/responses.json")
+          $http.get("../src/resources/responses.json")
             .success(function(data){
               self.responses = data;
               $log.log("Responses loaded in...");
@@ -11,7 +11,7 @@ module.exports = function($log, $http, eventService, gameStates){
               $log.log("error reading prompts");
             });
         }
-        eventService.subscribe(gameStates.WaitingForStart, this.loadResponses)
+        eventService.subscribe(gameStates.welcomeLoaded, this.loadResponses)
 
         this.getResponse = function(){
           return _.sample(self.responses, 1)[0];

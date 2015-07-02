@@ -1,19 +1,19 @@
-module.exports = function($log, $http){
+module.exports = function($log, $http, eventService, gameEvents){
 		var self = this;
 
 		self.messages = [];
 		this.loadMessages = function(){
-			$http.get("../resources/messages.json")
+			$http.get("../src/resources/messages.json")
 				.success(function(data){
 					self.messages = data.messages;
 					$log.log("Messages loaded in...");
+					eventService.publish(gameEvents.messageLoaded, "");
 				})
 				.error(function(data){
 					$log.log("error reading messages");
 				});
 		}
-
-		self.loadMessages();
+		eventService.subscribe(gameEvents.welcomeLoaded, this.loadMessages);
 
 		//grabs message requested, doing a string replace to input
 		//arguments as needed
@@ -24,7 +24,7 @@ module.exports = function($log, $http){
 		//        .points : numeric points (if needed)
 		this.getMessage = function(args){
 			var feedback;
-			if(_.findWhere(self.messages, {messageName: args.messageName})){
+			if((_.findWhere(self.messages, {messageName: args.messageName}))!==undefined){
 				feedback = _.findWhere(self.messages, {messageName: args.messageName}).message;
 				feedback = feedback.indexOf("{PNAME}") >= 0 ? feedback.replace("{PNAME}", args.pname) : feedback;
 				feedback = feedback.indexOf("{GNAME}") >= 0 ? feedback.replace("{GNAME}", args.gname) : feedback;

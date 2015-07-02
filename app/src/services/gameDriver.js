@@ -19,13 +19,15 @@ module.exports = function(eventService, gameEvents, stateManager, gameStates, me
           var readyPlayer = playerHandler.findPlayer(args.senderId);
           readyPlayer.setState(playerStates.ready);
           playerHandler.playerActed();
+          eventService.publish(gameEvents.playerUpdated, "");
           if(playerHandler.actedPlayersCount < playerHandler.activePlayers){
             messageSender.requestReady({senderId: readyPlayer.senderId, message: messageProvider.getMessage({messageName: messageNames.readyConfirm, pname: readyPlayer.playerName})});          
           }
           else{
             messageSender.requestReady({senderId: readyPlayer.senderId, message: messageProvider.getMessage({messageName: messageNames.lastReadyConfirm, pname: readyPlayer.playerName})});
             stateManager.setState(gameStates.ReadyToStart);
-            //sets statecount back to 0
+           
+             //sets statecount back to 0
             playerHandler.resetPlayerActedCount();
           }
         }

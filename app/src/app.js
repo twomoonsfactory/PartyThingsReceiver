@@ -5,12 +5,14 @@ module.exports = angular.module('gameMaster', ['ngRoute', require('./castService
 
 		//welcome page
 		.when('/welcome', {
-			templateUrl: '../views/welcome.html'
+			templateUrl: '../views/welcome.html',
+			controller: 'welcomeController'
 		})
 
 		//gameplay page
 		.when('/gameplay',{
-			templateUrl: '../views/gameplay.html'
+			templateUrl: '../views/gameplay.html',
+			controller: 'gameController'
 		})
 
 		//default to welcome
@@ -20,7 +22,7 @@ module.exports = angular.module('gameMaster', ['ngRoute', require('./castService
 	})
 	//controllers
 	.controller('gameController', require('./controllers/gameController.js'))
-	.controller('playerController', require('./controllers/playerController.js'))
+	.controller('welcomeController', require('./controllers/welcomeController.js'))
 	//directives
 	.directive('playerDisplay', require('./directives/playerDisplay.js'))
 	.directive('playerNames', require('./directives/playerNames.js'))
@@ -47,8 +49,13 @@ module.exports = angular.module('gameMaster', ['ngRoute', require('./castService
 		guessReceived: "guessReceived",
 		gamenameReceived: "gamenameReceived",
 		gameNamed: "gameNamed",
+		messageLoaded: "messageLoaded",
 		playernameReceived: "playernameReceived",
-		quitReceived: "quitReceived"
+		playerUpdated: "playerUpdated",
+		playersUpdated: "playersUpdated",
+		promptsLoaded: "promptsLoaded",
+		quitReceived: "quitReceived",
+		welcomeLoaded: "welcomeLoaded"
 	})
 	.constant('gameStates', {
 		WaitingForStart: "WaitingForStart",
@@ -77,7 +84,10 @@ module.exports = angular.module('gameMaster', ['ngRoute', require('./castService
 		guessRemain : "guessRemain",
 		winner : "winner",
 		endGame : "endGame",
-		quit : "quit"
+		quit : "quit",
+		screenInitialize: "screenInitialize",
+		screenWelcome: "screenWelcome",
+		screenReady: "screenReady"
 	})
 	.constant('playerStates', {
 		ready: "ready",
