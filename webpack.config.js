@@ -5,7 +5,7 @@ var path = require('path');
 var app = path.join(__dirname + '/app');
 	module.exports = {
 		context: app,
-		entry: ['webpack/hot/dev-server', './core/bootstrap'],
+		entry: ['./core/bootstrap'],
 		output: {
 			path: app,
 			filename: 'bundle.js'
