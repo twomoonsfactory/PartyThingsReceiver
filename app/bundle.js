@@ -52912,7 +52912,7 @@
 
 			self.messages = [];
 			this.loadMessages = function(){
-				$http.get("../src/resources/messages.json")
+				$http.get("http://twomoonsfactory.github.io/PartyThingsReceiver/app/src/resources/messages.json")
 					.success(function(data){
 						self.messages = data.messages;
 						$log.log("Messages loaded in...");
@@ -53117,7 +53117,7 @@
 	      self.prompt = "";
 	      self.votes = [0,0,0];
 	      this.loadPrompts = function(){
-	        $http.get("../src/resources/prompts.json")
+	        $http.get("http://twomoonsfactory.github.io/PartyThingsReceiver/app/src/resources/prompts.json")
 	          .success(function(data){
 	            self.prompts = data;
 	            $log.log("Prompts loaded in...");
@@ -53250,7 +53250,7 @@
 	        var self = this;
 	        self.responses = [];
 	        this.loadResponses = function(){
-	          $http.get("../src/resources/responses.json")
+	          $http.get("http://twomoonsfactory.github.io/PartyThingsReceiver/app/src/resources/responses.json")
 	            .success(function(data){
 	              self.responses = data;
 	              $log.log("Responses loaded in...");
