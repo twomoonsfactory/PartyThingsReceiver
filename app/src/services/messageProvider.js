@@ -3,7 +3,7 @@ module.exports = function($log, $http, eventService, gameEvents){
 
 		self.messages = [];
 		this.loadMessages = function(){
-			$http.get("../src/resources/messages.json")
+			$http.get("http://twomoonsfactory.github.io/PartyThingsReceiver/app/src/resources/messages.json")
 				.success(function(data){
 					self.messages = data.messages;
 					$log.log("Messages loaded in...");

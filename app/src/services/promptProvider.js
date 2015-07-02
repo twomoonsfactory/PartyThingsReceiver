@@ -6,7 +6,7 @@ module.exports = function($log, eventService, gameEvents, gameStates, $http){
       self.prompt = "";
       self.votes = [0,0,0];
       this.loadPrompts = function(){
-        $http.get("../src/resources/prompts.json")
+        $http.get("http://twomoonsfactory.github.io/PartyThingsReceiver/app/src/resources/prompts.json")
           .success(function(data){
             self.prompts = data;
             $log.log("Prompts loaded in...");

@@ -2,7 +2,7 @@ module.exports = function($log, $http, eventService, gameStates){
         var self = this;
         self.responses = [];
         this.loadResponses = function(){
-          $http.get("../src/resources/responses.json")
+          $http.get("http://twomoonsfactory.github.io/PartyThingsReceiver/app/src/resources/responses.json")
             .success(function(data){
               self.responses = data;
               $log.log("Responses loaded in...");
