@@ -5,13 +5,13 @@ module.exports = angular.module('gameMaster', ['ngRoute', require('./castService
 
 		//welcome page
 		.when('/welcome', {
-			templateUrl: 'http://twomoonsfactory.github.io/PartyThingsReceiver/views/welcome.html',
+			templateUrl: 'http://twomoonsfactory.github.io/PartyThingsReceiver/app/views/welcome.html',
 			controller: 'welcomeController'
 		})
 
 		//gameplay page
 		.when('/gameplay',{
-			templateUrl: 'http://twomoonsfactory.github.io/PartyThingsReceiver/views/gameplay.html',
+			templateUrl: 'http://twomoonsfactory.github.io/PartyThingsReceiver/app/views/gameplay.html',
 			controller: 'gameController'
 		})
 
