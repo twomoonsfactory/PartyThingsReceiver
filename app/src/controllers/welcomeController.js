@@ -37,7 +37,7 @@ module.exports = function($scope, $log, $location, gameStates, playerStates, eve
   	//adds "pending player"
   	$scope.pendPlayer = function(){
   		var incoming = {playerName: "Incoming Player"};
-  		if(!_.contains($scope.players, incoming))
+  		if(incoming.playerName !== _.property('playerName')(_.last($scope.joinedPlayers)))
   			$scope.joinedPlayers.push(incoming);
   	}
   	eventService.subscribe(gameEvents.playerJoined, $scope.pendPlayer);
