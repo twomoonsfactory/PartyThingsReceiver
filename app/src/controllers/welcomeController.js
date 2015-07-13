@@ -34,14 +34,6 @@ module.exports = function($scope, $log, $location, gameStates, playerStates, eve
 	}
 	eventService.subscribe(gameEvents.playersUpdated, $scope.updatePlayers);
 
-  	//adds "pending player"
-  	$scope.pendPlayer = function(){
-  		var incoming = {playerName: "Incoming Player"};
-  		if(incoming.playerName !== _.property('playerName')(_.last($scope.joinedPlayers)))
-  			$scope.joinedPlayers.push(incoming);
-  	}
-  	eventService.subscribe(gameEvents.playerJoined, $scope.pendPlayer);
-
   	//updates the game name and owner name
   	$scope.gameNamed = function(args){
   		$scope.gameName = args.gameName;
@@ -58,7 +50,6 @@ module.exports = function($scope, $log, $location, gameStates, playerStates, eve
 
   	      	//TEST VIA BUTTON
   	$scope.nameIt = function(){
-  		eventService.publish(gameEvents.playerJoined, {senderId:5});
   		eventService.publish(gameEvents.gamenameReceived, {senderId:13049823,message:{gamename:"Chuck's Palace",playerName: "Chuck"}});
   	}
   	$scope.count = 0;

@@ -26,6 +26,7 @@ module.exports = angular.module('gameMaster', ['ngRoute', require('./castService
 	//directives
 	.directive('playerDisplay', require('./directives/playerDisplay.js'))
 	.directive('playerNames', require('./directives/playerNames.js'))
+	.directive('promptRequest', require('./directives/promptRequest.js'))
 	//factories
 	.factory('guess', require('./factories/guess.js'))
 	.factory('player', require('./factories/player.js'))
@@ -90,10 +91,11 @@ module.exports = angular.module('gameMaster', ['ngRoute', require('./castService
 		screenReady: "screenReady"
 	})
 	.constant('playerStates', {
+		incoming: "incoming",
 		ready: "ready",
 		quit: "quit",
 		standingBy: "standingBy",
-		waiting: "waiting",	
+		waiting: "waiting",
 		readyRequested: "readyRequested",
 		voting: "voting",
 		writing: "writing",
@@ -101,4 +103,4 @@ module.exports = angular.module('gameMaster', ['ngRoute', require('./castService
 	});
 console.log('thingy');
 //all display changes still need to be written in -- all internal except the basic test at the moment
-//abstract out text  
+//abstract out text

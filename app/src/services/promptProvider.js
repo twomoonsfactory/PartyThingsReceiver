@@ -8,7 +8,7 @@ module.exports = function($log, eventService, gameEvents, gameStates, $http){
       this.loadPrompts = function(){
         $http.get("../src/resources/prompts.json")
           .success(function(data){
-            self.prompts = data;
+            self.prompts = data.prompts;
             $log.log("Prompts loaded in...");
           })
           .error(function(data){

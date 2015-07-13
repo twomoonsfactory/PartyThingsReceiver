@@ -5,7 +5,9 @@ module.exports = function(eventService, player, messageSender, stateManager, gam
   this.actedPlayersCount = 0;        //how many players have participated in the current state
   this.activePlayers = 0;     //the number of players currently playing -- should it be moved to the playerHandler?
   this.minimumPlayers = 5;    //the minimum number of players to start the game
-    
+  this.joinedPlayers = 0;     //the number of players joined, named or not.  Used for "incoming player"
+  this.incoming = new player("Incoming Player", 000);
+
   //this is where new players are added to the game
   this.addPlayer = function(args){
     if(stateManager.checkState(null)){
@@ -15,6 +17,8 @@ module.exports = function(eventService, player, messageSender, stateManager, gam
     else{
       messageSender.requestPlayerName({senderId: args.senderId, message: messageProvider.getMessage({messageName: messageNames.namePlayer, gname: stateManager.gameName})});
     }
+    self.joinedPlayers++;
+    eventService.publish(gameEvents.playerUpdated, "");
   }
   eventService.subscribe(gameEvents.playerJoined, this.addPlayer);
 
@@ -25,6 +29,10 @@ module.exports = function(eventService, player, messageSender, stateManager, gam
     self.playerNamed(args);
   }
   eventService.subscribe(gameEvents.gamenameReceived, this.gameNamed);
+
+  this.pendPlayer = function(args){
+
+  }
 
   //this is where new players are created and assigned a state appropriate to the game's state, ready requests even being handled.
   //Need error handling for duplicate player names, as it can create confusion
@@ -42,9 +50,9 @@ module.exports = function(eventService, player, messageSender, stateManager, gam
       messageSender.sendStandby({senderId: args.senderId, message: messageProvider.getMessage({messageName: messageNames.standby, pname: args.message.playerName, gname: stateManager.gameName})});
       self.players[self.playerCounter].setState(playerStates.standingBy);
     }
-    eventService.publish(gameEvents.playersUpdated, self.players);
     self.playerCounter++;
     self.activePlayers++;
+    eventService.publish(gameEvents.playerUpdated, "");
     if(self.activePlayers>=self.minimumPlayers){
       stateManager.setState(gameStates.WaitingForReady);
     }
@@ -57,7 +65,7 @@ module.exports = function(eventService, player, messageSender, stateManager, gam
     _.each(self.players, function(player){
       if(player.checkState(playerStates.ready) && !player.guessed)
         elegiblePlayers.push({playerName: player.playerName, playerId: player.playerId});
-      
+
     });
     return elegiblePlayers;
   }
@@ -66,12 +74,12 @@ module.exports = function(eventService, player, messageSender, stateManager, gam
   this.assignPoints = function(args){
     self.players[args.playerId].addPoints(args.points);
   }
-  
+
   //establishes that the given player has been guessed
   this.playerGuessed = function(args){
     self.players[args.playerId].wasGuessed();
   }
-  
+
   //returns true if there are more than 1 unguessed players
   this.unguessedPlayers = function(){
     var results = _.countBy(self.players, function(player){
@@ -143,6 +151,15 @@ module.exports = function(eventService, player, messageSender, stateManager, gam
   }
 
   this.playerUpdated = function(){
+    if(self.joinedPlayers>self.playerCounter){ //meaning there are still player(s) joining who aren't yet named
+      if(_.last(self.players)!==self.incoming){
+        self.players[self.playerCounter] = self.incoming;
+        self.players[self.playerCounter].setState(playerStates.incoming);
+      }
+    }
+    else if(self.incoming===(_.last(self.players))){ //otherwise it drops the "incoming" player if present
+      self.players.splice(self.players.length-1, 1);
+    }
     eventService.publish(gameEvents.playersUpdated, self.players);
   }
   eventService.subscribe(gameEvents.playerUpdated, this.playerUpdated);
