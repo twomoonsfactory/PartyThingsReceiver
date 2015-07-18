@@ -1,4 +1,4 @@
-module.exports = function(eventService, guess, gameStates, responseHandler){
+module.exports = function(eventService, guess, gameEvents, responseHandler){
   var self = this;
   this.guesses = [];
   this.newGuess = function(args){
@@ -10,7 +10,7 @@ module.exports = function(eventService, guess, gameStates, responseHandler){
         responseHandler.goodGuess({responseId:guess.responseId,guesser:guess.guesser});
       }
       else{
-        responseHandler.badGuess({responseId:guess.responseId,guesser:guess.guesser,writer:guess.playerId});
+        responseHandler.badGuess({responseId:guess.responseId,guesser:guess.guesser,guessedWriter:guess.writer});
       }
     });
     responseHandler.resolveResponses();
@@ -18,5 +18,5 @@ module.exports = function(eventService, guess, gameStates, responseHandler){
   this.wipeGuesses = function(){
     self.guesses = [];
   }
-  eventService.subscribe(gameStates.RoundEnd, this.wipeGuesses);
+  eventService.subscribe(gameEvents.guessesSorted, this.wipeGuesses);
 };

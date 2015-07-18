@@ -106,19 +106,18 @@ module.exports = function(eventService, gameEvents, stateManager, gameStates, me
           if(playerHandler.actedPlayersCount===playerHandler.activePlayers){
             playerHandler.actedPlayersCount = 0;
             guessHandler.tallyGuesses();
-            if(playerHandler.unguessedPlayers()){
-              _.each(playerHandler.players, function(player){
-                if(player.checkState(playerStates.ready)){
-                 messageSender.requestGuess({senderId: player.senderId,message:{message: messageProvider.getMessage({messageName: messageNames.guessRemain}), things: responseHandler.getResponses(), elegiblePlayers: playerHandler.getElegiblePlayers()}});
-                  player.setState(playerStates.guessing);
-                }
-              });
-            }
-            else
-              stateManager.setState(gameStates.RoundEnd);
           }
         }
         eventService.subscribe(gameEvents.guessReceived, this.guessReceiver);
+
+        //either moves game forward to round resolution or back to guessing if still more than one unguessed player
+        this.guessesResolved = function(args){
+          if(playerHandler.unguessedPlayers())
+            stateManager.setState(gameStates.ResponsesReceived);
+          else
+            stateManager.setState(gameStates.RoundEnd);
+        }
+        eventService.subscribe(gameEvents.guessesResolved, this.guessesResolved);
 
         //function to either roll things back to a fresh round with all the active players and players standing by, or
         //sends the game on to end game.

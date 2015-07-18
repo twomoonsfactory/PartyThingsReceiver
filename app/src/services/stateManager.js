@@ -1,4 +1,4 @@
-module.exports = function(eventService, gameStates, gameEvents, messageProvider, messageNames, $log){
+module.exports = function(eventService, gameStates, gameEvents, messageProvider, messageNames, promptProvider, $log){
       var self = this;
       self.gameName = "Party Things";
     	self.ownerName = null;
@@ -55,7 +55,7 @@ module.exports = function(eventService, gameStates, gameEvents, messageProvider,
               self.banner = messageProvider.getMessage({messageName:messageNames.bannerRequestResponse});
               break;
             case gameStates.ResponsesReceived:
-              self.message = messageProvider.getMessage({messageName:messageNames.screenRequestGuess});
+              self.message = messageProvider.getMessage({messageName:messageNames.screenRequestGuess, prompt: promptProvider.prompt});
               self.banner = messageProvider.getMessage({messageName:messageNames.bannerRequestGuess});
               break;
             case gameStates.RoundEnd:
@@ -70,4 +70,11 @@ module.exports = function(eventService, gameStates, gameEvents, messageProvider,
           }
           eventService.publish(gameEvents.messagesUpdated, {message:self.message, banner:self.banner});
       }
+
+      this.guessMessageUpdate = function(){
+        self.message = messageProvider.getMessage({messageName:messageNames.screenRoundResults, prompt: promptProvider.prompt});
+        self.banner = messageProvider.getMessage({messageName:messageNames.bannerRoundResults});
+        eventService.publish(gameEvents.messagesUpdated, {message:self.message, banner:self.banner});
+      }
+      eventService.subscribe(gameEvents.guessesSorted, this.guessMessageUpdate);
     };

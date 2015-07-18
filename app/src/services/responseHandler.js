@@ -1,4 +1,4 @@
-module.exports = function(eventService, response, gameStates, playerHandler, responseProvider, $log){
+module.exports = function(eventService, response, gameEvents, gameStates, playerHandler, responseProvider, $log){
       var self = this;
       self.responses = [];
       self.responseList = []; //list sent to users
@@ -33,7 +33,7 @@ module.exports = function(eventService, response, gameStates, playerHandler, res
 
       //adds incorrect guess
       this.badGuess = function(args){
-        self.responses[args.responseId].addWrongGuess(args.guesser,args.playerId);
+        self.responses[args.responseId].addWrongGuess(args.guesser,args.guessedWriter);
       }
 
       //resolves correct and incorrect guessers, called by resolveGuesses
@@ -43,7 +43,7 @@ module.exports = function(eventService, response, gameStates, playerHandler, res
         _.each(self.responses, function(response){
           if(response.incorrect.length>0){
             //adds to incorrect guess array
-            incorrectlyGuessedResponses.push(response)
+            incorrectlyGuessedResponses.push(response);
           }
 
           //assigns points
@@ -52,10 +52,32 @@ module.exports = function(eventService, response, gameStates, playerHandler, res
             correctlyGuessedResponses.push(response);
           }
         });
+          this.sortResponses({right: correctlyGuessedResponses, wrong: incorrectlyGuessedResponses});
         //remove guessedresponses from the array
         _.each(correctlyGuessedResponses, function(guessedResponse){
           self.responses.splice(_.findIndex(self.responses, {responseId: guessedResponse.responseId}), 1);
         });
+      }
+
+      //gathers in the guessed responses by whether they were guessed correctly or not and gathers all information needed for display and scoring before publishing them
+      this.sortResponses = function(args){
+        var right = args.right;
+        var wrong = args.wrong;
+        var correct = [];
+        var incorrect = [];
+        _.each(right, function(goodGuess){
+          correct.push({response: goodGuess.response, writer: playerHandler.players[goodGuess.playerId].playerName, writerId:goodGuess.playerId, guessers: []});
+          _.each(goodGuess.correct, function(rightGuesser){
+            _.last(correct).guessers.push({guesser: playerHandler.players[rightGuesser].playerName, guesserId: rightGuesser});
+          });
+        });
+        _.each(wrong, function(badGuess){
+          incorrect.push({response: badGuess.response, guessers: []});
+          _.each(badGuess.incorrect, function(wrongGuess){
+            _.last(incorrect).guessers.push({guesser: playerHandler.players[wrongGuess.guesser].playerName, guesserId: wrongGuess.guesser, guessedWriter: playerHandler.players[wrongGuess.guessedWriter].playerName, guessedWriterId: wrongGuess.guessedWriter});
+          });
+        });
+        eventService.publish(gameEvents.guessesSorted, {guessedRight: correct, guessedWrong: incorrect});
       }
 
       //starts fresh at the beginning of the game, or at the start of a new round

@@ -5,12 +5,11 @@ module.exports = function($scope, $log, $location, gameStates, eventService, gam
 	$scope.gameName = stateManager.gameName;
 	$scope.ownerName = stateManager.ownerName;
 	$scope.players = playerHandler.players;
-	$scope.resposes = [];
   $scope.currentState = null;
-	$scope.infoDisplay = null;
 	$scope.prompts = promptProvider.currentprompts;
   $scope.finalPrompt;
-	var incoming = {playerName: "Incoming Player", score: 0};
+  $scope.resposes = [];
+	$scope.guesses = [];
 
   $scope.updateMessages = function(args){
     $scope.gameMessage = args.message;
@@ -37,11 +36,19 @@ module.exports = function($scope, $log, $location, gameStates, eventService, gam
   }
   eventService.subscribe(gameStates.PromptChosen, $scope.getFinalPrompt);
 
+  //gets responses for display
   $scope.getResponses = function(){
     $scope.responses = responseHandler.getResponses();
     $scope.currentState = gameStates.ResponsesReceived;
   }
   eventService.subscribe(gameStates.ResponsesReceived, $scope.getResponses);
+
+  //gets guesses for display and resolution
+  $scope.getGuesses = function(args){
+    $scope.guesses = args;
+    $scope.currentState = gameEvents.guessesSorted;
+  }
+  eventService.subscribe(gameEvents.guessesSorted, $scope.getGuesses);
 
   //keeps
 	//TEST VIA BUTTON

@@ -14,6 +14,7 @@
               <div ng-switch-when="ReadyToStart" prompt-request prompts="prompts"></div>
               <div ng-switch-when="PromptChosen" response-request prompt="finalPrompt"></div>
               <div ng-switch-when="ResponsesReceived" guess-request responses="responses"></div>
+              <div ng-switch-when="guessesSorted" guesses-sorted guesses="guesses"></div>
               <div ng-switch-when="RoundEnd" round-results></div>
               <div ng-switch-when="GameEnd" game-end winners="winners"></div>
               <div ng-switch-default prompt-request prompts="prompts"></div>

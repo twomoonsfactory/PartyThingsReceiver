@@ -29,6 +29,7 @@ module.exports = angular.module('gameMaster', ['ngRoute', require('./castService
 	.directive('promptRequest', require('./directives/promptRequest.js'))
 	.directive('responseRequest', require('./directives/responseRequest.js'))
 	.directive('guessRequest', require('./directives/guessRequest.js'))
+	.directive('guessesSorted', require('./directives/guessesSorted.js'))
 	//factories
 	.factory('guess', require('./factories/guess.js'))
 	.factory('player', require('./factories/player.js'))
@@ -50,6 +51,7 @@ module.exports = angular.module('gameMaster', ['ngRoute', require('./castService
 		voteReceived: "voteReceived",
 		responseReceived: "responseReceived",
 		guessReceived: "guessReceived",
+		guessesResolved: "guessesResolved",
 		guessesSorted: "guessesSorted",
 		gamenameReceived: "gamenameReceived",
 		gameNamed: "gameNamed",
