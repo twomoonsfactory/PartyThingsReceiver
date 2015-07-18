@@ -2,20 +2,19 @@ module.exports = function($scope, $log, $location, gameStates, playerStates, eve
 	$scope.readyPlayers = [];
 	$scope.joinedPlayers = [];
 	$scope.gameName = "Party Things";
-	$scope.ownerName = "the";
 	$scope.message = "";
 
 	//loads the screen message
-	$scope.loadMessage = function(){
-		$scope.message = messageProvider.getMessage({messageName: messageNames.screenInitialize, pname: $scope.ownerName});
-	}
-	eventService.subscribe(gameEvents.messageLoaded, $scope.loadMessage);
+	// $scope.loadMessage = function(){
+	// 	$scope.message = messageProvider.getMessage({messageName: messageNames.screenInitialize, pname: $scope.ownerName});
+	// }
+	// eventService.subscribe(gameEvents.messageLoaded, $scope.loadMessage);
 
 	//udate screen message
-	$scope.updateMessage = function(){
-		$scope.message = messageProvider.getMessage({messageName: messageNames.screenReady})
+	$scope.updateMessage = function(args){
+		$scope.message = args.message;
 	}
-	eventService.subscribe(gameStates.WaitingForReady, $scope.updateMessage);
+	eventService.subscribe(gameEvents.messagesUpdated, $scope.updateMessage);
 
 	//keeps the player lists updated
 	$scope.updatePlayers = function(newPlayers){
@@ -34,13 +33,12 @@ module.exports = function($scope, $log, $location, gameStates, playerStates, eve
 	}
 	eventService.subscribe(gameEvents.playersUpdated, $scope.updatePlayers);
 
-  	//updates the game name and owner name
-  	$scope.gameNamed = function(args){
-  		$scope.gameName = args.gameName;
-  		$scope.ownerName = args.ownerName + "'s";
-  		$scope.message = messageProvider.getMessage({messageName: messageNames.screenWelcome, pname: $scope.ownerName});
-  	}
-  	eventService.subscribe(gameEvents.gameNamed, $scope.gameNamed);
+	//updates the game name and owner name
+	$scope.gameNamed = function(args){
+		$scope.gameName = args.gameName;
+	}
+	eventService.subscribe(gameEvents.gameNamed, $scope.gameNamed);
+
 	//swap to gamePlay view when all players are ready
 	$scope.changeView = function(){
   		$location.path('/gameplay');

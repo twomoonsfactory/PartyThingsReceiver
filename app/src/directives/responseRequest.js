@@ -2,8 +2,8 @@ module.exports = function(){
 		return {
 			restrict: 'A',
 			scope: {
-				players: '=players'
+				prompt: '=prompt'
 			},
-			templateUrl: 'src/directives/playerDisplay.html'
+			templateUrl: 'src/directives/responseRequest.html'
 		};
 	};

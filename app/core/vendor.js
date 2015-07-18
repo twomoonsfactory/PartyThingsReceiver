@@ -1,9 +1,9 @@
 module.exports = function(){
 	/* JS */
+	require('jquery');
 	require('angular-builds/angular.js');
 	require('angular-route');
 	require('underscore');
-	require('jquery');
 	require('bootstrap');
 
 	/* Styles */

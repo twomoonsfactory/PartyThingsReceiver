@@ -1,3 +1,9 @@
+<div class="playerList" ng-repeat="player in players | orderBy: '-score'">
 <p class="playerInfo">
-	<span class="playerName">{{display.playerName}}</span> ~ <span class="score">{{display.score}} Points</span>
+	<div ng-switch on="player.waitingForAction">
+		<div ng-switch-when="0" class="playerSlip"><span class="playerName">{{player.playerName}}</span> ~ <span class="score">{{player.score}} Points</span></div>
+		<div ng-switch-when="1" class="playerSlip waitingForAction"><span class="playerName">{{player.playerName}}</span> ~ <span class="score">{{player.score}} Points</span></div>
+		<div ng-switch-when="-1" class="playerSlip suppressed"><span class="playerName">{{player.playerName}}</span> ~ <span class="score">{{player.score}} Points</span></div>
+	</div>
 </p>
+</div>

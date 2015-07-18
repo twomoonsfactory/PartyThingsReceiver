@@ -42,7 +42,7 @@ module.exports = angular.module('castServices', [])
             };
             return castmock;
         }()))
-        
+
     // Here we ge real again
     .factory('castMessageBus', function(cast, messagetypes, eventService, gameEvents, $log) {
 
@@ -167,7 +167,7 @@ module.exports = angular.module('castServices', [])
     };
     //thing received
     castMessageBus.thing.onMessage = function(event){
-      eventService.publish(gameEvents.thingReceived, {senderId: event.senderId, message: angular.fromJson(event.data)});
+      eventService.publish(gameEvents.responseReceived, {senderId: event.senderId, message: angular.fromJson(event.data)});
     };
     //guess received
     castMessageBus.guess.onMessage = function(event){

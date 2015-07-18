@@ -27,6 +27,8 @@ module.exports = angular.module('gameMaster', ['ngRoute', require('./castService
 	.directive('playerDisplay', require('./directives/playerDisplay.js'))
 	.directive('playerNames', require('./directives/playerNames.js'))
 	.directive('promptRequest', require('./directives/promptRequest.js'))
+	.directive('responseRequest', require('./directives/responseRequest.js'))
+	.directive('guessRequest', require('./directives/guessRequest.js'))
 	//factories
 	.factory('guess', require('./factories/guess.js'))
 	.factory('player', require('./factories/player.js'))
@@ -46,23 +48,25 @@ module.exports = angular.module('gameMaster', ['ngRoute', require('./castService
 		playerJoined: "playerJoined",
 		readyReceived: "readyReceived",
 		voteReceived: "voteReceived",
-		thingReceived: "thingReceived",
+		responseReceived: "responseReceived",
 		guessReceived: "guessReceived",
+		guessesSorted: "guessesSorted",
 		gamenameReceived: "gamenameReceived",
 		gameNamed: "gameNamed",
 		messageLoaded: "messageLoaded",
+		messagesUpdated: "messagesUpdated",
 		playernameReceived: "playernameReceived",
 		playerUpdated: "playerUpdated",
 		playersUpdated: "playersUpdated",
 		promptsLoaded: "promptsLoaded",
 		quitReceived: "quitReceived",
+		stateUpdated: "stateUpdated",
 		welcomeLoaded: "welcomeLoaded"
 	})
 	.constant('gameStates', {
 		WaitingForStart: "WaitingForStart",
-		ReadyToStart: "ReadyToStart",
 		WaitingForReady: "WaitingForReady",
-		PlayersReady: "PlayersReady",
+		ReadyToStart: "ReadyToStart",
 		PromptChosen: "PromptChosen",
 		ResponsesReceived: "ResponsesReceived",
 		RoundEnd: "RoundEnd",
@@ -88,7 +92,17 @@ module.exports = angular.module('gameMaster', ['ngRoute', require('./castService
 		quit : "quit",
 		screenInitialize: "screenInitialize",
 		screenWelcome: "screenWelcome",
-		screenReady: "screenReady"
+		screenReady: "screenReady",
+		screenRequestPrompt: "screenRequestPrompt",
+		screenRequestResponse: "screenRequestResponse",
+		screenRequestGuess: "screenRequestGuess",
+		screenRoundResults: "screenRoundResults",
+		screenGameResults: "screenGameResults",
+		bannerRequestPrompt: "bannerRequestPrompt",
+		bannerRequestResponse: "bannerRequestResponse",
+		bannerRequestGuess: "bannerRequestGuess",
+		bannerRoundResults: "bannerRoundResults",
+		bannerGameResults: "bannerGameResults"
 	})
 	.constant('playerStates', {
 		incoming: "incoming",
@@ -101,6 +115,5 @@ module.exports = angular.module('gameMaster', ['ngRoute', require('./castService
 		writing: "writing",
 		guessing: "guessing"
 	});
-console.log('thingy');
 //all display changes still need to be written in -- all internal except the basic test at the moment
 //abstract out text

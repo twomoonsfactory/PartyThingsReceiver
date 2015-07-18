@@ -8,8 +8,16 @@
         </div>
         <div class='filler row'>
           <div class='filler col-lg-12'>
-            {{gameMessage}}
-            <div data-prompt-Request display="prompts"></div>
+           {{gameMessage}}
+<!--             <div id="gameboard" data-game-board prompts="prompts" final-prompt="finalPrompt" responses="responses" results="results" winners="winners" current-state="currentState"></div> -->
+            <div ng-switch on="currentState">
+              <div ng-switch-when="ReadyToStart" prompt-request prompts="prompts"></div>
+              <div ng-switch-when="PromptChosen" response-request prompt="finalPrompt"></div>
+              <div ng-switch-when="ResponsesReceived" guess-request responses="responses"></div>
+              <div ng-switch-when="RoundEnd" round-results></div>
+              <div ng-switch-when="GameEnd" game-end winners="winners"></div>
+              <div ng-switch-default prompt-request prompts="prompts"></div>
+            </div>
           </div>
         </div>
       </div>
@@ -30,9 +38,11 @@
             <button ng-click="incomingPlayer()">PendPlayer</button>
             <button ng-click="plusPlayer()">AddPlayer</button>
             <button ng-click="morePoints()">5 points</button>
-            <button ng-click="removePlayer()">RoseQuit</button><br />
-            <div class="playerSlip" ng-repeat="player in players">
-            <player-display info="player"></player-display>
+            <button ng-click="removePlayer()">DropPlayer</button>
+            <button ng-click="sendVotes()">Vote</button>
+            <button ng-click="sendResponses()">Respond</button>
+            <button ng-click="sendGuesses()">Guess</button><br />
+            <div player-display players="players"></div>
             </div>
           </div>
         </div>

@@ -12,7 +12,6 @@ module.exports = function(eventService, player, messageSender, stateManager, gam
   this.addPlayer = function(args){
     if(stateManager.checkState(null)){
       messageSender.requestGameName({senderId: args.senderId, message: messageProvider.getMessage({messageName: messageNames.nameGame})});
-      stateManager.setState(gameStates.WaitingForStart);
     }
     else{
       messageSender.requestPlayerName({senderId: args.senderId, message: messageProvider.getMessage({messageName: messageNames.namePlayer, gname: stateManager.gameName})});
@@ -73,11 +72,13 @@ module.exports = function(eventService, player, messageSender, stateManager, gam
   //gives players their points, determined in the response handler
   this.assignPoints = function(args){
     self.players[args.playerId].addPoints(args.points);
+    eventService.publish(gameEvents.playerUpdated, "");
   }
 
   //establishes that the given player has been guessed
   this.playerGuessed = function(args){
     self.players[args.playerId].wasGuessed();
+    eventService.publish(gameEvents.playerUpdated, "");
   }
 
   //returns true if there are more than 1 unguessed players

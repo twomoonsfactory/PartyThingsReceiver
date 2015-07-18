@@ -20,6 +20,16 @@
 		{"messageName" : "quit", "message" : "OK {PNAME}, we're sorry to see you to."},
 		{"messageName" : "screenInitialize", "message" : "Welcome, give us some names!"},
 		{"messageName" : "screenWelcome", "message" : "Welcome to {PNAME} game!  Waiting for more players to join!"},
-		{"messageName" : "screenReady", "message" : "We've got enough, we'll start when everyone is ready!"}
+		{"messageName" : "screenReady", "message" : "We've got enough, we'll start when everyone is ready!"},
+		{"messageName" : "screenRequestPrompt", "message" : "Please vote for one of the prompts below:"},
+		{"messageName" : "screenRequestResponse", "message" : "Here's your prompt, now respond!"},
+		{"messageName" : "screenRequestGuess", "message" : "Ok.... Who do you think said what?"},
+		{"messageName" : "screenRoundResults", "message" : "Here are the results for this round..."},
+		{"messageName" : "screenGameResults", "message" : "And the winner is... {PNAME}!  Congratulations!"},
+		{"messageName" : "bannerRequestPrompt", "message" : "Choose a Prompt"},
+		{"messageName" : "bannerRequestResponse", "message" : "Time to Reply"},
+		{"messageName" : "bannerRequestGuess", "message" : "Who Said It?"},
+		{"messageName" : "bannerRoundResults", "message" : "Round Results"},
+		{"messageName" : "bannerGameResults", "message" : "Game Results"}
 	]
 }

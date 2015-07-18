@@ -2,8 +2,8 @@ module.exports = function(){
 		return {
 			restrict: 'A',
 			scope: {
-				players: '=players'
+				responses: '=responses'
 			},
-			templateUrl: 'src/directives/playerDisplay.html'
+			templateUrl: 'src/directives/guessRequest.html'
 		};
 	};

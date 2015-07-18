@@ -24,6 +24,6 @@ var app = path.join(__dirname + '/app');
         	}),
 			new webpack.ProvidePlugin({
     			"_": "underscore"
-  			}) 
+  			})
 		]
 	};

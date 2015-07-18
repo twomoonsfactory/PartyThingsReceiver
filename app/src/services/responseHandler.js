@@ -1,19 +1,24 @@
 module.exports = function(eventService, response, gameStates, playerHandler, responseProvider, $log){
       var self = this;
       self.responses = [];
+      self.responseList = []; //list sent to users
       self.responseCounter = 1;
+      self.shuffled = false;
       this.newResponse = function(args){
         self.responses[self.responseCounter] = new response(args.response, self.responseCounter, args.playerId);
         self.responseCounter++;
       }
+
       //returns list of responses to send to players
       this.getResponses = function(){
-        var responselist = []
-        _.each(self.responses, function(currentresponse){
-          responselist.push({response:currentresponse.response, responseId:currentresponse.responseId});
-        });
-        responselist = _.shuffle(responselist);
-        return responselist;
+        if(!self.shuffled){
+          _.each(self.responses, function(currentresponse){
+            self.responseList.push({response:currentresponse.response, responseId:currentresponse.responseId});
+          });
+          self.responseList = _.shuffle(self.responseList);
+          self.shuffled = true;
+        }
+        return self.responseList;
       }
 
       //getter for playerId of the writer of a particular response
@@ -33,47 +38,33 @@ module.exports = function(eventService, response, gameStates, playerHandler, res
 
       //resolves correct and incorrect guessers, called by resolveGuesses
       this.resolveResponses = function(){
-        var guessedResponses = [];
+        var correctlyGuessedResponses = [];
+        var incorrectlyGuessedResponses = [];
         _.each(self.responses, function(response){
           if(response.incorrect.length>0){
-            //display updates re:incorrect guesses
+            //adds to incorrect guess array
+            incorrectlyGuessedResponses.push(response)
           }
 
           //assigns points
           if(response.correct.length>0){
-            _.each(response.correct, function(scorer){
-              //assigns points for correct guess based on the number of players guessing the same
-              playerHandler.assignPoints({playerId:scorer, points:Math.floor(10/response.correct.length)});
-              //display updates re:correct guesses
-            });
-            playerHandler.playerGuessed({playerId:response.playerId});
-            //saved guessed responses to drop from the "responses" array after iterating through.
-            guessedResponses.push(response.responseId);
-          }
-          else{
-            //assigns bonus points for the player(s) unguessed this round
-            if(response.playerId!==-1)
-              playerHandler.assignPoints({playerId:response.playerId, points: 5});
+            //adds to correct guess array
+            correctlyGuessedResponses.push(response);
           }
         });
-        if(!playerHandler.unguessedPlayers){
-          var unguessed = playerHandler.getElegiblePlayers();
-          playerHandler.assignPoints({playerId:unguessed[0].playerId, points:5});
-          //display update, bonus points for final unguessed player
-          //display someresponse for the computer's response, responseId -1
-        }
         //remove guessedresponses from the array
-        _.each(guessedResponses, function(guessedResponse){
-          self.responses.splice(_.findIndex(self.responses, {responseId: guessedResponse}), 1);
+        _.each(correctlyGuessedResponses, function(guessedResponse){
+          self.responses.splice(_.findIndex(self.responses, {responseId: guessedResponse.responseId}), 1);
         });
       }
 
       //starts fresh at the beginning of the game, or at the start of a new round
       this.freshResponses = function(){
         self.responses = [];
-        self.responses[0] = new response(responseProvider.getResponse(), -1, -1);
-        self.responseCounter = 1;
+        self.responseCounter = 0;
+        self.newResponse({response: responseProvider.getRandomResponse(), playerId: -1});
+        self.shuffled = false;
       }
       eventService.subscribe(gameStates.RoundEnd, this.freshResponses);
-      eventService.subscribe(gameStates.ReadyToStart, this.freshResponses);
+      eventService.subscribe(gameStates.PromptChosen, this.freshResponses);
     };
