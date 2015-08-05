@@ -15,6 +15,12 @@ module.exports = angular.module('gameMaster', ['ngRoute', require('./castService
 			controller: 'gameController'
 		})
 
+		//gameend page
+		.when('/gameEnd',{
+			templateUrl: '../views/gameEnd.html',
+			controller: 'gameEndController'
+		})
+
 		//default to welcome
 		.otherwise({
 			redirectTo: '/welcome'
@@ -23,6 +29,7 @@ module.exports = angular.module('gameMaster', ['ngRoute', require('./castService
 	//controllers
 	.controller('gameController', require('./controllers/gameController.js'))
 	.controller('welcomeController', require('./controllers/welcomeController.js'))
+	.controller('gameEndController', require('./controllers/gameEndController.js'))
 	//directives
 	.directive('playerDisplay', require('./directives/playerDisplay.js'))
 	.directive('playerNames', require('./directives/playerNames.js'))
@@ -30,6 +37,7 @@ module.exports = angular.module('gameMaster', ['ngRoute', require('./castService
 	.directive('responseRequest', require('./directives/responseRequest.js'))
 	.directive('guessRequest', require('./directives/guessRequest.js'))
 	.directive('guessesSorted', require('./directives/guessesSorted.js'))
+	.directive('gameEnd', require('./directives/gameEnd.js'))
 	//factories
 	.factory('guess', require('./factories/guess.js'))
 	.factory('player', require('./factories/player.js'))
@@ -63,7 +71,10 @@ module.exports = angular.module('gameMaster', ['ngRoute', require('./castService
 		promptsLoaded: "promptsLoaded",
 		quitReceived: "quitReceived",
 		stateUpdated: "stateUpdated",
-		welcomeLoaded: "welcomeLoaded"
+		welcomeLoaded: "welcomeLoaded",
+		winnersDecided: "winnersDecided",
+		endView: "endView",
+		newGameRequested: "newGameRequested"
 	})
 	.constant('gameStates', {
 		WaitingForStart: "WaitingForStart",
@@ -104,7 +115,24 @@ module.exports = angular.module('gameMaster', ['ngRoute', require('./castService
 		bannerRequestResponse: "bannerRequestResponse",
 		bannerRequestGuess: "bannerRequestGuess",
 		bannerRoundResults: "bannerRoundResults",
-		bannerGameResults: "bannerGameResults"
+		bannerGameResults: "bannerGameResults",
+		moreGuessing: "moreGuessing",
+		allGuessed: "allGuessed",
+		newRound: "newRound",
+		wrongDisplay: "wrongDisplay",
+		noWrongGuesses: "noWrongGuesses",
+		guessedWrong: "guessedWrong",
+		wrongGuess: "wrongGuess",
+		rightDisplay: "rightDisplay",
+		noRightGuesses: "noRightGuesses",
+		guessedRight: "guessedRight",
+		rightGuesser: "rightGuesser",
+		oneRightGuesser: "oneRightGuesser",
+		multiRightGuessers: "multiRightGuessers",
+		unguessedDisplay: "unguessedDisplay",
+		noUnguessed: "noUnguessed",
+		unguessedPlayer: "unguessedPlayer",
+		oneUnguessedPlayer: "oneUnguessedPlayer"
 	})
 	.constant('playerStates', {
 		incoming: "incoming",

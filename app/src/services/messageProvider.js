@@ -19,6 +19,7 @@ module.exports = function($log, $http, eventService, gameEvents){
 		//arguments as needed
 		//args -> .messageName : the message requested
 		//		  .pname : the player name (if needed)
+		//        .pname2 : the second playerName in message (if needed)
 		//        .prompt : the prompt selected (if needed)
 		//        .resp : the response (if needed)
 		//        .points : numeric points (if needed)
@@ -27,6 +28,7 @@ module.exports = function($log, $http, eventService, gameEvents){
 			if((_.findWhere(self.messages, {messageName: args.messageName}))!==undefined){
 				feedback = _.findWhere(self.messages, {messageName: args.messageName}).message;
 				feedback = feedback.indexOf("{PNAME}") >= 0 ? feedback.replace("{PNAME}", args.pname) : feedback;
+				feedback = feedback.indexOf("{PNAME2}") >= 0 ? feedback.replace("{PNAME2}", args.pname2) : feedback;
 				feedback = feedback.indexOf("{GNAME}") >= 0 ? feedback.replace("{GNAME}", args.gname) : feedback;
 				feedback = feedback.indexOf("{PROMPT}") >= 0 ? feedback.replace("{PROMPT}", args.prompt) : feedback;
 				feedback = feedback.indexOf("{RESP}") >= 0 ? feedback.replace("{RESP}", args.resp) : feedback;

@@ -1,6 +1,6 @@
 module.exports = function(eventService, gameEvents, stateManager, gameStates, messageSender, messageProvider, messageNames, playerHandler, playerStates, responseHandler, promptProvider, guessHandler, $log){
         var self = this;
-        self.winningScore = 50;     //the score that, when reached, ends the game.
+        self.winningScore = 100;     //the score that, when reached, ends the game.
         //takes over after the minimum number of players have joined and named themselves, requests them to indicate readiness
         //will skip players already sent this message as necessary (players carried over from previous games, etc)
         this.readyUp = function(){
@@ -113,7 +113,7 @@ module.exports = function(eventService, gameEvents, stateManager, gameStates, me
         //either moves game forward to round resolution or back to guessing if still more than one unguessed player
         this.guessesResolved = function(args){
           if(playerHandler.unguessedPlayers())
-            stateManager.setState(gameStates.ResponsesReceived);
+            stateManager.resetState(gameStates.ResponsesReceived);
           else
             stateManager.setState(gameStates.RoundEnd);
         }
@@ -122,8 +122,10 @@ module.exports = function(eventService, gameEvents, stateManager, gameStates, me
         //function to either roll things back to a fresh round with all the active players and players standing by, or
         //sends the game on to end game.
         this.nextRound = function(){
-          var self = this;
           if(playerHandler.highScore()>=self.winningScore){
+            var winners = playerHandler.getWinners();
+            var score = playerHandler.highScore();
+            eventService.publish(gameEvents.winnersDecided, {winners: winners, score: score});
             stateManager.setState(gameStates.GameEnd);
           }
           else{
@@ -131,7 +133,7 @@ module.exports = function(eventService, gameEvents, stateManager, gameStates, me
               if(player.checkState(playerStates.standingBy)){
                 messageSender.requestReady({senderId: player.senderId, message: messageProvider.getMessage({messageName: messageNames.standingByReadyRequest, pname: player.playerName})});
                 player.setState(playerStates.ready);
-                playerHandler.activePlayers ++;
+                playerHandler.activePlayers++;
               }
             });
             stateManager.setState(gameStates.ReadyToStart);
@@ -141,22 +143,22 @@ module.exports = function(eventService, gameEvents, stateManager, gameStates, me
 
         //handles the final end game, displaying the winner(s), and asking players if they want to play again
         this.endGame = function(){
-          var winners = playerHandler.getWinners();
           //Logic to display winners.
           _.each(playerHandler.players, function(player){
             var endMessage = "";
             if(player.checkState(playerStates.ready)){
-              if(_.contains(winners, player)){
-                endMessage += messageProvider.getMessage({messageName: messageNames.winner, pname: player.playerName, score: playerHandler.highScore()});
+              if(_.contains(stateManager.winners, player)){
+                endMessage += messageProvider.getMessage({messageName: messageNames.winner, pname: player.playerName, points: score});
               }
               endMessage+= messageProvider.getMessage({messageName: messageNames.endGame});
               messageSender.sendEnd({senderId: player.senderId, message: endMessage});
               player.setState(playerStates.readyRequested);
             }
-          stateManager.setState(gameStates.WaitingForReady);
+          // stateManager.setState(gameStates.WaitingForReady);
           //at this point (adjustable since I know we haven't discussed exactly how to handle it) either the player submits playerStates.ready on the readyReceived channel
           //or submits a quit request.
           });
+          eventService.publish(gameEvents.endView, "");
         }
         eventService.subscribe(gameStates.GameEnd, this.endGame);
     };

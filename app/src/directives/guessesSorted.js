@@ -1,4 +1,4 @@
-module.exports = function($log, $q, $interval, playerHandler, eventService, gameEvents, $timeout){
+module.exports = function($log, $q, $interval, playerHandler, eventService, gameEvents, $timeout, messageProvider, messageNames){
 		var template;
     var saveTemplate;
     var responseTime = 3000;
@@ -22,7 +22,7 @@ module.exports = function($log, $q, $interval, playerHandler, eventService, game
               var deferred = $q.defer();
               $log.log("guess: " + wrongGuesses[guessIndex].response + " with " + wrongGuesses[guessIndex].guessers.length + " guessers");
               template = saveTemplate;
-              template += '<p>' + wrongGuesses[guessIndex].response + '</p>';
+              template += messageProvider.getMessage({messageName: messageNames.guessedWrong, resp: wrongGuesses[guessIndex].response});
               elem.html(template);
               $timeout(function(){deferred.resolve()},responseTime);
               return deferred.promise;
@@ -42,7 +42,7 @@ module.exports = function($log, $q, $interval, playerHandler, eventService, game
             });
           }
           else{
-            template += '<p>There were no wrong guesses!</p>';
+            template += messageProvider.getMessage({messageName: messageNames.noWrongGuesses});
             $log.log('no wrong guesses');
             elem.html(template);
             var deferred = $q.defer();
@@ -54,7 +54,7 @@ module.exports = function($log, $q, $interval, playerHandler, eventService, game
           .then(function(){
             var deferred = $q.defer();
             $log.log("guesser: " + wrongGuessers[guesserIndex].guesser);
-            template += '<p>' + wrongGuessers[guesserIndex].guesser + ' thought that ' + wrongGuessers[guesserIndex].guessedWriter + ' wrote it!</p>';
+            template += messageProvider.getMessage({messageName: messageNames.wrongGuess, pname: wrongGuessers[guesserIndex].guesser, pname2: wrongGuessers[guesserIndex].guessedWriter});
             elem.html(template);
             $timeout(function(){deferred.resolve();}, guessTime);
             return deferred.promise;
@@ -90,7 +90,7 @@ module.exports = function($log, $q, $interval, playerHandler, eventService, game
             .then(function(){
               var deferred = $q.defer();
               template = saveTemplate;
-              template += '<h3>' + rightGuesses[guessIndex].response + '</h3><p>was guessed correctly, and ' + rightGuesses[guessIndex].writer + ' wrote it!';
+              template += messageProvider.getMessage({messageName: messageNames.guessedRight, resp: rightGuesses[guessIndex].response, pname: rightGuesses[guessIndex].writer});
               elem.html(template);
               $log.log(rightGuesses[guessIndex].writer + ' was guessed by ' + rightGuesses[guessIndex].guessers.length + ' people');
               playerHandler.playerGuessed({playerId: rightGuesses[guessIndex].writerId});
@@ -112,7 +112,7 @@ module.exports = function($log, $q, $interval, playerHandler, eventService, game
             });
           }
           else{
-            template += '<p>There were no right guesses!</p>';
+            template += messageProvider.getMessage({messageName: messageNames.noRightGuesses});
             $log.log('no right guesses');
             elem.html(template);
             var deferred = $q.defer();
@@ -124,7 +124,7 @@ module.exports = function($log, $q, $interval, playerHandler, eventService, game
             $q.when()
             .then(function(){
               var deferred = $q.defer();
-              template += '<p>' + rightGuessers[guesserIndex].guesser + ' got it right!</p>';
+              template += messageProvider.getMessage({messageName: messageNames.rightGuesser, pname: rightGuessers[guesserIndex].guesser});
               elem.html(template);
               $log.log(rightGuessers[guesserIndex].guesser + ' guessed it');
               $timeout(function(){deferred.resolve()}, guessTime);
@@ -144,9 +144,9 @@ module.exports = function($log, $q, $interval, playerHandler, eventService, game
               if(rightGuessers.length === guesserIndex +1){
                 var points = Math.floor(baseGuessPoints/rightGuessers.length)
                 if(rightGuessers.length === 1)
-                  template += '<p>' + rightGuessers[0].guesser + ' scores ' + points + ' points!</p>';
+                  template += messageProvider.getMessage({messageName: messageNames.oneRightGuesser, points: points});
                 else {
-                  template += '<p>They split ' + ' points!</p>';
+                  template += messageProvider.getMessage({messageName: messageNames.multiRightGuessers, points: points});
                 }
                 elem.html(template);
                 _.each(rightGuessers, function(rightGuesser){
@@ -177,12 +177,11 @@ module.exports = function($log, $q, $interval, playerHandler, eventService, game
           return time;
         }
         var unguessedResolve = function(unguessed, unguessedIndex){
-          if(unguessed.length>0){
+          if(unguessed.length>1){
             $q.when()
             .then(function(){
               var deferred = $q.defer();
-              template = saveTemplate;
-              template += '<p>' + unguessed[unguessedIndex].playerName + ' was unguessed, and gets a ' + unguessedPoints + ' point bonus!</p>';
+              template += messageProvider.getMessage({messageName: messageNames.unguessedPlayer, pname: unguessed[unguessedIndex].playerName, points:  unguessedPoints});
               $log.log(unguessed[unguessedIndex].playerName + ' unguessed');
               elem.html(template);
               playerHandler.assignPoints({playerId: unguessed[unguessedIndex].playerId, points: unguessedPoints});
@@ -202,7 +201,7 @@ module.exports = function($log, $q, $interval, playerHandler, eventService, game
             $q.when()
             .then(function(){
               var deferred = $q.defer();
-              template += '<p>' + unguessed[0].playerName + ' was the only unguessed player and gets a ' + unguessedPoints * 2 + 'point bonus!</p>';
+              template += messageProvider.getMessage({messageName: messageNames.oneUnguessedPlayer, pname: unguessed[0].playerName, points: unguessedPoints * 2});
               $log.log(unguessed[0].playerName + ' only unguessed');
               playerHandler.assignPoints({playerId: unguessed[0].playerId, points: unguessedPoints * 2});
               elem.html(template);
@@ -214,7 +213,7 @@ module.exports = function($log, $q, $interval, playerHandler, eventService, game
             $q.when()
             .then(function(){
               var deferred = $q.defer();
-              template += '<p>There were no unguessed players!</p>';
+              template += messageProvider.getMessage({messageName: messageNames.noUnguessed});
               $log.log('no unguessed');
               elem.html(template);
               $timeout(function(){deferred.resolve();},responseTime);
@@ -233,7 +232,7 @@ module.exports = function($log, $q, $interval, playerHandler, eventService, game
         $q.when()
         .then(function(){
           var deferred = $q.defer();
-          template = 'First, the incorrect guesses...';
+          template = messageProvider.getMessage({messageName: messageNames.wrongDisplay});
           elem.html(template);
           saveTemplate = template;
           $timeout(function(){deferred.resolve();},responseTime);
@@ -247,7 +246,7 @@ module.exports = function($log, $q, $interval, playerHandler, eventService, game
         })
         .then(function(){
           var deferred = $q.defer();
-          template = 'Now the right guesses!';
+          template = messageProvider.getMessage({messageName: messageNames.rightDisplay});
           saveTemplate = template;
           elem.html(template);
           $timeout(function(){deferred.resolve();},responseTime);
@@ -261,8 +260,7 @@ module.exports = function($log, $q, $interval, playerHandler, eventService, game
         })
         .then(function(){
           var deferred = $q.defer();
-          template = 'Now for the unguessed!';
-          saveTemplate = template;
+          template = messageProvider.getMessage({messageName: messageNames.unguessedDisplay});
           elem.html(template);
           $timeout(function(){deferred.resolve();},responseTime);
           return deferred.promise;
@@ -276,7 +274,7 @@ module.exports = function($log, $q, $interval, playerHandler, eventService, game
         })
         .then(function(){
           var deferred = $q.defer();
-          template = playerHandler.unguessedPlayers ? '<p>It\'s time for another round of guessing!</p>' : '<p>That\'s the end of this round!';
+          template = playerHandler.unguessedPlayers() ? messageProvider.getMessage({messageName: messageNames.moreGuessing}) : messageProvider.getMessage({messageName: messageNames.allGuessed});
           elem.html(template);
           $timeout(function(){deferred.resolve();}, correctGuessTime);
           return deferred.promise;

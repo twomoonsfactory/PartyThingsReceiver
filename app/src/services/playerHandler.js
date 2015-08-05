@@ -40,19 +40,20 @@ module.exports = function(eventService, player, messageSender, stateManager, gam
     if(stateManager.checkState(gameStates.WaitingForStart)){
       messageSender.requestPlayerName({senderId: args.senderId, message: messageProvider.getMessage({messageName: messageNames.waitingToStart, pname: args.message.playerName, gname: stateManager.gameName})});
       self.players[self.playerCounter].setState(playerStates.waiting);
+      self.activePlayers++;
     }
     else if(stateManager.checkState(gameStates.WaitingForReady)){
       messageSender.requestReady({senderId: args.senderId, message: messageProvider.getMessage({messageName: messageNames.readyRequest, pname: args.message.playerName})});
       self.players[self.playerCounter].setState(playerStates.readyRequested);
+      self.activePlayers++;
     }
     else{
       messageSender.sendStandby({senderId: args.senderId, message: messageProvider.getMessage({messageName: messageNames.standby, pname: args.message.playerName, gname: stateManager.gameName})});
       self.players[self.playerCounter].setState(playerStates.standingBy);
     }
     self.playerCounter++;
-    self.activePlayers++;
     eventService.publish(gameEvents.playerUpdated, "");
-    if(self.activePlayers>=self.minimumPlayers){
+    if(self.activePlayers>=self.minimumPlayers&&stateManager.checkState(gameStates.WaitingForStart)){
       stateManager.setState(gameStates.WaitingForReady);
     }
   }
@@ -71,13 +72,13 @@ module.exports = function(eventService, player, messageSender, stateManager, gam
 
   //gives players their points, determined in the response handler
   this.assignPoints = function(args){
-    self.players[args.playerId].addPoints(args.points);
+    _.findWhere(self.players, {playerId: args.playerId}).addPoints(args.points);
     eventService.publish(gameEvents.playerUpdated, "");
   }
 
   //establishes that the given player has been guessed
   this.playerGuessed = function(args){
-    self.players[args.playerId].wasGuessed();
+    _.findWhere(self.players, {playerId: args.playerId}).wasGuessed();
     eventService.publish(gameEvents.playerUpdated, "");
   }
 
@@ -100,19 +101,21 @@ module.exports = function(eventService, player, messageSender, stateManager, gam
 
   //returns the player names of the winning player(s)
   this.getWinners = function(){
-    var winners = _.filter(self.players, function(player){
-      if(player.score===self.highScore()){
-        return player.playerName;
-      }
+    var winners = [];
+    _.each(self.players, function(player){
+      if(player.score===self.highScore())
+        winners.push(player.playerName);
     });
     return winners;
   }
 
   //at the end of round, sets all players to unguessed
   this.freshRound = function(){
-    _.each(self.players, function(player){
+    if(self.getWinners().length===0){
+      _.each(self.players, function(player){
         player.freshRound();
       });
+    }
   }
   eventService.subscribe(gameStates.RoundEnd, this.freshRound);
 
@@ -137,6 +140,20 @@ module.exports = function(eventService, player, messageSender, stateManager, gam
     eventService.publish(gameEvents.playerUpdated, "");
   }
   eventService.subscribe(gameEvents.quitReceived, this.playerQuit);
+
+  //actually drops the quit players altogether
+  this.dropQuitPlayers = function(){
+    var toDrop = [];
+    _.each(self.players, function(player){
+      if(player.checkState(playerStates.quit))
+        toDrop.push(player);
+    });
+    self.players = _.difference(self.players, toDrop);
+    eventService.publish(gameEvents.playersUpdated);
+  }
+  eventService.subscribe(gameEvents.newGameRequested, this.dropQuitPlayers);
+  eventService.subscribe(gameStates.ReadyToStart, this.dropQuitPlayers);
+
 
   this.playerActed = function(){
     self.actedPlayersCount++;
@@ -164,4 +181,5 @@ module.exports = function(eventService, player, messageSender, stateManager, gam
     eventService.publish(gameEvents.playersUpdated, self.players);
   }
   eventService.subscribe(gameEvents.playerUpdated, this.playerUpdated);
+  eventService.subscribe(gameEvents.welcomeLoaded, this.playerUpdated);
 };

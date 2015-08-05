@@ -16,5 +16,10 @@ module.exports = function(){
 			this.incorrect.push({guesser: guesser, guessedWriter: writer});
 		};
 
+		response.prototype.wipeGuesses = function(){
+			this.incorrect = [];
+			this.correct = [];
+		};
+
 		return response;
 	};

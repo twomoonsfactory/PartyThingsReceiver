@@ -178,4 +178,4 @@ module.exports = angular.module('castServices', [])
       eventService.publish(gameEvents.quitReceived, {senderId: event.senderId, message: angular.fromJson(event.data)});
     };
   })
-  .constant('messagetypes', ['gamename','playername','ready','prompt','standby','thing','guess','result','quit']);
+  .constant('messagetypes', ['gamename','playername','ready','prompt','standby','thing','guess','result','quit', 'end']);

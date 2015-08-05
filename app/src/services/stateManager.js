@@ -5,6 +5,8 @@ module.exports = function(eventService, gameStates, gameEvents, messageProvider,
       self.state = null;          //the current state of the game
       self.banner = "";           //banner message for the screen
       self.message = "";          //message around the state of the game
+      self.winners = [];
+      self.score = 0;
 
       this.initialize = function(){
         self.setState(gameStates.WaitingForStart);
@@ -25,6 +27,17 @@ module.exports = function(eventService, gameStates, gameEvents, messageProvider,
         else{
         	$log.log("Attempted to enter invalid gamestate: " + newState);
         }
+      }
+
+      //resets the state to a current state (resends messages, loops guess round)
+      this.resetState = function(sameState){
+        if(self.state===sameState){
+          $log.log("Gamestate looped as: " + self.state);
+          eventService.publish(self.state, self.state);
+          self.updateMessages();
+        }
+        else
+          $log.log("In state: " + self.state + " cannot reset: " + sameState);
       }
 
       this.checkState = function(stateToCheck){
@@ -62,9 +75,9 @@ module.exports = function(eventService, gameStates, gameEvents, messageProvider,
               self.message = messageProvider.getMessage({messageName:messageNames.screenRoundResults});
               self.banner = messageProvider.getMessage({messageName:messageNames.bannerRoundResults});
               break;
-            case gameStates.gameEnd:
+            case gameStates.GameEnd:
               self.message = messageProvider.getMessage({messageName:messageNames.screenGameResults});
-              self.banner = messageProvider.getMessage({messageName:messageNames.bannerGameResults});
+              self.banner = messageProvider.getMessage({messageName:messageNames.bannerGameResults, points: self.score});
               break;
             default:
           }
@@ -77,4 +90,10 @@ module.exports = function(eventService, gameStates, gameEvents, messageProvider,
         eventService.publish(gameEvents.messagesUpdated, {message:self.message, banner:self.banner});
       }
       eventService.subscribe(gameEvents.guessesSorted, this.guessMessageUpdate);
+
+      this.getWinnerInfo = function(args){
+        self.winners = args.winners;
+        self.score = args.score;
+      }
+      eventService.subscribe(gameEvents.winnersDecided, this.getWinnerInfo);
     };

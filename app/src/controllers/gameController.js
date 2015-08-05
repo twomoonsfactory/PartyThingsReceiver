@@ -10,6 +10,7 @@ module.exports = function($scope, $log, $location, gameStates, eventService, gam
   $scope.finalPrompt;
   $scope.resposes = [];
 	$scope.guesses = [];
+  $scope.winners = [];
 
   $scope.updateMessages = function(args){
     $scope.gameMessage = args.message;
@@ -50,14 +51,36 @@ module.exports = function($scope, $log, $location, gameStates, eventService, gam
   }
   eventService.subscribe(gameEvents.guessesSorted, $scope.getGuesses);
 
+  //restarts the round
+  $scope.newRound = function(){
+    $scope.currentState = gameStates.ReadyToStart;
+  }
+  eventService.subscribe(gameStates.ReadyToStart, $scope.newRound);
+
+  //ends the game
+  // $scope.endDisplay = function(){
+  //   $scope.winners = playerHandler.getWinners();
+  //   $scope.currentState = gameStates.GameEnd;
+  // }
+  // eventService.subscribe(gameEvents.GameEnd, $scope.endDisplay);
+
+  $scope.changeView = function(){
+    eventService.publish(gameEvents.newGameRequested, "");
+    stateManager.updateMessages();
+		$location.path('/gameEnd');
+	}
+	eventService.subscribe(gameEvents.endView, $scope.changeView);
+
+
+
   //keeps
 	//TEST VIA BUTTON
 	$scope.count = 0;
 	$scope.plusPlayer = function(){
   	var list = [{senderId:522,message:{playerName:"Fran"}},
   				{senderId:152,message:{playerName:"Rosalina"}},
-  				{senderId:02215234,message:{playerName:"N3tasg131Slayùù│A"}},
-  				{senderId:15147,message:{playerName:"BillyBb"}},
+  				{senderId:02215234,message:{playerName:"Sir Alec Guiness"}},
+  				{senderId:15147,message:{playerName:"Billybob Thornton"}},
   				{senderId:09721343,message:{playerName:"Geriatric"}}];
   	eventService.publish(gameEvents.playernameReceived, list[$scope.count]);
   	$scope.count++;
@@ -71,9 +94,6 @@ module.exports = function($scope, $log, $location, gameStates, eventService, gam
   $scope.removePlayer = function(){
   	eventService.publish(gameEvents.quitReceived, {senderId:_.sample(_.filter(playerHandler.players, function(player){return player.state!=="quit"})).senderId});
   }
-	$scope.changeView = function(view){
-		$location.path(view);
-	}
   $scope.sendVotes = function(){
     eventService.publish(gameEvents.voteReceived, {senderId:_.sample(_.filter(playerHandler.players, function(player){return player.state==="voting"})).senderId, message:{promptIndex:_.sample([1,2,3])}});
   }
@@ -83,5 +103,11 @@ module.exports = function($scope, $log, $location, gameStates, eventService, gam
   }
   $scope.sendGuesses = function(){
     eventService.publish(gameEvents.guessReceived, {senderId: _.sample(_.filter(playerHandler.players, function(player){return player.state==='guessing'})).senderId, message: {playerId: _.sample(_.filter(playerHandler.players, function(player){return player.guessed===false})).playerId, responseId:_.sample(responseHandler.getResponses()).responseId}})
+  }
+  $scope.kingMaker = function(){
+    playerHandler.assignPoints({playerId:   _.sample(playerHandler.players).playerId, points: 100});
+  }
+  $scope.skipToEnd = function(){
+    eventService.publish(gameStates.RoundEnd, "");
   }
 };
