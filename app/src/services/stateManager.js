@@ -1,5 +1,6 @@
-module.exports = function(eventService, gameStates, gameEvents, messageProvider, messageNames, promptProvider, $log){
-      var self = this;
+export default ngModule => {
+  ngModule.service('stateManager', ['eventService', 'gameStates', 'gameEvents', 'messageProvider', 'messageNames', 'promptProvider', '$log', (eventService, gameStates, gameEvents, messageProvider, messageNames, promptProvider, $log) => {
+      let self = this;
       self.gameName = "Party Things";
     	self.ownerName = null;
       self.state = null;          //the current state of the game
@@ -8,13 +9,13 @@ module.exports = function(eventService, gameStates, gameEvents, messageProvider,
       self.winners = [];
       self.score = 0;
 
-      this.initialize = function(){
+      this.initialize = () => {
         self.setState(gameStates.WaitingForStart);
       }
       eventService.subscribe(gameEvents.messageLoaded, this.initialize);
 
       //sets the state and publishes the change.
-      this.setState = function(newState){
+      this.setState = newState => {
         if(self.state===newState){
           $log.log("Already in : " + newState);
         }
@@ -30,7 +31,7 @@ module.exports = function(eventService, gameStates, gameEvents, messageProvider,
       }
 
       //resets the state to a current state (resends messages, loops guess round)
-      this.resetState = function(sameState){
+      this.resetState = sameState => {
         if(self.state===sameState){
           $log.log("Gamestate looped as: " + self.state);
           eventService.publish(self.state, self.state);
@@ -40,18 +41,18 @@ module.exports = function(eventService, gameStates, gameEvents, messageProvider,
           $log.log("In state: " + self.state + " cannot reset: " + sameState);
       }
 
-      this.checkState = function(stateToCheck){
+      this.checkState = stateToCheck => {
         return self.state === stateToCheck;
       }
 
-      this.nameGame = function(args){
+      this.nameGame = args => {
         self.gameName = args.gameName;
         self.ownerName = args.ownerName + "'s";
         self.updateMessages();
       }
       eventService.subscribe(gameEvents.gameNamed, this.nameGame);
 
-      this.updateMessages = function(){
+      this.updateMessages = () => {
           switch(self.state){
             case gameStates.WaitingForStart :
               self.message = !self.ownerName ? messageProvider.getMessage({messageName: messageNames.screenInitialize}) : messageProvider.getMessage({messageName: messageNames.screenWelcome, pname: self.ownerName});
@@ -84,16 +85,17 @@ module.exports = function(eventService, gameStates, gameEvents, messageProvider,
           eventService.publish(gameEvents.messagesUpdated, {message:self.message, banner:self.banner});
       }
 
-      this.guessMessageUpdate = function(){
+      this.guessMessageUpdate = () => {
         self.message = messageProvider.getMessage({messageName:messageNames.screenRoundResults, prompt: promptProvider.prompt});
         self.banner = messageProvider.getMessage({messageName:messageNames.bannerRoundResults});
         eventService.publish(gameEvents.messagesUpdated, {message:self.message, banner:self.banner});
       }
       eventService.subscribe(gameEvents.guessesSorted, this.guessMessageUpdate);
 
-      this.getWinnerInfo = function(args){
+      this.getWinnerInfo = args => {
         self.winners = args.winners;
         self.score = args.score;
       }
       eventService.subscribe(gameEvents.winnersDecided, this.getWinnerInfo);
-    };
+    }])
+}

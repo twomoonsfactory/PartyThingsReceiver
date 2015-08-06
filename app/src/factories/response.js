@@ -1,6 +1,7 @@
-module.exports = function(){
+export default ngModule => {
+	ngModule.factory('response', ()=> {
 		//constructor
-		var response = function(response, responseId, playerId){
+		let response = (response, responseId, playerId) => {
 			this.response = response;
 			this.responseId = responseId;
 			this.playerId = playerId;
@@ -8,18 +9,19 @@ module.exports = function(){
 			this.incorrect = [];
 		}
 
-		response.prototype.addGoodGuess= function(guesser){
+		response.prototype.addGoodGuess= (guesser) => {
 			this.correct.push(guesser);
 		};
 
-		response.prototype.addWrongGuess = function(guesser, writer){
+		response.prototype.addWrongGuess = (guesser, writer) => {
 			this.incorrect.push({guesser: guesser, guessedWriter: writer});
 		};
 
-		response.prototype.wipeGuesses = function(){
+		response.prototype.wipeGuesses = ()=>{
 			this.incorrect = [];
 			this.correct = [];
 		};
 
 		return response;
-	};
+	})
+}

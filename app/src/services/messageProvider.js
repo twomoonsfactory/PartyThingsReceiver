@@ -1,15 +1,16 @@
-module.exports = function($log, $http, eventService, gameEvents){
-		var self = this;
+export default ngModule => {
+	ngModule.service('messageProvider', ['$log', '$http', 'eventService', 'gameEvents', ($log, $http, eventService, gameEvents)=>{
+		let self = this;
 
 		self.messages = [];
-		this.loadMessages = function(){
+		this.loadMessages = ()=>{
 			$http.get("../src/resources/messages.json")
-				.success(function(data){
+				.success(data => {
 					self.messages = data.messages;
 					$log.log("Messages loaded in...");
 					eventService.publish(gameEvents.messageLoaded, "");
 				})
-				.error(function(data){
+				.error(data => {
 					$log.log("error reading messages");
 				});
 		}
@@ -23,8 +24,8 @@ module.exports = function($log, $http, eventService, gameEvents){
 		//        .prompt : the prompt selected (if needed)
 		//        .resp : the response (if needed)
 		//        .points : numeric points (if needed)
-		this.getMessage = function(args){
-			var feedback;
+		this.getMessage = args => {
+			let feedback;
 			if((_.findWhere(self.messages, {messageName: args.messageName}))!==undefined){
 				feedback = _.findWhere(self.messages, {messageName: args.messageName}).message;
 				feedback = feedback.indexOf("{PNAME}") >= 0 ? feedback.replace("{PNAME}", args.pname) : feedback;
@@ -40,4 +41,5 @@ module.exports = function($log, $http, eventService, gameEvents){
 			}
 			return feedback;
 		}
-	};
+	}])
+}

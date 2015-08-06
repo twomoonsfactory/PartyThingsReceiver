@@ -1,23 +1,23 @@
 'use strict'
 
-describe('playerHandler', function(){
-	var playerHandler, eventService, player, messageSender, stateManager, gameEvents, gameStates, playerStates, messageNames, $log;
-	beforeEach(module('gameMaster'));
+describe('playerHandler', ()=>{
+	let playerHandler, eventService, player, messageSender, stateManager, gameEvents, gameStates, playerStates, messageNames, $log;
+	beforeEach(angular.mock.module(require('../app.js').name));
 	beforeEach(function() {
-      module(function($provide) {
-        $provide.constant('cast', (function(){
+      angular.mock.module(function($provide) {
+        $provide.constant('cast', (()=>{
 
-            var castmock = {};
+            let castmock = {};
 
             castmock.testCore = {
                 receivedStrings: []
             };
 
-            castmock.receiverManager = {                
+            castmock.receiverManager = {
                 getCastMessageBus: function(string){
                     castmock.testCore.receivedStrings.push(string);
                     return {
-                        getNamespace: function(){
+                        getNamespace: ()=>{
                             return 'aNamespace';
                         }
                     }
@@ -27,14 +27,14 @@ describe('playerHandler', function(){
                 }
             };
 
-            castmock.receiver = {                
+            castmock.receiver = {
                 logger: {
                     setLevelValue: function(levelValue){
                         castmock.testCore.levelValue = levelValue;
                     }
                 },
                 CastReceiverManager: {
-                    getInstance: function(){
+                    getInstance: ()=>{
                         return castmock.receiverManager;
                     },
 
@@ -43,65 +43,64 @@ describe('playerHandler', function(){
             return castmock;
         }()));
       });
-     
+
       inject(function($window) {
         window = $window;
       });
     });
 
-	beforeEach(inject(function(_playerHandler_,_eventService_,_player_,_messageSender_,_stateManager_,_gameStates_,_playerStates_,_gameEvents_,_messageNames_,_$log_){
-		playerHandler = _playerHandler_;
-		eventService = _eventService_;
-		player = _player_;
-		messageSender = _messageSender_;
-		stateManager = _stateManager_;
-		gameEvents = _gameEvents_;
-		gameStates = _gameStates_;
-		playerStates = _playerStates_;
-		messageNames = _messageNames_;
-		$log = _$log_;
+		beforeEach(angular.mock.inject(($injector)=>{
+			playerHandler = $injector.get('playerHandler', playerHandler);
+			eventService = $injector.get('eventService', eventService);
+			player = $injector.get('player', player);
+			messageSender = $injector.get('messageSender', messageSender);
+			stateManager = $injector.get('stateManager', stateManager);
+			gameEvents = $injector.get('gameEvents', gameEvents);
+			gameStates = $injector.get('gameStates', gameStates);
+			playerStates = $injector.get('playerStates', playerStates);
+			messageNames = $injector.get('messageNames', messageNames);
+			$log = $injector.get('$log', $log);
 
-		spyOn(messageSender, 'requestGameName').and.callFake(function(){return;});
-		spyOn(messageSender, 'requestPlayerName').and.callFake(function(){return;});
-		spyOn(messageSender, "requestReady").and.callFake(function(){return;});
-		spyOn(messageSender, 'sendQuit').and.callFake(function(){return;});
-		spyOn(stateManager, 'setState').and.callFake(function(){return;});
-		spyOn(messageSender, 'sendStandby').and.callFake(function(){return;});
+			spyOn(messageSender, 'requestGameName').and.callFake(()=>{return;});
+			spyOn(messageSender, 'requestPlayerName').and.callFake(()=>{return;});
+			spyOn(messageSender, "requestReady").and.callFake(()=>{return;});
+			spyOn(messageSender, 'sendQuit').and.callFake(()=>{return;});
+			spyOn(stateManager, 'setState').and.callFake(()=>{return;});
+			spyOn(messageSender, 'sendStandby').and.callFake(()=>{});
 
-	})); 
+		}));
 
-	it('requests the game AND player names for the first player to join', function(){
-		spyOn(stateManager, 'checkState').and.callFake(function(){return true;});
-		var player = {senderId: 123};
-		
+	it('requests the game AND player names for the first player to join', ()=>{
+		spyOn(stateManager, 'checkState').and.callFake(()=>{return true;});
+		let player = {senderId: 123};
+
 		playerHandler.addPlayer(player);
 
 		expect(messageSender.requestGameName).toHaveBeenCalled();
 		expect(messageSender.requestPlayerName).not.toHaveBeenCalled();
-		expect(stateManager.setState).toHaveBeenCalled();
 	});
 
-	it('requests just the player name of subsequent players', function(){
-		spyOn(stateManager, 'checkState').and.callFake(function(){return false;});
-		var player = {senderId: 123};
+	it('requests just the player name of subsequent players', ()=>{
+		spyOn(stateManager, 'checkState').and.callFake(()=>{return false;});
+		let player = {senderId: 123};
 
 		playerHandler.addPlayer(player);
 
 		expect(messageSender.requestPlayerName).toHaveBeenCalled();
 		expect(messageSender.requestGameName).not.toHaveBeenCalled();
 	});
-	
-	it('names the game and passes the player name on', function(){
-		var args = {message: {gameName: "gamename"}};
-		spyOn(playerHandler, 'playerNamed').and.callFake(function(){return;});
+
+	it('names the game and passes the player name on', ()=>{
+		let args = {message: {gameName: "gamename"}};
+		spyOn(playerHandler, 'playerNamed').and.callFake(()=>{return;});
 		playerHandler.gameNamed(args);
 
 		expect(playerHandler.playerNamed).toHaveBeenCalledWith(args);
 	});
 
-	it('get the player objects, confirms creation and sets the correct state', function(){
-		var args = {senderId: 123, message:{playerName:"bob"}};
-		var argz = {senderId: 234, message:{playerName:"joe"}};
+	it('get the player objects, confirms creation and sets the correct state', ()=>{
+		let args = {senderId: 123, message:{playerName:"bob"}};
+		let argz = {senderId: 234, message:{playerName:"joe"}};
 		spyOn(stateManager, 'checkState').and.callFake(function(args){return args === gameStates.WaitingForReady;});
 
 		playerHandler.playerNamed(args);
@@ -111,41 +110,41 @@ describe('playerHandler', function(){
 		expect(playerHandler.players[0].state).toBe(playerStates.readyRequested);
 	});
 
-	it('returns unguessed players', function(){
-		var args = {senderId: 123, message:{playerName:"bob"}};
-		var argz = {senderId: 234, message:{playerName:"joe"}};
-		spyOn(stateManager, 'checkState').and.callFake(function(){return true;});
+	it('returns unguessed players', ()=>{
+		let args = {senderId: 123, message:{playerName:"bob"}};
+		let argz = {senderId: 234, message:{playerName:"joe"}};
+		spyOn(stateManager, 'checkState').and.callFake(()=>{return true;});
 		playerHandler.playerNamed(args);
 		playerHandler.playerNamed(argz);
 		playerHandler.players[0].state = playerStates.ready;
 		playerHandler.players[1].state = playerStates.ready;
 		playerHandler.players[1].guessed = true;
 
-		var results = playerHandler.getElegiblePlayers();
+		let results = playerHandler.getElegiblePlayers();
 
 		expect(results.length).toBe(1);
 		expect(results[0].playerName).toBe(args.message.playerName);
 	});
 
-	it('assigns points', function(){
-		var args = {senderId: 123, message:{playerName:"bob"}};
-		var argz = {senderId: 123, message:{playerName:'joe'}};
+	it('assigns points', ()=>{
+		let args = {senderId: 123, message:{playerName:"bob"}};
+		let argz = {senderId: 123, message:{playerName:'joe'}};
 		playerHandler.playerNamed(args);
 		playerHandler.playerNamed(argz);
-		var arg = {playerId: 0, points: 5};
-		
+		let arg = {playerId: 0, points: 5};
+
 		playerHandler.assignPoints(arg);
 
 		expect(playerHandler.players[0].score).toBe(5);
 		expect(playerHandler.players[1].score).toBe(0);
 	});
 
-	it('marks players guessed', function(){
-		var args = {senderId: 123, message:{playerName:"bob"}};
-		var argz = {senderId: 123, message:{playerName:'joe'}};
+	it('marks players guessed', ()=>{
+		let args = {senderId: 123, message:{playerName:"bob"}};
+		let argz = {senderId: 123, message:{playerName:'joe'}};
 		playerHandler.playerNamed(args);
 		playerHandler.playerNamed(argz);
-		var id = {playerId:1};
+		let id = {playerId:1};
 
 		playerHandler.playerGuessed(id);
 
@@ -153,74 +152,75 @@ describe('playerHandler', function(){
 		expect(playerHandler.players[0].guessed).toBe(false);
 	});
 
-	it('returns true for multiple unguessed players', function(){
-		var args = {senderId: 123, message:{playerName:"bob"}};
-		var argz = {senderId: 123, message:{playerName:'joe'}};
+	it('returns true for multiple unguessed players', ()=>{
+		let args = {senderId: 123, message:{playerName:"bob"}};
+		let argz = {senderId: 123, message:{playerName:'joe'}};
 		playerHandler.playerNamed(args);
 		playerHandler.playerNamed(argz);
 
-		var result = playerHandler.unguessedPlayers();
+		let result = playerHandler.unguessedPlayers();
 
 		expect(result).toBe(true);
 	});
 
-	it('returns false for only one unguessed player', function(){
-		var args = {senderId: 123, message:{playerName:"bob"}};
-		var argz = {senderId: 123, message:{playerName:'joe'}};
+	it('returns false for only one unguessed player', ()=>{
+		let args = {senderId: 123, message:{playerName:"bob"}};
+		let argz = {senderId: 123, message:{playerName:'joe'}};
 		playerHandler.playerNamed(args);
 		playerHandler.playerNamed(argz);
 
 		playerHandler.playerGuessed({playerId:1});
 
-		var result = playerHandler.unguessedPlayers();
+		let result = playerHandler.unguessedPlayers();
 
 		expect(result).toBe(false);
 	});
 
-	it('returns the high score', function(){
-		var args = {senderId: 123, message:{playerName:"bob"}};
-		var argz = {senderId: 123, message:{playerName:'joe'}};
+	it('returns the high score', ()=>{
+		let args = {senderId: 123, message:{playerName:"bob"}};
+		let argz = {senderId: 123, message:{playerName:'joe'}};
 		playerHandler.playerNamed(args);
 		playerHandler.playerNamed(argz);
-		var score1 = {playerId:1, points:20};
-		var score2 = {playerId:0, points:5};
+		let score1 = {playerId:1, points:20};
+		let score2 = {playerId:0, points:5};
 		playerHandler.assignPoints(score1);
 		playerHandler.assignPoints(score2);
 
-		var results = playerHandler.highScore();
+		let results = playerHandler.highScore();
 
 		expect(playerHandler.players[1].score).toBe(score1.points);
 		expect(results).toBe(score1.points);
 	});
 
-	it('returns the object of the winning player(s)', function(){
-		var args = {senderId: 123, message:{playerName:"bob"}};
-		var argz = {senderId: 456, message:{playerName:'joe'}};
-		var argss = {senderId: 434, message:{playerName:'frank'}};
+	it('returns the object of the winning player(s)', ()=>{
+		let args = {senderId: 123, message:{playerName:"bob"}};
+		let argz = {senderId: 456, message:{playerName:'joe'}};
+		let argss = {senderId: 434, message:{playerName:'frank'}};
 		playerHandler.playerNamed(args);
 		playerHandler.playerNamed(argz);
 		playerHandler.playerNamed(argss);
-		var score1 = {playerId:1, points:20};
-		var score2 = {playerId:0, points:5};
-		var score3 = {playerId:2, points:20};
+		let score1 = {playerId:1, points:20};
+		let score2 = {playerId:0, points:5};
+		let score3 = {playerId:2, points:20};
 		playerHandler.assignPoints(score1);
 		playerHandler.assignPoints(score2);
 		playerHandler.assignPoints(score3);
 
-		var winners = playerHandler.getWinners();
+		let winners = playerHandler.getWinners();
 
 		expect(winners.length).toBe(2);
-		expect(winners[0].playerName).toBe(argz.message.playerName);
-		expect(winners[1].playerName).toBe(argss.message.playerName);
+		expect(winners[0]).toBe(argz.message.playerName);
+		expect(winners[1]).toBe(argss.message.playerName);
 	});
 
-	it('resets guesses on all players for a new round', function(){
-		var args = {senderId: 123, message:{playerName:"bob"}};
-		var argz = {senderId: 123, message:{playerName:'joe'}};
+	it('resets guesses on all players for a new round', ()=>{
+		let args = {senderId: 123, message:{playerName:"bob"}};
+		let argz = {senderId: 123, message:{playerName:'joe'}};
 		playerHandler.playerNamed(args);
 		playerHandler.playerNamed(argz);
 		playerHandler.playerGuessed({playerId:0});
 		playerHandler.playerGuessed({playerId:1});
+		spyOn(playerHandler, 'getWinners').and.callFake(()=>[]);
 
 		playerHandler.freshRound();
 
@@ -228,17 +228,17 @@ describe('playerHandler', function(){
 		expect(playerHandler.players[1].guessed).toBe(false);
 	});
 
-	it('resets guesses and scores on all players for a new game', function(){
-		var args = {senderId: 123, message:{playerName:"bob"}};
-		var argz = {senderId: 123, message:{playerName:'joe'}};
+	it('resets guesses and scores on all players for a new game', ()=>{
+		let args = {senderId: 123, message:{playerName:"bob"}};
+		let argz = {senderId: 123, message:{playerName:'joe'}};
 		playerHandler.playerNamed(args);
 		playerHandler.playerNamed(argz);
-		var score1 = {playerId:1, points:20};
-		var score2 = {playerId:0, points:5};
+		let score1 = {playerId:1, points:20};
+		let score2 = {playerId:0, points:5};
 		playerHandler.assignPoints(score1);
 		playerHandler.assignPoints(score2);
 		playerHandler.playerGuessed({playerId:0});
-		
+
 		playerHandler.freshGame();
 
 		expect(playerHandler.players[0].guessed).toBe(false);
@@ -247,29 +247,29 @@ describe('playerHandler', function(){
 		expect(playerHandler.players[1].score).toBe(0);
 	});
 
-	it('flags the player object and counts correctly for quitting players', function(){
+	it('flags the player object and counts correctly for quitting players', ()=>{
+		spyOn(stateManager, 'checkState').and.callFake(()=>gameStates.WaitingForStart);
 		playerHandler.actedPlayersCount = 1;
-		var args = {senderId: 123, message:{playerName:"joe"}};
+		let args = {senderId: 123, message:{playerName:"joe"}};
 		playerHandler.playerNamed(args);
-		playerHandler.players[0].state = playerStates.ready;
 
 		playerHandler.playerQuit({senderId: 123});
 
 		expect(messageSender.sendQuit).toHaveBeenCalled();
-		expect(playerHandler.actedPlayersCount).toBe(0);
+		expect(playerHandler.actedPlayersCount).toBe(1);
 		expect(playerHandler.activePlayers).toBe(0);
 		expect(playerHandler.players[0].state).toBe(playerStates.quit);
 		expect(playerHandler.playerCounter).toBe(1);
 	});
 
-	it('increments actedPlayersCount', function(){
+	it('increments actedPlayersCount', ()=>{
 		playerHandler.playerActed();
 		playerHandler.playerActed();
 
 		expect(playerHandler.actedPlayersCount).toBe(2);
 	});
 
-	it('resets the actedPlayersCount', function(){
+	it('resets the actedPlayersCount', ()=>{
 		playerHandler.actedPlayersCount = 10;
 
 		playerHandler.resetPlayerActedCount();
@@ -277,17 +277,17 @@ describe('playerHandler', function(){
 		expect(playerHandler.actedPlayersCount).toBe(0);
 	});
 
-	it('returns the right player', function(){
-		var args = {senderId: 123, message:{playerName:"bob"}};
-		var argz = {senderId: 456, message:{playerName:'joe'}};
-		var argss = {senderId: 434, message:{playerName:'frank'}};
+	it('returns the right player', ()=>{
+		let args = {senderId: 123, message:{playerName:"bob"}};
+		let argz = {senderId: 456, message:{playerName:'joe'}};
+		let argss = {senderId: 434, message:{playerName:'frank'}};
 		playerHandler.playerNamed(args);
 		playerHandler.playerNamed(argz);
 		playerHandler.playerNamed(argss);
 
-		var foundPlayer = playerHandler.findPlayer(434);
-		var foundPlayer2 = playerHandler.findPlayer(123);
-		var foundPlayer3 = playerHandler.findPlayer(456);
+		let foundPlayer = playerHandler.findPlayer(434);
+		let foundPlayer2 = playerHandler.findPlayer(123);
+		let foundPlayer3 = playerHandler.findPlayer(456);
 
 		expect(foundPlayer.playerName).toBe('frank');
 		expect(foundPlayer2.playerName).toBe('bob');

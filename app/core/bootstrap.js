@@ -3,9 +3,9 @@
 
 require('./vendor')();
 
-var appModule = require('../src/app');
+let appModule = require('../src/app');
 
-angular.element(document).ready(function(){
+angular.element(document).ready(()=>{
 	angular.bootstrap(document, [appModule.name],{
 
 	});

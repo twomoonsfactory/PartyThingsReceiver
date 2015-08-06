@@ -1,20 +1,22 @@
-module.exports = function($log, $http, eventService, gameEvents){
-        var self = this;
+export default ngModule => {
+  ngModule.service('responseProvider', ['$log', '$http', 'eventService', 'gameEvents', ($log, $http, eventService, gameEvents) => {
+        let self = this;
         self.responses = [];
-        this.loadResponses = function(){
+        this.loadResponses = () => {
           $http.get("../src/resources/responses.json")
-            .success(function(data){
+            .success(data => {
               self.responses = data.responses;
               $log.log("Responses loaded in...");
             })
-            .error(function(data){
+            .error(data => {
               $log.log("error reading responses");
             });
         }
         eventService.subscribe(gameEvents.welcomeLoaded, this.loadResponses)
 
-        this.getRandomResponse = function(){
-          var randomResponse = _.sample(self.responses);
+        this.getRandomResponse = () => {
+          let randomResponse = _.sample(self.responses);
           return randomResponse;
         }
-      };
+      }])
+}

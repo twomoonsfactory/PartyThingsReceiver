@@ -1,33 +1,33 @@
 'use strict';
 
 
-describe('guessFactory', function(){
-	var guess, rawGuesser, rawWriter, rawResponseID;
+describe('guessFactory', ()=>{
+	let guess, rawGuesser, rawWriter, rawResponseID;
 
-	beforeEach(module('gameMaster'));
+	beforeEach(angular.mock.module(require('../app.js').name));
 
-	beforeEach(inject(function(_guess_){
-		guess = _guess_;
+	beforeEach(angular.mock.inject(($injector)=>{
+		guess = $injector.get('guess', guess);
 		//arrange for most
 		rawGuesser = 'Bob';
 		rawWriter = 'Joe';
 		rawResponseID = 2;
 	}));
 
-	describe('constructor', function(){
-		it('assigns values', function(){
+	describe('constructor', ()=>{
+		it('assigns values', ()=>{
 			//act
-			var myGuess = new guess(rawGuesser,rawWriter,rawResponseID);
+			let myGuess = new guess(rawGuesser,rawWriter,rawResponseID);
 			//assert
 			expect(myGuess.guesser).toBe(rawGuesser);
 		});
 	});
 
 
-	describe('prototype', function(){
-		it('compares writers', function(){
+	describe('prototype', ()=>{
+		it('compares writers', ()=>{
 			//act
-			var myGuess = new guess(rawGuesser,rawWriter,rawResponseID);
+			let myGuess = new guess(rawGuesser,rawWriter,rawResponseID);
 			//assert
 			expect(myGuess.isWriter(rawWriter)).toBe(true);
 		});

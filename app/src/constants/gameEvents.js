@@ -1,11 +1,25 @@
-module.exports = angular.module('gameMaster')
-	.constant('gameEvents', {
+export default ngModule => {
+	ngModule.constant('gameEvents', {
 		playerJoined: "playerJoined",
 		readyReceived: "readyReceived",
 		voteReceived: "voteReceived",
-		thingReceived: "thingReceived",
+		responseReceived: "responseReceived",
 		guessReceived: "guessReceived",
+		guessesResolved: "guessesResolved",
+		guessesSorted: "guessesSorted",
 		gamenameReceived: "gamenameReceived",
+		gameNamed: "gameNamed",
+		messageLoaded: "messageLoaded",
+		messagesUpdated: "messagesUpdated",
 		playernameReceived: "playernameReceived",
-		quitReceived: "quitReceived"
+		playerUpdated: "playerUpdated",
+		playersUpdated: "playersUpdated",
+		promptsLoaded: "promptsLoaded",
+		quitReceived: "quitReceived",
+		stateUpdated: "stateUpdated",
+		welcomeLoaded: "welcomeLoaded",
+		winnersDecided: "winnersDecided",
+		endView: "endView",
+		newGameRequested: "newGameRequested"
 	});
+}

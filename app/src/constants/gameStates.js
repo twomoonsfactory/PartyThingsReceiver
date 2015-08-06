@@ -1,11 +1,11 @@
-module.exports = angular.module('gameMaster')
-	.constant('gameStates', {
+export default ngModule => {
+	ngModule.constant('gameStates', {
 		WaitingForStart: "WaitingForStart",
-		ReadyToStart: "ReadyToStart",
 		WaitingForReady: "WaitingForReady",
-		PlayersReady: "PlayersReady",
+		ReadyToStart: "ReadyToStart",
 		PromptChosen: "PromptChosen",
 		ResponsesReceived: "ResponsesReceived",
 		RoundEnd: "RoundEnd",
 		GameEnd: "GameEnd"
 	});
+}

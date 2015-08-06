@@ -1,9 +1,9 @@
-module.exports = function($log, gameEvents, gameStates){
-      var self = this;
+export default ngModule => {
+  ngModule.service('eventService', ['$log', 'gameEvents', 'gameStates', ($log, gameEvents, gameStates) => {
+      let self = this;
       self.subs = {};
       //takes subscriptions, functions to be called on a specific event being published.
-      this.subscribe = function(eventId, subscriber){
-        $log.log(arguments.callee.caller.name);
+      this.subscribe = (eventId, subscriber) => {
         //handle invalid events to subscribe to
         if(!(_.contains(gameEvents, eventId))&&!(_.contains(gameStates, eventId))){
         	$log.log('Invalid eventId subscribed: ' + eventId);
@@ -16,7 +16,7 @@ module.exports = function($log, gameEvents, gameStates){
         }
       };
       //publishes a specific event, calling the arguments, if any.
-      this.publish = function(eventId, args){
+      this.publish = (eventId, args) => {
         if(!self.subs[eventId]){
           if(_.contains(gameEvents,eventId)||_.contains(gameStates,eventId))
             $log.log('No subscribers');
@@ -24,9 +24,10 @@ module.exports = function($log, gameEvents, gameStates){
             $log.log('Invalid eventId published: ' + eventId);
         }
         else{
-          _.each(self.subs[eventId], function(subscriber){
+          _.each(self.subs[eventId], subscriber => {
             subscriber(args);
           });
         }
       }
-	};
+	}])
+}

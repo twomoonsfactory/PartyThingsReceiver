@@ -1,12 +1,14 @@
-module.exports = function(){
+export default ngModule =>{
+	ngModule.factory('guess', ()=>{
 		//guesser and writer are strings, responseId is an int
-		var guess = function(guesser, writer, responseId){
+		let guess = (guesser, writer, responseId) => {
 			this.guesser = guesser;
 			this.writer = writer;
 			this.responseId = responseId;
 		};
-		guess.prototype.isWriter = function(writerToCheck){
+		guess.prototype.isWriter = (writerToCheck) => {
 			return writerToCheck === this.writer;
 		};
 		return guess;
-	};
+	})
+}

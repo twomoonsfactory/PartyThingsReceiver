@@ -1,4 +1,5 @@
-module.exports = function(){
+export default ngModule =>{
+		ngModule.directive('gameEnd', ()=>{
 		return {
 			restrict: 'A',
 			scope: {
@@ -6,4 +7,5 @@ module.exports = function(){
 			},
 			templateUrl: 'src/directives/gameEnd.html'
 		};
-	};
+	});
+}

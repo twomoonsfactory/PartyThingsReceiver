@@ -1,3 +1,12 @@
-module.exports = angular.module('app', []);
+/*jshint browser:true*/
+'use strict';
 
-console.log('stuff');
+require('./core/vendor')();
+
+const ngModule = angular.module('gameMaster', ['ngRoute', require('./src/castServices.js').name]);
+require('./src/config')(ngModule);
+require('./src/constants')(ngModule);
+require('./src/controllers')(ngModule);
+require('./src/directives')(ngModule);
+require('./src/factories')(ngModule);
+require('./src/services')(ngModule);

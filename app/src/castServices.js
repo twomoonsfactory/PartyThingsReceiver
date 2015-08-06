@@ -2,9 +2,9 @@ module.exports = angular.module('castServices', [])
   // THIS IS REAL
   //.constant('cast', window.cast)
   //THIS IS NOT
-    .constant('cast', (function(){
+    .constant('cast', (()=>{
 
-            var castmock = {};
+            let castmock = {};
 
             castmock.testCore = {
                 receivedStrings: []
@@ -14,10 +14,10 @@ module.exports = angular.module('castServices', [])
                 getCastMessageBus: function(string){
                     castmock.testCore.receivedStrings.push(string);
                     return {
-                        getNamespace: function(){
+                        getNamespace: ()=>{
                             return 'aNamespace';
                         },
-                        send: function(){
+                        send: ()=>{
 
                         }
                     }
@@ -34,7 +34,7 @@ module.exports = angular.module('castServices', [])
                     }
                 },
                 CastReceiverManager: {
-                    getInstance: function(){
+                    getInstance: ()=>{
                         return castmock.receiverManager;
                     },
 
@@ -48,7 +48,7 @@ module.exports = angular.module('castServices', [])
 
       // start up chromecast uncomment next line for production
       cast.receiver.logger.setLevelValue(0);
-      var castReceiverManager = cast.receiver.CastReceiverManager.getInstance();
+      let castReceiverManager = cast.receiver.CastReceiverManager.getInstance();
       $log.log('Starting Receiver Manager');
 
       // 'ready' event handler
@@ -81,9 +81,9 @@ module.exports = angular.module('castServices', [])
       };
 
       //initializing channel collection
-      var messageBuses = [];
+      let messageBuses = [];
 
-      for(var i = 0; i < messagetypes.length; i++){
+      for(let i = 0; i < messagetypes.length; i++){
         messageBuses[messagetypes[i]] = castReceiverManager.getCastMessageBus('urn:x-cast:com.partythings.' + messagetypes[i]);
         $log.log(messageBuses[messagetypes[i]].getNamespace());
       }

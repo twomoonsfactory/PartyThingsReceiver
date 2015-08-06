@@ -1,6 +1,6 @@
-module.exports = function(){
+module.exports = ()=>{
 	/* JS */
-	require('jquery');
+	require('jQuery');
 	require('angular-builds/angular.js');
 	require('angular-route');
 	require('underscore');
