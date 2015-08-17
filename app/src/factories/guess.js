@@ -1,14 +1,12 @@
-export default ngModule =>{
-	ngModule.factory('guess', ()=>{
-		//guesser and writer are strings, responseId is an int
-		let guess = (guesser, writer, responseId) => {
-			this.guesser = guesser;
-			this.writer = writer;
-			this.responseId = responseId;
-		};
-		guess.prototype.isWriter = (writerToCheck) => {
-			return writerToCheck === this.writer;
-		};
-		return guess;
-	})
+export default class guess{
+	//guesser and writer are strings, responseId is an int
+	constructor(guesser, writer, responseId){
+		this.guesser = guesser;
+		this.writer = writer;
+		this.responseId = responseId;
+		return this;
+	}
+	isWriter(writerToCheck){
+		return writerToCheck === this.writer;
+	}
 }

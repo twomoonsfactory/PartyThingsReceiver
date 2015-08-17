@@ -1,24 +1,35 @@
-export default ngModule => {
-  ngModule.service('guessHandler', ['eventService', 'guess', 'gameEvents', 'responseHandler', (eventService, guess, gameEvents, responseHandler) => {
-    let self = this;
+export default class guessHandler{
+  constructor(eventService, guess, gameEvents, responseHandler){
     this.guesses = [];
-    this.newGuess = args => {
-      self.guesses.push(new guess(args.guesser,args.playerId,args.responseId));
-    }
-    this.tallyGuesses = ()=>{
-      _.each(self.guesses, guess => {
-        if(guess.isWriter(responseHandler.getWriter(guess.responseId))){
-          responseHandler.goodGuess({responseId:guess.responseId,guesser:guess.guesser});
-        }
-        else{
-          responseHandler.badGuess({responseId:guess.responseId,guesser:guess.guesser,guessedWriter:guess.writer});
-        }
-      });
-      responseHandler.resolveResponses();
-    }
-    this.wipeGuesses = ()=>{
-      self.guesses = [];
-    }
-    eventService.subscribe(gameEvents.guessesSorted, this.wipeGuesses);
-  }])
+
+    //local references for injected externals
+    this.eventService = eventService;
+    this.guess = guess;
+    this.gameEvents = gameEvents;
+    this.responseHandler = responseHandler;
+
+    //event subscriptions
+    this.eventService.subscribe(this.gameEvents.guessesSorted, this.wipeGuesses);    
+  }
+  //adds a guess to the list
+  newGuess(args){
+    this.guesses.push(new guess(args.guesser,args.playerId,args.responseId));
+  }
+  //sorts guesses
+  tallyGuesses(){
+    _.each(this.guesses, guess => {
+      if(guess.isWriter(this.responseHandler.getWriter(guess.responseId))){
+        this.responseHandler.goodGuess({responseId:guess.responseId,guesser:guess.guesser});
+      }
+      else{
+        this.responseHandler.badGuess({responseId:guess.responseId,guesser:guess.guesser,guessedWriter:guess.writer});
+      }
+    });
+    this.responseHandler.resolveResponses();
+  }
+  //refreshes the guess list
+  wipeGuesses(){
+    this.guesses = [];
+  }
 }
+guessHandler.$inject = ['eventService', 'guess', 'gameEvents', 'responseHandler'];

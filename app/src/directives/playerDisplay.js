@@ -1,11 +1,9 @@
-export default ngModule => {
- 	ngModule.directive('playerDisplay', ()=>{
-		return {
-			restrict: 'A',
-			scope: {
-				players: '=players'
-			},
-			templateUrl: 'src/directives/playerDisplay.html'
-		}
-	})
+export default class playerDisplay{
+	constructor(){
+		this.restrict = 'A';
+		this.scope = {
+			players: '=players'
+		};
+		this.templateUrl = 'src/directives/playerDisplay.html';
+	}
 }

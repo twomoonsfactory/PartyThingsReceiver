@@ -1,11 +1,9 @@
-export default ngModule =>{
-	ngModule.directive('promtpRequest', ()=>{
-		return {
-			restrict: 'A',
-			scope: {
-				prompts: '=prompts'
-			},
-			templateUrl: 'src/directives/promptRequest.html'
-		}
-	})
+export default class promtpRequest{
+	constructor(){
+		this.restrict = 'A';
+		this.scope = {
+			prompts: '=prompts'
+		};
+		this.templateUrl = 'src/directives/promptRequest.html';
+	}
 }

@@ -3,10 +3,18 @@
 
 require('./core/vendor')();
 
-const ngModule = angular.module('gameMaster', ['ngRoute', require('./src/castServices.js').name]);
-require('./src/config')(ngModule);
-require('./src/constants')(ngModule);
-require('./src/controllers')(ngModule);
-require('./src/directives')(ngModule);
-require('./src/factories')(ngModule);
-require('./src/services')(ngModule);
+import gameMasterConstants from './src/constants/index.js';
+import gameMasterControllers from './src/controllers/index.js';
+import gameMasterDirectives from './src/directives/index.js';
+import gameMasterFactories from './src/directives/index.js';
+import gameMasterServices from './src/services/index.js';
+
+const ngModule = angular.module('gameMaster', [require('./src/castServices.js').name, gameMasterConfig, gameMasterConstants, gameMasterControllers, gameMasterDirectives, gameMasterFactories, gameMasterServices]);
+
+import gameMasterConfig from './src/config/index.js' (ngModule);
+
+
+angular.element(document).ready(()=>{
+	angular.bootstrap(document, [ngModule.name],{
+	});
+});

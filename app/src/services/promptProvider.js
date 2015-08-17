@@ -1,49 +1,53 @@
-export default ngModule => {
-  ngModule.service('promptProvider', ['$log', 'eventService', 'gameEvents', 'gameStates', '$http', ($log, eventService, gameEvents, gameStates, $http) => {
-      //stores prompt list locally, will send three at random on call
-      let self = this;
-      self.prompts = [];
-      self.currentprompts = [];
-      self.prompt = "";
-      self.votes = [];
-      this.loadPrompts = ()=>{
-        $http.get("../src/resources/prompts.json")
-          .success(data => {
-            self.prompts = data.prompts;
-            $log.log("Prompts loaded in...");
-          })
-          .error(data => {
-            $log.log("error reading prompts");
-          });
-      }
-      eventService.subscribe(gameEvents.welcomeLoaded, this.loadPrompts);
+export default class promptProvider{
+  constructor($log, eventService, gameEvents, gameStates, $http){
+    //local variables
+    this.prompts = [];
+    this.currentprompts = [];
+    this.prompt = "";
+    this.votes = [];
+    //local reference to injected externals
+    this.log = $log;
+    this.eventService = eventService;
+    this.gameEvents = gameEvents;
+    this.gameStates = gameStates;
+    this.http = $http;
+    //event subscriptions
+    this.eventService.subscribe(this.gameEvents.welcomeLoaded, this.loadPrompts);
+    this.eventService.subscribe(this.gameStates.WaitingForReady, this.getPrompts);
+    this.eventService.subscribe(this.gameStates.RoundEnd, this.getPrompts);
+  }
+  loadPrompts(){
+    this.http.get("../src/resources/prompts.json")
+      .then(data => {
+        this.prompts = data.prompts;
+        this.log.log("Prompts loaded in...");
+      });
+  }
 
-      this.getPrompts = ()=>{
-         self.currentprompts = _.sample(self.prompts, 3);
-         eventService.publish(gameEvents.promptsLoaded, self.currentprompts);
-      }
-      eventService.subscribe(gameStates.WaitingForReady, this.getPrompts);
-      eventService.subscribe(gameStates.RoundEnd, this.getPrompts);
+  getPrompts(){
+     this.currentprompts = _.sample(this.prompts, 3);
+     this.eventService.publish(this.gameEvents.promptsLoaded, this.currentprompts);
+  }
 
-      //processes votes received
-      this.promptVote = voteindex => {
-        self.votes[voteindex]++;
-      }
+  //processes votes received
+  promptVote(voteindex){
+    this.votes[voteindex]++;
+  }
 
-      //votes handled
-      this.tallyVotes = () => {
-        self.votes= [0,0,0];
-        let promptIndex = [];
-        for(let i = 0; i < self.votes.length; i++){
-          if(self.votes[i]===_.max(self.votes))
-            promptIndex.push(i);
-        }
-        if(promptIndex.length === 1)
-          self.prompt = self.currentprompts[promptIndex[0]];
-        else if(promptIndex.length ===2)
-          self.prompt = self.currentprompts[promptIndex[_.sample([promptIndex[0],promptIndex[1]])]];
-        else
-          self.prompt = self.currentprompts[_.random(0,2)];
-      }
-    }])
+  //votes handled
+  tallyVotes(){
+    this.votes = [0,0,0];
+    let promptIndex = [];
+    for(let i = 0; i < this.votes.length; i++){
+      if(this.votes[i]===_.max(this.votes))
+        promptIndex.push(i);
+    }
+    if(promptIndex.length === 1)
+      this.prompt = this.currentprompts[promptIndex[0]];
+    else if(promptIndex.length ===2)
+      this.prompt = this.currentprompts[promptIndex[_.sample([promptIndex[0],promptIndex[1]])]];
+    else
+      this.prompt = this.currentprompts[_.random(0,2)];
+  }
 }
+promptProvider.$inject = ['$log', 'eventService', 'gameEvents', 'gameStates', '$http'];

@@ -1,11 +1,9 @@
-export default ngModule =>{
-		ngModule.directive('gameEnd', ()=>{
-		return {
-			restrict: 'A',
-			scope: {
-				winners: '=winners'
-			},
-			templateUrl: 'src/directives/gameEnd.html'
+export default class gameEnd{
+	constructor(){
+		this.restrict = 'A';
+		this.scope = {
+			winners: '=winners'
 		};
-	});
+		this.templateUrl = 'src/directives/gameEnd.html';
+	}
 }

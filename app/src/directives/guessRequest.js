@@ -1,11 +1,9 @@
-export default ngModule =>{
-	ngModule.directive('guessRequest', ()=>{
-		return {
-			restrict: 'A',
-			scope: {
-				responses: '=responses'
-			},
-			templateUrl: 'src/directives/guessRequest.html'
-		}
-	})
+export default class guessRequest{
+	constructor(){
+		this.restrict = 'A';
+		this.scope = {
+			responses: '=responses'
+		};
+		this.templateUrl = 'src/directives/guessRequest.html';
+	}
 }

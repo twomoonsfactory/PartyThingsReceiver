@@ -1,11 +1,22 @@
-export default ngModule =>{
-  require('./eventService.js')(ngModule);
-  require('./gameDriver.js')(ngModule);
-  require('./guessHandler.js')(ngModule);
-  require('./messageProvider.js')(ngModule);
-  require('./playerHandler.js')(ngModule);
-  require('./promptProvider.js')(ngModule);
-  require('./responseHandler.js')(ngModule);
-  require('./responseProvider.js')(ngModule);
-  require('./stateManager.js')(ngModule);
-}
+require('../../core/vendor')();
+
+import eventService from './eventService.js';
+import gameDriver from './gameDriver.js';
+import guessHandler from './guessHandler.js';
+import messageProvider from './messageProvider.js';
+import playerHandler from './playerHandler.js';
+import promptProvider from './promptProvider.js';
+import responseHandler from './responseHandler.js';
+import responseProvider from './responseProvider.js';
+import stateManager from './stateManager.js';
+
+module.export = angular.module('gameMasterServices', [])
+  .service(eventService)
+  .service(gameDriver)
+  .service(guessHandler)
+  .service(messageProvider)
+  .service(playerHandler)
+  .service(promptProvider)
+  .service(responseHandler)
+  .service(responseProvider)
+  .service(stateManager);

@@ -1,27 +1,24 @@
-export default ngModule => {
-	ngModule.factory('response', ()=> {
-		//constructor
-		let response = (response, responseId, playerId) => {
-			this.response = response;
-			this.responseId = responseId;
-			this.playerId = playerId;
-			this.correct = [];
-			this.incorrect = [];
-		}
+export default class response{
+	construtor(response, responseId, playerId){
+		this.response = response;
+		this.responseId = responseId;
+		this.playerId = playerId;
+		this.correct = [];
+		this.incorrect = [];
 
-		response.prototype.addGoodGuess= (guesser) => {
-			this.correct.push(guesser);
-		};
+		return this;
+	}
 
-		response.prototype.addWrongGuess = (guesser, writer) => {
-			this.incorrect.push({guesser: guesser, guessedWriter: writer});
-		};
+	addGoodGuess(guesser){
+		this.correct.push(guesser);
+	}
 
-		response.prototype.wipeGuesses = ()=>{
-			this.incorrect = [];
-			this.correct = [];
-		};
+	addWrongGuess(guesser, writer){
+		this.incorrect.push({guesser: guesser, guessedWriter: writer});
+	}
 
-		return response;
-	})
+	wipeGuesses(){
+		this.incorrect = [];
+		this.correct = [];
+	}
 }
