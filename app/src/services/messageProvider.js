@@ -1,20 +1,30 @@
 export default ngModule => {
-	ngModule.service('messageProvider', ['$log', '$http', 'eventService', 'gameEvents', ($log, $http, eventService, gameEvents)=>{
-		let self = this;
+	class messageProvider{
+		constructor($log, $http, eventService, gameEvents){
+				this.$log = $log;
+				this.$http = $http;
+				this.eventService = eventService;
+				this.gameEvents = gameEvents;
 
-		self.messages = [];
-		this.loadMessages = ()=>{
-			$http.get("../src/resources/messages.json")
+				this.messages = [];
+
+				this.subscribeToGameEvents();
+		}
+		subscribeToGameEvents(){
+			this.eventService.subscribe(this.gameEvents.welcomeLoaded, this.loadMessages.bind(this));
+		}
+		//pulls messages from server
+		loadMessages(){
+			this.$http.get("../src/resources/messages.json")
 				.success(data => {
-					self.messages = data.messages;
-					$log.log("Messages loaded in...");
-					eventService.publish(gameEvents.messageLoaded, "");
+					this.messages = data.messages;
+					this.$log.log("Messages loaded in...");
+					this.eventService.publish(this.gameEvents.messageLoaded, "");
 				})
 				.error(data => {
-					$log.log("error reading messages");
+					this.$log.log("error reading messages");
 				});
 		}
-		eventService.subscribe(gameEvents.welcomeLoaded, this.loadMessages);
 
 		//grabs message requested, doing a string replace to input
 		//arguments as needed
@@ -24,22 +34,24 @@ export default ngModule => {
 		//        .prompt : the prompt selected (if needed)
 		//        .resp : the response (if needed)
 		//        .points : numeric points (if needed)
-		this.getMessage = args => {
-			let feedback;
-			if((_.findWhere(self.messages, {messageName: args.messageName}))!==undefined){
-				feedback = _.findWhere(self.messages, {messageName: args.messageName}).message;
-				feedback = feedback.indexOf("{PNAME}") >= 0 ? feedback.replace("{PNAME}", args.pname) : feedback;
-				feedback = feedback.indexOf("{PNAME2}") >= 0 ? feedback.replace("{PNAME2}", args.pname2) : feedback;
-				feedback = feedback.indexOf("{GNAME}") >= 0 ? feedback.replace("{GNAME}", args.gname) : feedback;
-				feedback = feedback.indexOf("{PROMPT}") >= 0 ? feedback.replace("{PROMPT}", args.prompt) : feedback;
-				feedback = feedback.indexOf("{RESP}") >= 0 ? feedback.replace("{RESP}", args.resp) : feedback;
-				feedback = feedback.indexOf("{POINTS}") >= 0 ? feedback.replace("{POINTS}", args.points.toString()) : feedback;
+		getMessage(args){
+			let compiledMessage = '';
+			if((_.findWhere(this.messages, {messageName: args.messageName}))!==undefined){
+				compiledMessage = _.findWhere(this.messages, {messageName: args.messageName}).message;
+				compiledMessage = compiledMessage.indexOf("{PNAME}") >= 0 ? compiledMessage.replace("{PNAME}", args.pname) : compiledMessage;
+				compiledMessage = compiledMessage.indexOf("{PNAME2}") >= 0 ? compiledMessage.replace("{PNAME2}", args.pname2) : compiledMessage;
+				compiledMessage = compiledMessage.indexOf("{GNAME}") >= 0 ? compiledMessage.replace("{GNAME}", args.gname) : compiledMessage;
+				compiledMessage = compiledMessage.indexOf("{PROMPT}") >= 0 ? compiledMessage.replace("{PROMPT}", args.prompt) : compiledMessage;
+				compiledMessage = compiledMessage.indexOf("{RESP}") >= 0 ? compiledMessage.replace("{RESP}", args.resp) : compiledMessage;
+				compiledMessage = compiledMessage.indexOf("{POINTS}") >= 0 ? compiledMessage.replace("{POINTS}", args.points.toString()) : compiledMessage;
 			}
 			else{
-				$log.log("Message: " + args.messageName + "does not exist");
-				feedback = null;
+				this.$log.log("Message: " + args.messageName + "does not exist");
+				compiledMessage = null;
 			}
-			return feedback;
+			return compiledMessage;
 		}
-	}])
+	}
+	messageProvider.$inject = ['$log', '$http', 'eventService', 'gameEvents'];
+	ngModule.service('messageProvider', messageProvider);
 }

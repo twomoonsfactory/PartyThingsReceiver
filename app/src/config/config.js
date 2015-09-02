@@ -1,7 +1,6 @@
 export default ngModule => {
   ngModule.config(function($routeProvider, $locationProvider){
     $routeProvider
-
     //welcome page
     .when('/welcome', {
       templateUrl: '../../views/welcome.html',
