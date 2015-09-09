@@ -70,16 +70,15 @@ export default ngModule => {
 		$scope.plusPlayer = ()=>{
 			eventService.publish(gameEvents.playernameReceived, $scope.list[$scope.count]);
 			$scope.count++;
-	    }
-	    $scope.readyPlayer = ()=>{
-	    	eventService.publish(gameEvents.readyReceived, $scope.joinedPlayers[0]);
-	    }
-	    $scope.incomingPlayer = ()=>{
-	    	eventService.publish(gameEvents.playerJoined, {});
-	    }
-	    $scope.removePlayer = ()=>{
-	    	eventService.publish(gameEvents.quitReceived, {senderId:15});
-	    }
-
+    }
+    $scope.readyPlayer = ()=>{
+    	eventService.publish(gameEvents.readyReceived, $scope.joinedPlayers[0]);
+    }
+    $scope.incomingPlayer = ()=>{
+	  	eventService.publish(gameEvents.playerJoined, {});
+    }
+    $scope.removePlayer = ()=>{
+    	eventService.publish(gameEvents.quitReceived, {senderId:_.sample(playerHandler.players).senderId});
+    }
 	}]);
 }
