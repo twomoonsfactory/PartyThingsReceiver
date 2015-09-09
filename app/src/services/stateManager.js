@@ -57,7 +57,7 @@ export default ngModule => {
       else
         this.$log.log("In state: " + this.state + " cannot reset: " + sameState);
     }
-      
+
     checkState(stateToCheck){
       return this.state === stateToCheck;
     }
@@ -104,7 +104,7 @@ export default ngModule => {
     guessMessageUpdate(){
       this.message = this.messageProvider.getMessage({messageName:this.messageNames.screenRoundResults, prompt: this.promptProvider.prompt});
       this.banner = this.messageProvider.getMessage({messageName:this.messageNames.bannerRoundResults});
-      this.eventService.publish(gameEvents.messagesUpdated, {message:this.message, banner:this.banner});
+      this.eventService.publish(this.gameEvents.messagesUpdated, {message:this.message, banner:this.banner});
     }
 
     getWinnerInfo(args){

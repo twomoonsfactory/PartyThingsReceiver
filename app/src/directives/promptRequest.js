@@ -1,5 +1,5 @@
 export default ngModule =>{
-	ngModule.directive('promtpRequest', ()=>{
+	ngModule.directive('promptRequest', ()=>{
 		return {
 			restrict: 'A',
 			scope: {

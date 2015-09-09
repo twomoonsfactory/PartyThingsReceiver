@@ -16,7 +16,7 @@ export default ngModule => {
     }
     //adds a new guess
     newGuess(args){
-      this.guesses.push(guessFactory.newGuess(args.guesser,args.playerId,args.responseId));
+      this.guesses.push(this.guessFactory.newGuess(args.guesser,args.playerId,args.responseId));
     }
     //sorts existing guesses
     tallyGuesses(){

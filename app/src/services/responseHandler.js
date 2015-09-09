@@ -23,7 +23,7 @@ export default ngModule => {
     }
 
     newResponse(args){
-      this.responses[this.responseCounter] = responseFactory.newResponse(args.response, this.responseCounter, args.playerId);
+      this.responses[this.responseCounter] = this.responseFactory.newResponse(args.response, this.responseCounter, args.playerId);
       this.responseCounter++;
     }
 
@@ -88,7 +88,7 @@ export default ngModule => {
       let correct = [];
       let incorrect = [];
       _.each(right, goodGuess => {
-        correct.push({response: goodGuess.response, writer: playerHandler.players[goodGuess.playerId].playerName, writerId:goodGuess.playerId, guessers: []});
+        correct.push({response: goodGuess.response, writer: this.playerHandler.players[goodGuess.playerId].playerName, writerId:goodGuess.playerId, guessers: []});
         _.each(goodGuess.correct, rightGuesser => {
           _.last(correct).guessers.push({guesser: this.playerHandler.players[rightGuesser].playerName, guesserId: rightGuesser});
         });

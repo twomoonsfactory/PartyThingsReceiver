@@ -144,7 +144,7 @@ export default ngModule =>{
     //function to either roll things back to a fresh round with all the active players and players standing by, or
     //sends the game on to end game.
     nextRound(){
-      if(this.playerHandler.highScore()>=self.winningScore){
+      if(this.playerHandler.highScore()>=this.winningScore){
         let winners = this.playerHandler.getWinners();
         let score = this.playerHandler.highScore();
         this.eventService.publish(this.gameEvents.winnersDecided, {winners: winners, score: score});
