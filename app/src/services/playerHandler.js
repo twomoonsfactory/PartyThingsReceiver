@@ -4,7 +4,7 @@ export default ngModule => {
       this.eventService = eventService;
       this.playerFactory = playerFactory;
       this.messageSender = messageSender;
-      this.sateManager = stateManager;
+      this.stateManager = stateManager;
       this.gameEvents = gameEvents;
       this.gameStates = gameStates;
       this.playerStates = playerStates;
@@ -39,7 +39,7 @@ export default ngModule => {
     }
 
     addPlayer(args){
-      if(this.stateManager.state === null){
+      if(this.stateManager.checkState(null)){
         this.messageSender.requestGameName({senderId: args.senderId, message: this.messageProvider.getMessage({messageName: this.messageNames.nameGame})});
       }
       else{
@@ -60,10 +60,10 @@ export default ngModule => {
     //this is where new players are created and assigned a state appropriate to the game's state, ready requests even being handled.
     //Need error handling for duplicate player names, as it can create confusion
     playerNamed(args){
-      this.players[this.playerCounter]= playerFactory.newPlayer(args.message.playerName, args.senderId, this.playerCounter);
+      this.players[this.playerCounter]= this.playerFactory.newPlayer(args.message.playerName, args.senderId, this.playerCounter);
       if(this.stateManager.checkState(this.gameStates.WaitingForStart)){
         this.messageSender.requestPlayerName({senderId: args.senderId, message: this.messageProvider.getMessage({messageName: this.messageNames.waitingToStart, pname: args.message.playerName, gname: this.stateManager.gameName})});
-        this.players[this.playerCounter].setState(playerStates.waiting);
+        this.players[this.playerCounter].setState(this.playerStates.waiting);
         this.activePlayers++;
       }
       else if(this.stateManager.checkState(this.gameStates.WaitingForReady)){

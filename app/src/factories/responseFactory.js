@@ -10,11 +10,11 @@ export default ngModule => {
 			response.correct = [];
 			response.incorrect = [];
 
-			response.addGoodGuess = (guesser) => this.correct.push(guesser);
-			response.addWrongGuess = (guesser, writer) => this.incorrect.push({guesser: guesser, guessedWriter: writer});
+			response.addGoodGuess = (guesser) => response.correct.push(guesser);
+			response.addWrongGuess = (guesser, writer) => response.incorrect.push({guesser: guesser, guessedWriter: writer});
 			response.wipeGuesses = ()=>	{
-				this.incorrect = [];
-				this.correct = [];
+				response.incorrect = [];
+				response.correct = [];
 			};
 
 			return response;

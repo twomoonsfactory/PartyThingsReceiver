@@ -9,7 +9,7 @@ export default ngModule =>{
 			guess.guesser = guesser;
 			guess.writer = writer;
 			guess.responseId = responseId;
-			guess.isWriter = writerToCheck => writerToCheck === this.writer;
+			guess.isWriter = writerToCheck => writerToCheck === guess.writer;
 
 			return guess;
 		}

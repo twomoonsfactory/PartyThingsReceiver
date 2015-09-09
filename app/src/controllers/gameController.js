@@ -1,5 +1,5 @@
 export default ngModule => {
-  ngModule.controller('gameController', ['$scope', '$log', '$location', 'gameStates', 'eventService', 'gameEvents', 'player', 'playerHandler', 'stateManager', 'promptProvider', 'responseHandler', ($scope, $log, $location, gameStates, eventService, gameEvents, player, playerHandler, stateManager, promptProvider, responseHandler) => {
+  ngModule.controller('gameController', ['$scope', '$log', '$location', 'gameStates', 'eventService', 'gameEvents', 'playerHandler', 'stateManager', 'promptProvider', 'responseHandler', ($scope, $log, $location, gameStates, eventService, gameEvents, playerHandler, stateManager, promptProvider, responseHandler) => {
     //many of these dependencies can be chunked once button testing is no loner in use
    	$scope.gameMessage = stateManager.message;
    	$scope.gameHeader = stateManager.banner;

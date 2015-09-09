@@ -57,7 +57,7 @@ export default ngModule => {
       else
         this.$log.log("In state: " + this.state + " cannot reset: " + sameState);
     }
-
+      
     checkState(stateToCheck){
       return this.state === stateToCheck;
     }
