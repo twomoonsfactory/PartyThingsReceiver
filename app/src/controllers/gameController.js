@@ -108,6 +108,10 @@ export default ngModule => {
     $scope.kingMaker = ()=>{
       playerHandler.assignPoints({playerId:   _.sample(playerHandler.players).playerId, points: 100});
     }
+    $scope.guessRight = ()=>{
+      let responseNum = _.random(0, responseHandler.responses.length - 1);
+      eventService.publish(gameEvents.guessReceived, {senderId: _.sample(_.filter(playerHandler.players, function(player){return player.state==='guessing'})).senderId, message: {playerId: responseHandler.responses[responseNum].playerId, responseId:responseHandler.responses[responseNum].responseId}})
+    }
     $scope.skipToEnd = ()=>{
       eventService.publish(gameStates.RoundEnd, "");
     }

@@ -108,7 +108,10 @@ export default ngModule => {
     //returns true if there are more than 1 unguessed players
     unguessedPlayers(){
       let results = _.countBy(this.players, player => {
-        return player.guessed === true ? 'guessed' : 'unguessed';
+        if((player.guessed === true)||(!player.checkState(this.playerStates.ready)))
+          return 'guessed';
+        else
+          return 'unguessed';
       })
       return results.unguessed > 1 ? true : false;
     }
@@ -139,6 +142,7 @@ export default ngModule => {
           player.freshRound();
         });
       }
+      this.playerUpdated();
     }
 
     //at the end of game, sets all scores to zero, all players to unguessed
@@ -146,6 +150,7 @@ export default ngModule => {
       _.each(this.players, player => {
           player.freshGame();
         });
+      this.playerUpdated();
     }
 
     //allows the players to quit at any point without seriously disrupting gameplay.  Will still allow for submitted things to be guessed
@@ -154,7 +159,8 @@ export default ngModule => {
       let quitter = this.findPlayer(args.senderId);
       if(quitter.checkState(this.playerStates.ready))
         this.actedPlayersCount--;
-      this.activePlayers--;
+      if(!quitter.checkState(this.playerStates.standingBy))
+        this.activePlayers--;
       //logic to remove quit player from on screen display here
       quitter.setState(this.playerStates.quit);
       this.messageSender.sendQuit({senderId: quitter.senderId, message: this.messageProvider.getMessage({messageName: this.messageNames.quit, pname: quitter.playerName})});
@@ -169,7 +175,7 @@ export default ngModule => {
           toDrop.push(player);
       });
       this.players = _.difference(this.players, toDrop);
-      this.eventService.publish(this.gameEvents.playersUpdated);
+      this.eventService.publish(this.gameEvents.playersUpdated, "");
     }
 
 
