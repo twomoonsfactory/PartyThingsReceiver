@@ -1,16 +1,16 @@
 'use strict'
 describe('playerFactory', ()=>{
-	let player, playerStates, $log, playerName, senderId, playerId, myPlayer;
+	let playerFactory, playerStates, $log, playerName, senderId, playerId, myPlayer;
 	beforeEach(angular.mock.module(require('../app.js').name));
 
 	beforeEach(angular.mock.inject(($injector)=>{
-		player = $injector.get('player', player);
+		playerFactory = $injector.get('playerFactory', playerFactory);
 		playerStates = $injector.get('playerStates', playerStates);
 		$log = $injector.get('$log', $log);
 		playerName = 'Bob';
 		senderId = '22abf14';
 		playerId = 62;
-		myPlayer = new player(playerName, senderId, playerId);
+		myPlayer = playerFactory.newPlayer(playerName, senderId, playerId);
 	}));
 
 	describe('construcor', ()=>{
