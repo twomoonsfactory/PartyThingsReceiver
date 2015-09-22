@@ -1,21 +1,21 @@
 'use strict'
-describe('playerFactory', function(){
-	var player, playerStates, $log, playerName, senderId, playerId, myPlayer;	
-	beforeEach(module('gameMaster'));
+describe('playerFactory', ()=>{
+	let playerFactory, playerStates, $log, playerName, senderId, playerId, myPlayer;
+	beforeEach(angular.mock.module(require('../app.js').name));
 
-	beforeEach(inject(function(_player_,_playerStates_,_$log_){
-		player = _player_;
-		playerStates = _playerStates_;
-		$log = _$log_;
+	beforeEach(angular.mock.inject(($injector)=>{
+		playerFactory = $injector.get('playerFactory', playerFactory);
+		playerStates = $injector.get('playerStates', playerStates);
+		$log = $injector.get('$log', $log);
 		playerName = 'Bob';
 		senderId = '22abf14';
 		playerId = 62;
-		myPlayer = new player(playerName, senderId, playerId);
+		myPlayer = playerFactory.newPlayer(playerName, senderId, playerId);
 	}));
 
-	describe('construcor', function(){
-		it('creates object with correct values', function(){
-			
+	describe('construcor', ()=>{
+		it('creates object with correct values', ()=>{
+
 			//assert
 			expect(myPlayer.playerName).toBe(playerName);
 			expect(myPlayer.senderId).toBe(senderId);
@@ -26,28 +26,28 @@ describe('playerFactory', function(){
 		});
 	});
 
-	describe('prototype function', function(){
-		it('adds points correctly', function(){
+	describe('prototype function', ()=>{
+		it('adds points correctly', ()=>{
 			myPlayer.addPoints(25);
 
 			expect(myPlayer.score).toBe(25);
 		});
 
-		it('marks guessed players', function(){
+		it('marks guessed players', ()=>{
 			myPlayer.wasGuessed();
 
 			expect(myPlayer.guessed).toBe(true);
 		});
 
-		it('refreshes the guesses for a new round', function(){
+		it('refreshes the guesses for a new round', ()=>{
 			myPlayer.wasGuessed();
-			
+
 			myPlayer.freshRound();
 
 			expect(myPlayer.guessed).toBe(false);
 		});
 
-		it('refreshes the guesses and score for a new round', function(){
+		it('refreshes the guesses and score for a new round', ()=>{
 			myPlayer.wasGuessed();
 			myPlayer.addPoints(5);
 
@@ -57,30 +57,30 @@ describe('playerFactory', function(){
 			expect(myPlayer.score).toBe(0);
 		});
 
-		it('allows the state to be set dynamically', function(){
+		it('allows the state to be set dynamically', ()=>{
 			myPlayer.setState(playerStates.ready);
 
 			expect(myPlayer.state).toBe(playerStates.ready);
 		});
 
-		it('logs an error on a bad state', function(){
+		it('logs an error on a bad state', ()=>{
 			spyOn($log, 'log').and.callThrough();
-			var fakeState = "fakePlayerState";
+			let fakeState = "fakePlayerState";
 
 			myPlayer.setState(fakeState);
 
 			expect($log.log).toHaveBeenCalled();
 		});
 
-		it('does not save a bad state', function(){
-			var fakeState = "fakePlayerState";
+		it('does not save a bad state', ()=>{
+			let fakeState = "fakePlayerState";
 
 			myPlayer.setState(fakeState);
 
 			expect(myPlayer.state).not.toEqual(fakeState);
 		});
 
-		it('compares player states', function(){
+		it('compares player states', ()=>{
 			myPlayer.setState(playerStates.ready);
 
 			expect(myPlayer.checkState(playerStates.ready)).toBe(true);

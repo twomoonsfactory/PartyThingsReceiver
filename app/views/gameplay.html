@@ -1,23 +1,55 @@
-
-<div class="row">
-  <div class='col-lg-12 header'>
-    <span id="banner">{{gamename}}</span>
-    <br />
-    <span id="sub-banner">Join {{owner}} party!</span><button ng-click="nameIt()">nameIt</button>
-  </div>
-</div>
-<div class="row fill">
-    <div class='col-lg-8 fill'>
-      <span id="main-event">This is where the game happens</span>
-      <button type="button" ng-click="changeView('/welcome')">Main</button>
-    </div>
-    <div class='col-lg-4 fill'>
-      <button ng-click="pendPlayer()">PendPlayer</button>
-      <button ng-click="plusPlayer()">AddPlayer</button>
-      <button ng-click="morePoints()">5 points</button><br />
-      <span id="player-banner">Players</span>
-      <div class="playerSlip" ng-repeat="player in players">
-        <player-display info="player"></player-display>
+<div class='container-fluid tall'>
+  <div class="filler row">
+      <div class='col-lg-8 fill'>
+        <div class='banner sign row'>
+          <div class='filler col-lg-12'>
+            <h2>{{gameHeader}}</h2>
+          </div>
+        </div>
+        <div class='filler row'>
+          <div class='filler col-lg-12'>
+           {{gameMessage}}
+<!--             <div id="gameboard" data-game-board prompts="prompts" final-prompt="finalPrompt" responses="responses" results="results" winners="winners" current-state="currentState"></div> -->
+            <div ng-switch on="currentState">
+              <div ng-switch-when="ReadyToStart" prompt-request prompts="prompts"></div>
+              <div ng-switch-when="PromptChosen" response-request prompt="finalPrompt"></div>
+              <div ng-switch-when="ResponsesReceived" guess-request responses="responses"></div>
+              <div ng-switch-when="guessesSorted" guesses-sorted guesses="guesses"></div>
+              <div ng-switch-when="RoundEnd" round-results></div>
+              <div ng-switch-when="GameEnd" game-end winners="winners"></div>
+              <div ng-switch-default prompt-request prompts="prompts"></div>
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
+      <div class='col-lg-4 filler'>
+        <div class='banner sign row'>
+          <div class='col-lg-12 filler'>
+            <h3>{{gameName}}</h3>
+            <h4>{{ownerName}}'s Game</h4>
+          </div>
+        </div>
+        <div class='wide row subbanner'>
+          <div class='col-lg-12 filler'>
+            Players
+          </div>
+        </div>
+        <div class='wide playerlist row'>
+          <div class='col-lg-12 filler'>
+            <button ng-click="incomingPlayer()">PendPlayer</button>
+            <button ng-click="plusPlayer()">AddPlayer</button>
+            <button ng-click="morePoints()">5 points</button>
+            <button ng-click="removePlayer()">DropPlayer</button>
+            <button ng-click="sendVotes()">Vote</button>
+            <button ng-click="sendResponses()">Respond</button>
+            <button ng-click="sendGuesses()">Guess</button>
+            <button ng-click="guessRight()">Right</button>
+            <button ng-click="kingMaker()">Win</button>
+            <button ng-click="skipToEnd()">SkipEnd</button><br />
+            <div player-display players="players"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+  </div>
 </div>

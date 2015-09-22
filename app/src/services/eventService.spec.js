@@ -1,45 +1,45 @@
 'use strict'
-describe('eventService', function(){
-	var eventService, test, newEvent, otherEvent, $log, gameEvents, gameStates;
-	beforeEach(module('gameMaster'));
 
-	beforeEach(inject(function(_eventService_,_$log_,_gameEvents_,_gameStates_){
-		eventService = _eventService_;
-		$log = _$log_;
-		gameEvents = _gameEvents_;
-		gameStates = _gameStates_;
+describe('eventService', ()=>{
+	let eventService, test, newEvent, otherEvent, $log, gameEvents, gameStates;
+
+	beforeEach(angular.mock.module(require('../app.js').name));
+	beforeEach(angular.mock.inject(($injector)=>{
+		eventService = $injector.get('eventService', eventService);
+		$log = $injector.get('$log', $log);
+		gameEvents = $injector.get('gameEvents', gameEvents);
+		gameStates = $injector.get('gameStates', gameStates);
 		newEvent = gameEvents.readyReceived;
 		otherEvent = gameStates.GameEnd;
-		test= {
-			functionWasCalled : function(){return true},
-			quickFunction : function(){return false}
+		test = {
+			functionWasCalled : ()=>true,
+			quickFunction: ()=>false
 		}
-
 		spyOn($log, 'log').and.callThrough();
 		spyOn(test, 'functionWasCalled').and.callThrough();
 		spyOn(test, 'quickFunction').and.callThrough();
 	}));
 
-	describe('subscriber', function(){
-		it('adds a new subscriber', function(){
+	describe('subscriber', ()=>{
+		it('adds a new subscriber', ()=>{
 			eventService.subscribe(newEvent, test.functionWasCalled);
 
 			expect(eventService.subs[newEvent]).toContain(test.functionWasCalled);
 		});
 
-		it('logs an error for invalid events/states', function(){
+		it('logs an error for invalid events/states', ()=>{
 			eventService.subscribe("fakeEvent", test.functionWasCalled);
 
 			expect($log.log).toHaveBeenCalled();
 		});
 
-		it('does not store functions for invalid events/state', function(){
+		it('does not store functions for invalid events/state', ()=>{
 			eventService.subscribe('fakeEvent', test.functionWasCalled);
 
 			expect(eventService.subs['fakeEvent']).toBe(undefined);
 		});
 
-		if('stores multiples in one array and adds a new hash for other functions', function(){
+		if('stores multiples in one array and adds a new hash for other functions', ()=>{
 			eventService.subscribe(newEvent, test.functionWasCalled);
 			eventService.subscribe(otherEvent, test.quickFunction);
 			eventService.subscribe(newEvent, test.quickFunction);
@@ -51,8 +51,8 @@ describe('eventService', function(){
 		});
 	});
 
-	describe('publisher', function(){
-		it('calls subscribed functions on a published event', function(){
+	describe('publisher', ()=>{
+		it('calls subscribed functions on a published event', ()=>{
 			eventService.subscribe(newEvent, test.functionWasCalled);
 			eventService.subscribe(otherEvent, test.quickFunction);
 			eventService.subscribe(newEvent, test.quickFunction);
@@ -61,7 +61,7 @@ describe('eventService', function(){
 			expect(test.functionWasCalled.calls.count()).toEqual(1);
 			expect(test.quickFunction.calls.count()).toEqual(1);
 		});
-		it('does not call invalid published events and logs the error', function(){
+		it('does not call invalid published events and logs the error', ()=>{
 			eventService.subscribe(otherEvent, test.quickFunction);
 
 			eventService.publish(newEvent, {args: 'args'});

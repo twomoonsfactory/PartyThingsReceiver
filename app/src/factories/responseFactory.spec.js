@@ -1,13 +1,13 @@
 'use strict';
 
 
-describe('responseFactory', function(){
-	var response, rawResponse, rawResponseID, rawPlayerId, guessedBy, guessedBy2;
+describe('responseFactory', ()=>{
+	let responseFactory, rawResponse, rawResponseID, rawPlayerId, guessedBy, guessedBy2;
 
-	beforeEach(module('gameMaster'));
+	beforeEach(angular.mock.module(require('../app.js').name));
 
-	beforeEach(inject(function(_response_){
-		response = _response_;
+	beforeEach(angular.mock.inject(($injector)=>{
+		responseFactory = $injector.get('responseFactory', responseFactory);
 		//arrange for most
 		rawResponse = 'Bob is a goof';
 		rawPlayerId = 5;
@@ -16,10 +16,10 @@ describe('responseFactory', function(){
 		guessedBy2 = 4;
 	}));
 
-	describe('constructor', function(){
-		it('assigns values', function(){
+	describe('constructor', ()=>{
+		it('assigns values', ()=>{
 			//act
-			var myresponse = new response(rawResponse,rawResponseID, rawPlayerId);
+			let myresponse = responseFactory.newResponse(rawResponse,rawResponseID, rawPlayerId);
 			//assert
 			expect(myresponse.playerId).toBe(rawPlayerId);
 			expect(myresponse.response).toBe(rawResponse);
@@ -30,17 +30,17 @@ describe('responseFactory', function(){
 	});
 
 
-	describe('prototype', function(){
-		it('adds wrong guesses', function(){
+	describe('prototype', ()=>{
+		it('adds wrong guesses', ()=>{
 			//act
-			var myresponse = new response(rawResponse,rawResponseID, rawPlayerId);
+			let myresponse = responseFactory.newResponse(rawResponse,rawResponseID, rawPlayerId);
 			myresponse.addGoodGuess(guessedBy);
 			//assert
 			expect(myresponse.correct[0]).toBe(guessedBy);
 		});
-		it('adds correct guesses', function(){
+		it('adds correct guesses', ()=>{
 			//act
-			var myresponse = new response(rawResponse,rawResponseID, rawPlayerId);
+			let myresponse = responseFactory.newResponse(rawResponse,rawResponseID, rawPlayerId);
 			myresponse.addWrongGuess(guessedBy, guessedBy2);
 			myresponse.addWrongGuess(guessedBy2, guessedBy);
 			//assert

@@ -1,9 +1,11 @@
-module.exports = function(){
+export default ngModule => {
+ 	ngModule.directive('playerDisplay', ()=>{
 		return {
-			restrict: 'E',
+			restrict: 'A',
 			scope: {
-				display: '=info'
+				players: '=players'
 			},
 			templateUrl: 'src/directives/playerDisplay.html'
-		};
-	};
+		}
+	})
+}

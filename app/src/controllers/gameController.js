@@ -1,88 +1,119 @@
-module.exports = function($scope, $log, $location, eventService, gameEvents, player) {
- 	$scope.message = "Foo";
-  	$scope.gamename = "Foo";
-  	$scope.players = [
-  		{
-  			playerName: "Joe",
-  			senderId: 123,
-  			score: 5,
-  			state: "writing",
-  			playerId: 1,
-  			guessed: false
-  		},
-  		{
-  			playerName: "Bob",
-  			senderId: 135,
-  			score: 10,
-  			state: "ready",
-  			playerId: 2,
-  			guessed: false
-  		},
-  		{
-  			playerName: "Samantha",
-  			senderId: 52412,
-  			score: 33,
-  			state: "writing",
-  			playerId: 3,
-  			guessed: false
-  		}
-		];
-  	$scope.things = [];
-  	$scope.infoDisplay = null;
-  	$scope.prompts;
-  	$scope.owner = "the";
-  	var incoming = {playerName: "Incoming Player", score: 0};
-  	$scope.changeView = function(view){
-  		$location.path(view);
-  	}
-  	$scope.nameGame = function(args){
-  		$scope.gamename = args;
-  	}
-  	eventService.subscribe(gameEvents.gameNamed, $scope.nameGame);
-  	$scope.addOwner = function(args){
-  		$scope.owner = args.message.playerName + '\'s';
-  	}
-  	eventService.subscribe(gameEvents.gamenameReceived, $scope.addOwner);
-  	$scope.nameIt = function(){
-  		eventService.publish(gameEvents.gameNamed, "IT WORKS");
-  		eventService.publish(gameEvents.gamenameReceived, {message:{playerName: "Chuck"}});
-  	}
-  	//adds "pending player"
-  	$scope.pendPlayer = function(){
-  		if(!_.contains($scope.players, incoming))
-  			$scope.players.push(incoming);
-  	}
-  	//adds a new player to the display
-  	$scope.addPlayer = function(player){
-  		if(_.contains($scope.players, incoming))
-  			$scope.players.splice(_.indexOf($scope.players, incoming), 1);
-  		$scope.players.push(player);
-  	};
-  	//drops a player from the display
-  	$scope.dropPlayer = function(player){
-  		$scope.players.splice(_.indexOf($scope.players, player), 1);
-  	};
+export default ngModule => {
+  ngModule.controller('gameController', ['$scope', '$log', '$location', 'gameStates', 'eventService', 'gameEvents', 'playerHandler', 'stateManager', 'promptProvider', 'responseHandler', ($scope, $log, $location, gameStates, eventService, gameEvents, playerHandler, stateManager, promptProvider, responseHandler) => {
+    //many of these dependencies can be chunked once button testing is no loner in use
+   	$scope.gameMessage = stateManager.message;
+   	$scope.gameHeader = stateManager.banner;
+  	$scope.gameName = stateManager.gameName;
+  	$scope.ownerName = stateManager.ownerName;
+  	$scope.players = playerHandler.players;
+    $scope.currentState = null;
+  	$scope.prompts = promptProvider.currentprompts;
+    $scope.finalPrompt;
+    $scope.resposes = [];
+  	$scope.guesses = [];
+    $scope.winners = [];
 
-    $scope.morePoints = function(){
-          $scope.players[3].addPoints(5);
+    $scope.updateMessages = (args) => {
+      $scope.gameMessage = args.message;
+      $scope.gameHeader = args.banner;
     }
+    eventService.subscribe(gameEvents.messagesUpdated, $scope.updateMessages);
 
-    this.newPlayer = function(args){
-          $scope.addPlayer(new player(args.message.playerName, 1512, 5));
+  	//updates player list
+  	$scope.updatePlayers = (newPlayers) => {
+  		$scope.players = newPlayers;
+  	}
+  	eventService.subscribe(gameEvents.playersUpdated, $scope.updatePlayers);
+
+  	//pulls prompts for display
+    $scope.grabPrompts = (args) => {
+    	$scope.prompts = args;
     }
-    eventService.subscribe(gameEvents.playernameReceived, this.newPlayer);
+    eventService.subscribe(gameEvents.promptsLoaded, $scope.grabPrompts);
 
-    $scope.plusPlayer = function(){
-          eventService.publish(gameEvents.playernameReceived, {message:{playerName: "Franklin"}});
+    //gets final prompt for display
+    $scope.getFinalPrompt = ()=>{
+      $scope.finalPrompt = promptProvider.prompt;
+      $scope.currentState = gameStates.PromptChosen;
     }
-	this.updateGameName = function(args){
-		$scope.gameName = args;
-	}
-	eventService.subscribe(gameEvents.gameNamed, this.updateGameName);
-    
-      	//highlight a player with pending action
+    eventService.subscribe(gameStates.PromptChosen, $scope.getFinalPrompt);
 
-      	//remove highlight
+    //gets responses for display
+    $scope.getResponses = ()=>{
+      $scope.responses = responseHandler.getResponses();
+      $scope.currentState = gameStates.ResponsesReceived;
+    }
+    eventService.subscribe(gameStates.ResponsesReceived, $scope.getResponses);
 
-      	//sort players by score
-};
+    //gets guesses for display and resolution
+    $scope.getGuesses = (args) => {
+      $scope.guesses = args;
+      $scope.currentState = gameEvents.guessesSorted;
+    }
+    eventService.subscribe(gameEvents.guessesSorted, $scope.getGuesses);
+
+    //restarts the round
+    $scope.newRound = ()=>{
+      $scope.currentState = gameStates.ReadyToStart;
+    }
+    eventService.subscribe(gameStates.ReadyToStart, $scope.newRound);
+
+    //ends the game
+    // $scope.endDisplay = ()=>{
+    //   $scope.winners = playerHandler.getWinners();
+    //   $scope.currentState = gameStates.GameEnd;
+    // }
+    // eventService.subscribe(gameEvents.GameEnd, $scope.endDisplay);
+
+    $scope.changeView = ()=>{
+      eventService.publish(gameEvents.newGameRequested, "");
+      stateManager.updateMessages();
+  		$location.path('/gameEnd');
+  	}
+  	eventService.subscribe(gameEvents.endView, $scope.changeView);
+
+
+
+    //keeps
+  	//TEST VIA BUTTON
+  	$scope.count = 0;
+  	$scope.plusPlayer = ()=>{
+    	let list = [{senderId:522,message:{playerName:"Fran"}},
+    				{senderId:152,message:{playerName:"Rosalina"}},
+    				{senderId:2215234,message:{playerName:"Sir Alec Guiness"}},
+    				{senderId:15147,message:{playerName:"Billybob Thornton"}},
+    				{senderId:9721343,message:{playerName:"Geriatric"}}];
+    	eventService.publish(gameEvents.playernameReceived, list[$scope.count]);
+    	$scope.count++;
+    }
+    $scope.incomingPlayer = ()=>{
+    	eventService.publish(gameEvents.playerJoined, {});
+    }
+    $scope.morePoints = ()=>{
+        playerHandler.assignPoints({playerId:_.sample(playerHandler.players).playerId,points: 5});
+    }
+    $scope.removePlayer = ()=>{
+    	eventService.publish(gameEvents.quitReceived, {senderId:_.sample(_.filter(playerHandler.players, function(player){return player.state!=="quit"})).senderId});
+    }
+    $scope.sendVotes = ()=>{
+      eventService.publish(gameEvents.voteReceived, {senderId:_.sample(_.filter(playerHandler.players, function(player){return player.state==="voting"})).senderId, message:{promptIndex:_.sample([1,2,3])}});
+    }
+    $scope.sendResponses = ()=>{
+      let responses = ["The ministry of silly walks.", "The first dog president.", "Foo", "Bar", "I have no idea."];
+      eventService.publish(gameEvents.responseReceived, {senderId: _.sample(_.filter(playerHandler.players, function(player){return player.state==='writing'})).senderId, message: {response: _.sample(responses)}});
+    }
+    $scope.sendGuesses = ()=>{
+      eventService.publish(gameEvents.guessReceived, {senderId: _.sample(_.filter(playerHandler.players, function(player){return player.state==='guessing'})).senderId, message: {playerId: _.sample(_.filter(playerHandler.players, function(player){return player.guessed===false})).playerId, responseId:_.sample(responseHandler.getResponses()).responseId}})
+    }
+    $scope.kingMaker = ()=>{
+      playerHandler.assignPoints({playerId:   _.sample(playerHandler.players).playerId, points: 100});
+    }
+    $scope.guessRight = ()=>{
+      let responseNum = _.random(0, responseHandler.responses.length - 1);
+      eventService.publish(gameEvents.guessReceived, {senderId: _.sample(_.filter(playerHandler.players, function(player){return player.state==='guessing'})).senderId, message: {playerId: responseHandler.responses[responseNum].playerId, responseId:responseHandler.responses[responseNum].responseId}})
+    }
+    $scope.skipToEnd = ()=>{
+      eventService.publish(gameStates.RoundEnd, "");
+    }
+  }]);
+}

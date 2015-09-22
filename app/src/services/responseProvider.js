@@ -1,19 +1,36 @@
-module.exports = function($log, $http, eventService, gameStates){
-        var self = this;
-        self.responses = [];
-        this.loadResponses = function(){
-          $http.get("../resources/responses.json")
-            .success(function(data){
-              self.responses = data;
-              $log.log("Responses loaded in...");
-            })
-            .error(function(data){
-              $log.log("error reading prompts");
-            });
-        }
-        eventService.subscribe(gameStates.WaitingForStart, this.loadResponses)
+export default ngModule => {
+  class responseProvider{
+    constructor($log, $http, eventService, gameEvents){
+        this.$log = $log;
+        this.$http = $http;
+        this.eventService = eventService;
+        this.gameEvents = gameEvents;
 
-        this.getResponse = function(){
-          return _.sample(self.responses, 1)[0];
-        }
-      };
+        this.responses = [];
+
+        this.subscribeToGameEvents();
+    }
+
+    subscribeToGameEvents(){
+      this.eventService.subscribe(this.gameEvents.welcomeLoaded, this.loadResponses.bind(this))
+    }
+
+    loadResponses(){
+      this.$http.get("../src/resources/responses.json")
+        .success(data => {
+          this.responses = data.responses;
+          this.$log.log("Responses loaded in...");
+        })
+        .error(data => {
+          this.$log.log("error reading responses");
+        });
+    }
+
+    getRandomResponse(){
+      let randomResponse = _.sample(this.responses);
+      return randomResponse;
+    }
+  }
+  responseProvider.$inject = ['$log', '$http', 'eventService', 'gameEvents'];
+  ngModule.service('responseProvider', responseProvider);
+}

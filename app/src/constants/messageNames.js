@@ -1,5 +1,5 @@
-module.exports = angular.module('gameMaster')
-	.constant('messageNames', {
+export default ngModule => {
+	ngModule.constant('messageNames', {
 		nameGame : "nameGame",
 		namePlayer : "namePlayer",
 		waitingToStart : "waitingToStart",
@@ -16,5 +16,36 @@ module.exports = angular.module('gameMaster')
 		guessRemain : "guessRemain",
 		winner : "winner",
 		endGame : "endGame",
-		quit : "quit"
+		quit : "quit",
+		screenInitialize: "screenInitialize",
+		screenWelcome: "screenWelcome",
+		screenReady: "screenReady",
+		screenRequestPrompt: "screenRequestPrompt",
+		screenRequestResponse: "screenRequestResponse",
+		screenRequestGuess: "screenRequestGuess",
+		screenRoundResults: "screenRoundResults",
+		screenGameResults: "screenGameResults",
+		bannerRequestPrompt: "bannerRequestPrompt",
+		bannerRequestResponse: "bannerRequestResponse",
+		bannerRequestGuess: "bannerRequestGuess",
+		bannerRoundResults: "bannerRoundResults",
+		bannerGameResults: "bannerGameResults",
+		moreGuessing: "moreGuessing",
+		allGuessed: "allGuessed",
+		newRound: "newRound",
+		wrongDisplay: "wrongDisplay",
+		noWrongGuesses: "noWrongGuesses",
+		guessedWrong: "guessedWrong",
+		wrongGuess: "wrongGuess",
+		rightDisplay: "rightDisplay",
+		noRightGuesses: "noRightGuesses",
+		guessedRight: "guessedRight",
+		rightGuesser: "rightGuesser",
+		oneRightGuesser: "oneRightGuesser",
+		multiRightGuessers: "multiRightGuessers",
+		unguessedDisplay: "unguessedDisplay",
+		noUnguessed: "noUnguessed",
+		unguessedPlayer: "unguessedPlayer",
+		oneUnguessedPlayer: "oneUnguessedPlayer"
 	});
+}

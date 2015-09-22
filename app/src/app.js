@@ -5,12 +5,20 @@ module.exports = angular.module('gameMaster', ['ngRoute', require('./castService
 
 		//welcome page
 		.when('/welcome', {
-			templateUrl: '../views/welcome.html'
+			templateUrl: '../views/welcome.html',
+			controller: 'welcomeController'
 		})
 
 		//gameplay page
 		.when('/gameplay',{
-			templateUrl: '../views/gameplay.html'
+			templateUrl: '../views/gameplay.html',
+			controller: 'gameController'
+		})
+
+		//gameend page
+		.when('/gameEnd',{
+			templateUrl: '../views/gameEnd.html',
+			controller: 'gameEndController'
 		})
 
 		//default to welcome
@@ -20,9 +28,16 @@ module.exports = angular.module('gameMaster', ['ngRoute', require('./castService
 	})
 	//controllers
 	.controller('gameController', require('./controllers/gameController.js'))
-	.controller('playerController', require('./controllers/playerController.js'))
+	.controller('welcomeController', require('./controllers/welcomeController.js'))
+	.controller('gameEndController', require('./controllers/gameEndController.js'))
 	//directives
 	.directive('playerDisplay', require('./directives/playerDisplay.js'))
+	.directive('playerNames', require('./directives/playerNames.js'))
+	.directive('promptRequest', require('./directives/promptRequest.js'))
+	.directive('responseRequest', require('./directives/responseRequest.js'))
+	.directive('guessRequest', require('./directives/guessRequest.js'))
+	.directive('guessesSorted', require('./directives/guessesSorted.js'))
+	.directive('gameEnd', require('./directives/gameEnd.js'))
 	//factories
 	.factory('guess', require('./factories/guess.js'))
 	.factory('player', require('./factories/player.js'))
@@ -42,18 +57,29 @@ module.exports = angular.module('gameMaster', ['ngRoute', require('./castService
 		playerJoined: "playerJoined",
 		readyReceived: "readyReceived",
 		voteReceived: "voteReceived",
-		thingReceived: "thingReceived",
+		responseReceived: "responseReceived",
 		guessReceived: "guessReceived",
+		guessesResolved: "guessesResolved",
+		guessesSorted: "guessesSorted",
 		gamenameReceived: "gamenameReceived",
 		gameNamed: "gameNamed",
+		messageLoaded: "messageLoaded",
+		messagesUpdated: "messagesUpdated",
 		playernameReceived: "playernameReceived",
-		quitReceived: "quitReceived"
+		playerUpdated: "playerUpdated",
+		playersUpdated: "playersUpdated",
+		promptsLoaded: "promptsLoaded",
+		quitReceived: "quitReceived",
+		stateUpdated: "stateUpdated",
+		welcomeLoaded: "welcomeLoaded",
+		winnersDecided: "winnersDecided",
+		endView: "endView",
+		newGameRequested: "newGameRequested"
 	})
 	.constant('gameStates', {
 		WaitingForStart: "WaitingForStart",
-		ReadyToStart: "ReadyToStart",
 		WaitingForReady: "WaitingForReady",
-		PlayersReady: "PlayersReady",
+		ReadyToStart: "ReadyToStart",
 		PromptChosen: "PromptChosen",
 		ResponsesReceived: "ResponsesReceived",
 		RoundEnd: "RoundEnd",
@@ -76,18 +102,48 @@ module.exports = angular.module('gameMaster', ['ngRoute', require('./castService
 		guessRemain : "guessRemain",
 		winner : "winner",
 		endGame : "endGame",
-		quit : "quit"
+		quit : "quit",
+		screenInitialize: "screenInitialize",
+		screenWelcome: "screenWelcome",
+		screenReady: "screenReady",
+		screenRequestPrompt: "screenRequestPrompt",
+		screenRequestResponse: "screenRequestResponse",
+		screenRequestGuess: "screenRequestGuess",
+		screenRoundResults: "screenRoundResults",
+		screenGameResults: "screenGameResults",
+		bannerRequestPrompt: "bannerRequestPrompt",
+		bannerRequestResponse: "bannerRequestResponse",
+		bannerRequestGuess: "bannerRequestGuess",
+		bannerRoundResults: "bannerRoundResults",
+		bannerGameResults: "bannerGameResults",
+		moreGuessing: "moreGuessing",
+		allGuessed: "allGuessed",
+		newRound: "newRound",
+		wrongDisplay: "wrongDisplay",
+		noWrongGuesses: "noWrongGuesses",
+		guessedWrong: "guessedWrong",
+		wrongGuess: "wrongGuess",
+		rightDisplay: "rightDisplay",
+		noRightGuesses: "noRightGuesses",
+		guessedRight: "guessedRight",
+		rightGuesser: "rightGuesser",
+		oneRightGuesser: "oneRightGuesser",
+		multiRightGuessers: "multiRightGuessers",
+		unguessedDisplay: "unguessedDisplay",
+		noUnguessed: "noUnguessed",
+		unguessedPlayer: "unguessedPlayer",
+		oneUnguessedPlayer: "oneUnguessedPlayer"
 	})
 	.constant('playerStates', {
+		incoming: "incoming",
 		ready: "ready",
 		quit: "quit",
 		standingBy: "standingBy",
-		waiting: "waiting",	
+		waiting: "waiting",
 		readyRequested: "readyRequested",
 		voting: "voting",
 		writing: "writing",
 		guessing: "guessing"
 	});
-console.log('thingy');
 //all display changes still need to be written in -- all internal except the basic test at the moment
-//abstract out text  
+//abstract out text
