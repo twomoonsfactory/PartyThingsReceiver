@@ -5,5 +5,5 @@ export default ngModule => {
   require('./playerDisplay.js')(ngModule);
   require('./playerNames.js')(ngModule);
   require('./promptRequest.js')(ngModule);
-  require('./responserequest.js')(ngModule);
+  require('./responseRequest.js')(ngModule);
 }

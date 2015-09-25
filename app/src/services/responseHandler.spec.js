@@ -1,8 +1,8 @@
 'use strict'
 
-describe('responseHandler', ()=>{
+describe('service: responseHandler', ()=>{
 	let responseHandler, response, eventService, gameStates, $log, responseProvider, playerHandler;
-	beforeEach(angular.mock.module(require('../app.js').name));
+	beforeEach(angular.mock.module('gameMaster'));
 	beforeEach(function() {
       angular.mock.module(function($provide) {
         $provide.constant('cast', (()=>{
@@ -49,13 +49,13 @@ describe('responseHandler', ()=>{
       });
     });
 	beforeEach(angular.mock.inject(($injector)=>{
-		responseHandler = $intector.get('responseHandler', responseHandler);
-		response = $intector.get('response', response);
-		eventService = $intector.get('eventService', eventService);
-		gameStates = $intector.get('gameStates', gameStates);
-		responseProvider = $intector.get('responseProvider', responseProvider);
-		$log = $intector.get('$log', $log);
-		playerHandler = $intector.get('playerHandler', playerHandler);
+		responseHandler = $injector.get('responseHandler', responseHandler);
+		response = $injector.get('response', response);
+		eventService = $injector.get('eventService', eventService);
+		gameStates = $injector.get('gameStates', gameStates);
+		responseProvider = $injector.get('responseProvider', responseProvider);
+		$log = $injector.get('$log', $log);
+		playerHandler = $injector.get('playerHandler', playerHandler);
 	}));
 
 	beforeEach(()=>{
@@ -145,5 +145,5 @@ describe('responseHandler', ()=>{
 
 		expect(responseHandler.responses.length).toBe(1);
 		expect(responseHandler.responses[0].playerId).toBe(-1);
-	})
+	});
 })

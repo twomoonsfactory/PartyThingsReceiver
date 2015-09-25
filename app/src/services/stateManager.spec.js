@@ -2,7 +2,8 @@
 
 describe('Service: stateManager', ()=>{
 	let stateManager, eventService, gameStates, $log;
-	beforeEach(angular.mock.module(require('../app.js').name));
+	// beforeEach(angular.mock.module(require('../app.js').name));
+	beforeEach(angular.mock.module('gameMaster'))
 	beforeEach(inject(($injector)=>{
 		stateManager = $injector.get('stateManager', stateManager);
 		eventService = $injector.get('eventService', eventService);

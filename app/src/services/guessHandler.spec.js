@@ -2,7 +2,7 @@
 describe('guessHandler', ()=>{
 	let guessHandler, eventService, guess, gameStates, responseHandler, args, args2;
 
-	beforeEach(angular.mock.module(require('../app.js').name));
+	beforeEach(angular.mock.module('gameMaster');
 	beforeEach(function() {
       angular.mock.module(function($provide) {
         $provide.constant('cast', (()=>{
