@@ -3,7 +3,7 @@
 
 require('./core/vendor')();
 
-const ngModule = angular.module('gameMaster', ['ngRoute', require('./src/castServices.js').name]);
+const ngModule = angular.module('gameMaster', ['ngRoute', 'ngMaterial', 'ngAnimate', require('./src/castServices.js').name]);
 require('./src/config')(ngModule);
 require('./src/constants')(ngModule);
 require('./src/controllers')(ngModule);
