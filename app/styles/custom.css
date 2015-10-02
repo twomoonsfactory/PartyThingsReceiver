@@ -1,0 +1,70 @@
+.joined{
+  height:auto;
+  padding:5px;
+}
+.readied{
+  height:auto;
+  padding:5px;
+}
+.joined.ng-enter, .joined.ng-leave, .readied.ng-enter, .readied.ng-leave{
+  -webkit-transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) .75s;
+  -moz-transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) .75s;
+  -o-transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) .75s;
+  transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) .75s;
+ }
+.joined.ng-enter{
+  opacity: 0;
+  bottom: -50px;
+}
+.joined.ng-enter-active{
+  bottom: 0;
+  opacity: 1;
+}
+.joined.ng-leave{
+  opacity: 1;
+  right: 0;
+}
+.joined.ng-leave-active{
+  opacity: 0;
+  right: -100px;
+}
+.readied.ng-enter{
+  opacity: 0;
+  left: -100px;
+}
+.readied.ng-enter-active{
+  left: 0;
+  opacity: 1;
+}
+.readied.ng-leave{
+  opacity: 1;
+  bottom: 0;
+}
+.readied.ng-leave-active{
+  opacity: 0;
+  bottom: -50px;
+}
+.slideup {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+}
+.slideup.ng-enter,
+.slideup.ng-leave {
+    -webkit-transition: all 1s ease;
+    transition: all 1s ease;
+}
+.slideup.ng-enter {
+    top: 100%;
+}
+.slideup.ng-enter-active {
+    top: 0;
+}
+.slideup.ng-leave {
+    top: 0;
+}
+.slideup.ng-leave-active {
+    top: -100%;
+}

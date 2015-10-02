@@ -6,6 +6,8 @@ module.exports = ()=>{
 	require('underscore');
 	require('angular-material');
 	require('angular-animate');
+	require('../../node_modules/angular-material/angular-material.css');
+	require('../styles/custom.css');
 	// require('bootstrap');
 
 	/* Styles */
