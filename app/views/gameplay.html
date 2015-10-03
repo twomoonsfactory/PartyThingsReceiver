@@ -1,55 +1,46 @@
-<div class='container-fluid tall'>
-  <div class="filler row">
-      <div class='col-lg-8 fill'>
-        <div class='banner sign row'>
-          <div class='filler col-lg-12'>
-            <h2>{{gameHeader}}</h2>
-          </div>
-        </div>
-        <div class='filler row'>
-          <div class='filler col-lg-12'>
-           {{gameMessage}}
-<!--             <div id="gameboard" data-game-board prompts="prompts" final-prompt="finalPrompt" responses="responses" results="results" winners="winners" current-state="currentState"></div> -->
-            <div ng-switch on="currentState">
-              <div ng-switch-when="ReadyToStart" prompt-request prompts="prompts"></div>
-              <div ng-switch-when="PromptChosen" response-request prompt="finalPrompt"></div>
-              <div ng-switch-when="ResponsesReceived" guess-request responses="responses"></div>
-              <div ng-switch-when="guessesSorted" guesses-sorted guesses="guesses"></div>
-              <div ng-switch-when="RoundEnd" round-results></div>
-              <div ng-switch-when="GameEnd" game-end winners="winners"></div>
-              <div ng-switch-default prompt-request prompts="prompts"></div>
-            </div>
-          </div>
-        </div>
+<div layout-fill>
+  <md-toolbar class="md-tall" layout="column" layout-align="end">
+		<div class="md-toolbar-tools" layout="row" layout-align="space-around end">
+			<div></div>
+			<div class="md-display-1">{{gameName}}!</div>
+			<div class="md-headline">{{ownerName}} Game</div>
+		</div>
+	</md-toolbar>
+  <md-content layout="row" layout-align="space-around end">
+    <md-toolbar flex="40" class="md-accent md-short">
+      <div class="md-headline">{{gameHeader}}</div>
+    </md-toolbar>
+    <div flex></div>
+    <md-toolbar flex="30" class="md-accent md-short">
+      <div class="md-headline">Scoreboard</div>
+    </md-toolbar>
+  </md-content>
+  <md-content layout="row" layout-fill>
+    <div flex="70">
+      <h3 class="gameMessage">{{gameMessage}}</h3>
+      <div ng-switch on="currentState" class="gameContent">
+        <div ng-switch-when="ReadyToStart" prompt-request prompts="prompts"></div>
+        <div ng-switch-when="PromptChosen" response-request prompt="finalPrompt"></div>
+        <div ng-switch-when="ResponsesReceived" guess-request responses="responses"></div>
+        <div ng-switch-when="guessesSorted" guesses-sorted guesses="guesses"></div>
+        <div ng-switch-when="RoundEnd" round-results></div>
+        <div ng-switch-when="GameEnd" game-end winners="winners"></div>
+        <div ng-switch-default prompt-request prompts="prompts"></div>
       </div>
-      <div class='col-lg-4 filler'>
-        <div class='banner sign row'>
-          <div class='col-lg-12 filler'>
-            <h3>{{gameName}}</h3>
-            <h4>{{ownerName}}'s Game</h4>
-          </div>
-        </div>
-        <div class='wide row subbanner'>
-          <div class='col-lg-12 filler'>
-            Players
-          </div>
-        </div>
-        <div class='wide playerlist row'>
-          <div class='col-lg-12 filler'>
-            <button ng-click="incomingPlayer()">PendPlayer</button>
-            <button ng-click="plusPlayer()">AddPlayer</button>
-            <button ng-click="morePoints()">5 points</button>
-            <button ng-click="removePlayer()">DropPlayer</button>
-            <button ng-click="sendVotes()">Vote</button>
-            <button ng-click="sendResponses()">Respond</button>
-            <button ng-click="sendGuesses()">Guess</button>
-            <button ng-click="guessRight()">Right</button>
-            <button ng-click="kingMaker()">Win</button>
-            <button ng-click="skipToEnd()">SkipEnd</button><br />
-            <div player-display players="players"></div>
-            </div>
-          </div>
-        </div>
-      </div>
-  </div>
+    </div>
+    <div flex="30">
+      <button ng-click="incomingPlayer()">PendPlayer</button>
+      <button ng-click="plusPlayer()">AddPlayer</button>
+      <button ng-click="morePoints()">5 points</button>
+      <button ng-click="removePlayer()">DropPlayer</button>
+      <button ng-click="sendVotes()">Vote</button>
+      <button ng-click="sendResponses()">Respond</button>
+      <button ng-click="sendGuesses()">Guess</button>
+      <button ng-click="guessRight()">Right</button>
+      <button ng-click="kingMaker()">Win</button>
+      <button ng-click="skipToEnd()">SkipEnd</button><br />
+      <div player-display players="players" guessing="currentlyGuessing"></div>
+    </div>
+  </md-content>
+
 </div>

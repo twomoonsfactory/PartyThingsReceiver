@@ -1,5 +1,5 @@
 <div layout-fill>
-	<md-toolbar>
+	<md-toolbar class="md-tall" layout="column" layout-align="end">
 		<div class="md-toolbar-tools" layout="row" layout-align="space-around end">
 			<div class="md-headline">Players Joined</div>
 			<div class="md-display-1">Welcome to {{gameName}}!</div>
@@ -40,6 +40,7 @@
 			  <button ng-click="plusPlayer()">AddPlayer</button><br />
 			  <button ng-click="removePlayer()">RoseQuit</button>
 			  <button ng-click="readyPlayer()">Ready</button>
+				<button ng-click="primeIt()">Prime</button>
 			</div>
 		  <h3 class="md-headline">{{message}}</h3>
 		</md-card>

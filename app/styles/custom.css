@@ -6,7 +6,7 @@
   height:auto;
   padding:5px;
 }
-.joined.ng-enter, .joined.ng-leave, .readied.ng-enter, .readied.ng-leave{
+.joined.ng-enter, .joined.ng-leave, .readied.ng-enter, .readied.ng-leave, .gameContent.ng-enter, .gameContent.ng-leave{
   -webkit-transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) .75s;
   -moz-transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) .75s;
   -o-transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) .75s;
@@ -67,4 +67,33 @@
 }
 .slideup.ng-leave-active {
     top: -100%;
+}
+.gameMessage {
+  margin-top: 8px;
+  font-size: 20px;
+  font-weight: 500;
+  letter-spacing: 0.005em;
+}
+.gameContent {}
+.gameContent.ng-enter{
+  left: 100%;
+}
+.gameContent.ng-enter-active{
+  left: 0;
+}
+.gameContent.ng-leave{
+  left: 0;
+}
+.gameContent.ng-leave-active{
+  left: -100%
+}
+.playerSlip{
+  font-size: 16px;
+  font-weight: bold;
+  height: 40px;
+  padding-left: 5px;
+}
+.suppressed{
+  font-size: 16px;
+  color: #999999;
 }

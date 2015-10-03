@@ -7,6 +7,7 @@ export default ngModule => {
   	$scope.ownerName = stateManager.ownerName;
   	$scope.players = playerHandler.players;
     $scope.currentState = null;
+    $scope.currentlyGuessing = false;
   	$scope.prompts = promptProvider.currentprompts;
     $scope.finalPrompt;
     $scope.resposes = [];
@@ -42,6 +43,7 @@ export default ngModule => {
     $scope.getResponses = ()=>{
       $scope.responses = responseHandler.getResponses();
       $scope.currentState = gameStates.ResponsesReceived;
+      $scope.currentlyGuessing = true;
     }
     eventService.subscribe(gameStates.ResponsesReceived, $scope.getResponses);
 
@@ -55,6 +57,7 @@ export default ngModule => {
     //restarts the round
     $scope.newRound = ()=>{
       $scope.currentState = gameStates.ReadyToStart;
+      $scope.currentlyGuessing = false;
     }
     eventService.subscribe(gameStates.ReadyToStart, $scope.newRound);
 

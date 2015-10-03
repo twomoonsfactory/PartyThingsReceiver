@@ -9,7 +9,7 @@ export default ngModule => {
         this.promptProvider = promptProvider;
         this.$log = $log;
 
-        this.gameName = 'PartyThigs';
+        this.gameName = 'Party Things';
         this.ownerName = null;
         this.state = null;
         this.banner = '';

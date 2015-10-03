@@ -48,6 +48,18 @@ export default ngModule => {
   	eventService.publish(gameEvents.welcomeLoaded, "");
 
   	      	//TEST VIA BUTTON
+		$scope.primeIt = ()=>{
+			$scope.nameIt();
+			$scope.plusPlayer();
+			$scope.plusPlayer();
+			$scope.plusPlayer();
+			$scope.plusPlayer();
+			$scope.readyPlayer();
+			$scope.readyPlayer();
+			$scope.readyPlayer();
+			$scope.readyPlayer();
+			$scope.readyPlayer();
+		}
   	$scope.nameIt = ()=>{
   		eventService.publish(gameEvents.gamenameReceived, {senderId:13049823,message:{gamename:"Chuck's Palace",playerName: "Chuck"}});
   	}
