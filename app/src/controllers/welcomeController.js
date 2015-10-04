@@ -75,10 +75,10 @@ export default ngModule => {
 			{senderId:1547,message:{playerName:"Mary Jane"}},
 			{senderId:9872343,message:{playerName:"Peter Parker"}},
 			{senderId:572,message:{playerName:"Steve Rodgers"}},
-			{senderId:157,message:{playerName:"Nick Fury"}},
-			{senderId:258234,message:{playerName:"Professor Xavier"}},
-			{senderId:1557,message:{playerName:"Derpina"}},
-			{senderId:9762343,message:{playerName:"Derp"}}];
+			{senderId:998,message:{playerName:"Nick Fury"}},
+			{senderId:997,message:{playerName:"Professor Xavier"}},
+			{senderId:996,message:{playerName:"Derpina"}},
+			{senderId:995,message:{playerName:"Derp"}}];
 		$scope.plusPlayer = ()=>{
 			eventService.publish(gameEvents.playernameReceived, $scope.list[$scope.count]);
 			$scope.count++;

@@ -75,17 +75,23 @@
   letter-spacing: 0.005em;
 }
 .gameContent {}
-.gameContent.ng-enter{
-  left: 100%;
+.gameContent.ng-animate{
+  transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) 1s;
+  position: absolute;
+  top:0;
+  left:0;
+  right:0;
+  bottom:0;
 }
-.gameContent.ng-enter-active{
-  left: 0;
+.gameContent.ng-leave.ng-leave-active, .gameContent.ng-enter {
+  top: 1000px;
+  left: -20px;
+  opacity: 0;
 }
-.gameContent.ng-leave{
-  left: 0;
-}
-.gameContent.ng-leave-active{
-  left: -100%
+.gameContent.ng-leave, .gameContent.ng-enter.ng-enter-active {
+  top: 50px;
+  left: -20px;
+  opacity: 1;
 }
 .playerSlip{
   font-size: 16px;
@@ -96,4 +102,16 @@
 .suppressed{
   font-size: 16px;
   color: #999999;
+}
+.response.ng-enter{
+  -webkit-transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) 1s;
+  -moz-transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) 1s;
+  -o-transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) 1s;
+  transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) 1s;
+}
+.response.ng-enter{
+  left:100%;
+}
+.response.ng-enter-active{
+  left:0;
 }

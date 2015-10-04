@@ -50,15 +50,10 @@ export default ngModule =>{
       readyPlayer.setState(this.playerStates.ready);
       this.playerHandler.playerActed();
       this.eventService.publish(this.gameEvents.playerUpdated, "");
-      if(this.playerHandler.actedPlayersCount < this.playerHandler.activePlayers){
-        this.messageSender.requestReady({senderId: readyPlayer.senderId, message: this.messageProvider.getMessage({messageName: this.messageNames.readyConfirm, pname: readyPlayer.playerName})});
-      }
-      else{
-        this.messageSender.requestReady({senderId: readyPlayer.senderId, message: this.messageProvider.getMessage({messageName: this.messageNames.lastReadyConfirm, pname: readyPlayer.playerName})});
-        this.stateManager.setState(this.gameStates.ReadyToStart);
-
+      if(this.playerHandler.actedPlayersCount >= this.playerHandler.activePlayers){
          //sets statecount back to 0
         this.playerHandler.resetPlayerActedCount();
+        this.stateManager.setState(this.gameStates.ReadyToStart);
       }
     }
 
@@ -102,6 +97,7 @@ export default ngModule =>{
       let responseWriter = this.playerHandler.findPlayer(args.senderId);
       this.responseHandler.newResponse({response: args.message.response, playerId:responseWriter.playerId});
       responseWriter.setState(this.playerStates.ready);
+      responseWriter.written = true;
       this.messageSender.requestResponse({senderId:responseWriter.senderId, message: this.messageProvider.getMessage({messageName: this.messageNames.responseConfirm, pname: responseWriter.playerName, resp: args.message.thing})});
       this.playerHandler.playerActed();
       if(this.playerHandler.actedPlayersCount===this.playerHandler.activePlayers){

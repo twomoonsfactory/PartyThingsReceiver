@@ -16,7 +16,7 @@
 				<div flex="30">
 					{{player.playerName}}
 				</div>
-				<div flex="30" ng-if="guessing">
+				<div flex="30" ng-if="guessing && player.written">
 					<md-checkbox ng-model="player.guessed"></md-checkbox>
 				</div>
 				<div flex="30">
@@ -45,8 +45,8 @@
 					<div flex="50">
 						{{player.playerName}}
 					</div>
-					<div flex="20" ng-if="guessing">
-						<md-checkbox ng-model="player.guessed"></md-checkbox>
+					<div flex="20" ng-if="guessing && player.written">
+						<md-checkbox ng-if="player.written" ng-model="player.guessed"></md-checkbox>
 					</div>
 					<div flex="20">
 						{{player.score}}
@@ -73,7 +73,7 @@
 					<div flex="50">
 						{{player.playerName}}
 					</div>
-					<div flex="20" ng-if="guessing">
+					<div flex="20" ng-if="guessing && player.written">
 						<md-checkbox ng-model="player.guessed"></md-checkbox>
 					</div>
 					<div flex="20">
@@ -84,56 +84,3 @@
 		</md-list>
 	</div>
 </div>
-		<!-- <div layout-fill class="playerList" ng-repeat="player in players | orderBy: '-score' | limitTo:10">
-			<div ng-switch on="player.waitingForAction">
-					<md-card layout="row" ng-switch-when="0" class="playerSlip">
-						<p>
-						<span class="playerName">
-							{{player.playerName}}
-						</span>
-						<ng-checkbox ng-if="guessing" ng-model="player.guessed" ng-true-value="Guessed" ng-false-value="Unguessed">{{player.guessed}}</ng-checkbox>
-						<span class="score">
-							{{player.score}} Points
-						</span>
-						</p>
-					</md-card>
-					<md-card ng-switch-when="1" class="playerSlip waitingForAction">
-						<p>
-						<span class="playerName">
-							{{player.playerName}}
-						</span>
-						<ng-checkbox ng-if="guessing" ng-model="player.guessed" ng-true-value="Guessed" ng-false-value="Unguessed">{{player.guessed}}</ng-checkbox>
-						<span class="score">
-							{{player.score}} Points
-						</span>
-						</p>
-					</md-card>
-					<div ng-switch-when="-1" class="playerSlip suppressed">
-						<md-divider ng-if="!$first"></md-divider>
-						<p>
-							<span class="playerName">
-								{{player.playerName}}
-							</span>
-							<ng-checkbox ng-if="guessing" ng-model="player.guessed" ng-true-value="Guessed" ng-false-value="Unguessed">{{player.guessed}}</ng-checkbox>
-							<span class="score">
-								{{player.score}} Points
-							</span>
-						</p>
-					</div>
-
-			</div>
-		</div>
-	</div>
-	<div flex="50">
-		<div layout-fill class="playerList" ng-repeat="player in players | orderBy: '-score' | limitTo:10:10">
-			<div ng-switch on="player.waitingForAction">
-
-					<div layout="row" ng-switch-when="0" class="playerSlip"><span class="playerName">{{player.playerName}} ~ {{player.score}} Points</span></div>
-					<md-card ng-switch-when="1" class="playerSlip waitingForAction"><span class="playerName">{{player.playerName}} ~ {{player.score}} Points</span></md-card>
-					<div ng-switch-when="-1" class="playerSlip suppressed"><span class="playerName">{{player.playerName}} ~ {{player.score}} Points</span></div>
-
-			</div>
-		</div>
-	</div>
-</div>
--->

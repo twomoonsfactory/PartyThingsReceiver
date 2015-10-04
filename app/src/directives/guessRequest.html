@@ -1,5 +1,61 @@
-<div ng-repeat="response in responses">
-  <p class="response">
-  {{ response.response }}
-  </p>
+<div ng-if="responses.length<=6" layout-fill layout="row">
+  <div flex offset="15">
+    <md-list>
+      <md-list-item class="md-1-line" ng-repeat="response in responses">
+        <md-card class="response" flex="80">
+          <h4>{{ response.response }}</h4>
+        </md-card>
+      </md-list-item>
+    </md-list>
+  </div>
+  <div flex="20"></div>
+</div>
+<div ng-if="responses.length>6 && responses.length<=14" layout-fill layout="row">
+  <div flex="45" offset="5">
+    <md-list>
+      <md-list-item class="md-1-line" ng-repeat="response in responses | limitTo:7">
+        <md-card class="response" flex="80">
+          <h4>{{ response.response }}</h4>
+        </md-card>
+      </md-list-item>
+    </md-list>
+  </div>
+  <div flex="45">
+      <md-list>
+        <md-list-item class="md-1-line" ng-repeat="response in responses | limitTo:7:7">
+          <md-card class="response" flex="80">
+            <h4>{{ response.response }}</h4>
+          </md-card>
+        </md-list-item>
+      </md-list>
+    </div>
+</div>
+<div ng-if="responses.length>14" layout-fill layout="row">
+  <div flex="33">
+    <md-list>
+      <md-list-item class="md-1-line" ng-repeat="response in responses | limitTo:7">
+        <md-card class="response" flex="80">
+          <h5>{{ response.response }}</h5>
+        </md-card>
+      </md-list-item>
+    </md-list>
+  </div>
+  <div flex="33">
+    <md-list>
+      <md-list-item class="md-1-line" ng-repeat="response in responses | limitTo:7:7">
+        <md-card class="response" flex="80">
+          <h5>{{ response.response }}</h5>
+        </md-card>
+      </md-list-item>
+    </md-list>
+  </div>
+  <div flex="34">
+    <md-list>
+      <md-list-item class="md-1-line" ng-repeat="response in responses | limitTo:7:14">
+        <md-card class="response" flex="80">
+          <h5>{{ response.response }}</h5>
+        </md-card>
+      </md-list-item>
+    </md-list>
+  </div>
 </div>
