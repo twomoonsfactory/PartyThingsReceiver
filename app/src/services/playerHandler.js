@@ -11,6 +11,8 @@ export default ngModule => {
       this.messageNames = messageNames;
       this.messageProvider = messageProvider;
       this.$log = $log;
+      this.winningScore = 100; //the score that, when reached, ends the game
+
 
       //local variables
       this.players = [];          //contains all players of the game
@@ -29,8 +31,6 @@ export default ngModule => {
       this.eventService.subscribe(this.gameEvents.playerJoined, this.addPlayer.bind(this));
       this.eventService.subscribe(this.gameEvents.gamenameReceived, this.gameNamed.bind(this));
       this.eventService.subscribe(this.gameEvents.playernameReceived, this.playerNamed.bind(this));
-      this.eventService.subscribe(this.gameStates.RoundEnd, this.freshRound.bind(this));
-      this.eventService.subscribe(this.gameStates.GameEnd, this.freshGame.bind(this));
       this.eventService.subscribe(this.gameEvents.quitReceived, this.playerQuit.bind(this));
       this.eventService.subscribe(this.gameEvents.newGameRequested, this.dropQuitPlayers.bind(this));
       this.eventService.subscribe(this.gameStates.ReadyToStart, this.dropQuitPlayers.bind(this));
@@ -142,7 +142,7 @@ export default ngModule => {
           player.freshRound();
         });
       }
-      this.playerUpdated();
+      this.eventService.publish(this.gameEvents.playersUpdated, this.players);
     }
 
     //at the end of game, sets all scores to zero, all players to unguessed
@@ -150,7 +150,7 @@ export default ngModule => {
       _.each(this.players, player => {
           player.freshGame();
         });
-      this.playerUpdated();
+      this.eventService.publish(this.gameEvents.playersUpdated, this.players);
     }
 
     //allows the players to quit at any point without seriously disrupting gameplay.  Will still allow for submitted things to be guessed
@@ -175,7 +175,7 @@ export default ngModule => {
           toDrop.push(player);
       });
       this.players = _.difference(this.players, toDrop);
-      this.eventService.publish(this.gameEvents.playersUpdated, "");
+      this.eventService.publish(this.gameEvents.playersUpdated, this.players);
     }
 
 

@@ -7,7 +7,8 @@ module.exports = ()=>{
 	require('angular-material');
 	require('angular-animate');
 	require('../../node_modules/angular-material/angular-material.css');
-	require('../styles/custom.css');
+	require('../styles/animation.css');
+	require('../styles/cards.css');
 	// require('bootstrap');
 
 	/* Styles */

@@ -14,8 +14,6 @@ export default ngModule =>{
       this.promptProvider = promptProvider;
       this.guessHandler = guessHandler;
 
-      this.winningScore = 100; //the score that, when reached, ends the game
-
       this.subscribeToGameEvents();
     }
 
@@ -140,11 +138,12 @@ export default ngModule =>{
     //function to either roll things back to a fresh round with all the active players and players standing by, or
     //sends the game on to end game.
     nextRound(){
-      if(this.playerHandler.highScore()>=this.winningScore){
+      if(this.playerHandler.highScore()>=this.playerHandler.winningScore){
         let winners = this.playerHandler.getWinners();
         let score = this.playerHandler.highScore();
         this.eventService.publish(this.gameEvents.winnersDecided, {winners: winners, score: score});
         this.stateManager.setState(this.gameStates.GameEnd);
+        this.playerHandler.freshGame();
       }
       else{
         _.each(this.playerHandler.players, player => {
@@ -154,6 +153,7 @@ export default ngModule =>{
             this.playerHandler.activePlayers++;
           }
         });
+        this.playerHandler.freshRound();
         this.stateManager.setState(this.gameStates.ReadyToStart);
       }
     }

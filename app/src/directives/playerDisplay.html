@@ -17,7 +17,7 @@
 					{{player.playerName}}
 				</div>
 				<div flex="30" ng-if="guessing && player.written">
-					<md-checkbox ng-model="player.guessed"></md-checkbox>
+					<md-checkbox aria-label="guessed" ng-model="player.guessed"></md-checkbox>
 				</div>
 				<div flex="30">
 					{{player.score}}
@@ -46,7 +46,7 @@
 						{{player.playerName}}
 					</div>
 					<div flex="20" ng-if="guessing && player.written">
-						<md-checkbox ng-if="player.written" ng-model="player.guessed"></md-checkbox>
+						<md-checkbox aria-label="guessed" ng-if="player.written" ng-model="player.guessed"></md-checkbox>
 					</div>
 					<div flex="20">
 						{{player.score}}
@@ -74,7 +74,7 @@
 						{{player.playerName}}
 					</div>
 					<div flex="20" ng-if="guessing && player.written">
-						<md-checkbox ng-model="player.guessed"></md-checkbox>
+						<md-checkbox aria-label="guessed" ng-model="player.guessed"></md-checkbox>
 					</div>
 					<div flex="20">
 						{{player.score}}
