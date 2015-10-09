@@ -1,47 +1,47 @@
 module.exports = angular.module('castServices', [])
   // THIS IS REAL
-  //.constant('cast', window.cast)
+  .constant('cast', window.cast)
   //THIS IS NOT
-    .constant('cast', (function(){
-
-            var castmock = {};
-
-            castmock.testCore = {
-                receivedStrings: []
-            };
-
-            castmock.receiverManager = {                
-                getCastMessageBus: function(string){
-                    castmock.testCore.receivedStrings.push(string);
-                    return {
-                        getNamespace: function(){
-                            return 'aNamespace';
-                        },
-                        send: function(){
-                          
-                        }
-                    }
-                },
-                start: function(status){
-                            castmock.testCore.startStatus = status;
-                }
-            };
-
-            castmock.receiver = {                
-                logger: {
-                    setLevelValue: function(levelValue){
-                        castmock.testCore.levelValue = levelValue;
-                    }
-                },
-                CastReceiverManager: {
-                    getInstance: function(){
-                        return castmock.receiverManager;
-                    },
-
-                }
-            };
-            return castmock;
-        }()))
+    // .constant('cast', (function(){
+    //
+    //         var castmock = {};
+    //
+    //         castmock.testCore = {
+    //             receivedStrings: []
+    //         };
+    //
+    //         castmock.receiverManager = {
+    //             getCastMessageBus: function(string){
+    //                 castmock.testCore.receivedStrings.push(string);
+    //                 return {
+    //                     getNamespace: function(){
+    //                         return 'aNamespace';
+    //                     },
+    //                     send: function(){
+    //
+    //                     }
+    //                 }
+    //             },
+    //             start: function(status){
+    //                         castmock.testCore.startStatus = status;
+    //             }
+    //         };
+    //
+    //         castmock.receiver = {
+    //             logger: {
+    //                 setLevelValue: function(levelValue){
+    //                     castmock.testCore.levelValue = levelValue;
+    //                 }
+    //             },
+    //             CastReceiverManager: {
+    //                 getInstance: function(){
+    //                     return castmock.receiverManager;
+    //                 },
+    //
+    //             }
+    //         };
+    //         return castmock;
+    //     }()))
     .factory('castMessageBus', function(cast, messagetypes, eventService, gameEvents, $log) {
 
       // start up chromecast uncomment next line for production
@@ -84,7 +84,7 @@ module.exports = angular.module('castServices', [])
       for(var i = 0; i < messagetypes.length; i++){
         messageBuses[messagetypes[i]] = castReceiverManager.getCastMessageBus('urn:x-cast:com.partythings.' + messagetypes[i]);
         $log.log(messageBuses[messagetypes[i]].getNamespace());
-      }    
+      }
 
 
       // initialization for the manager and log
@@ -146,7 +146,7 @@ module.exports = angular.module('castServices', [])
     };
   })
   .service('messageReceiver', function(castMessageBus, eventService, gameEvents, $log){
-    
+
     //gamename received
     castMessageBus.gamename.onMessage = function(event){
       eventService.publish(gameEvents.gamenameReceived, {senderId: event.senderId, message: angular.fromJson(event.data)});
