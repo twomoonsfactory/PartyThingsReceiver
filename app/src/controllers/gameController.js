@@ -10,7 +10,7 @@ export default ngModule => {
     $scope.currentlyGuessing = false;
   	$scope.prompts = promptProvider.currentprompts;
     $scope.finalPrompt;
-    $scope.resposes = [];
+    $scope.responses = [];
   	$scope.guesses = [];
     $scope.winners = [];
 
@@ -50,13 +50,13 @@ export default ngModule => {
     //gets guesses for display and resolution
     $scope.getGuesses = (args) => {
       $scope.guesses = args;
-      $scope.currentState = gameEvents.guessesSorted;
     }
     eventService.subscribe(gameEvents.guessesSorted, $scope.getGuesses);
 
     //restarts the round
     $scope.newRound = ()=>{
       $scope.currentState = gameStates.ReadyToStart;
+      $scope.guesses = [];
       $scope.currentlyGuessing = false;
     }
     eventService.subscribe(gameStates.ReadyToStart, $scope.newRound);

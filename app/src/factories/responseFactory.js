@@ -9,12 +9,20 @@ export default ngModule => {
 			response.playerId = playerId;
 			response.correct = [];
 			response.incorrect = [];
+			response.guesses = 0;
 
-			response.addGoodGuess = (guesser) => response.correct.push(guesser);
-			response.addWrongGuess = (guesser, writer) => response.incorrect.push({guesser: guesser, guessedWriter: writer});
+			response.addGoodGuess = (guesser, writer) => {
+				response.correct.push({guesser: guesser, guessedWriter: writer});
+				response.guesses ++;
+			}
+			response.addWrongGuess = (guesser, writer) => {
+				response.incorrect.push({guesser: guesser, guessedWriter: writer});
+				response.guesses ++;
+			}
 			response.wipeGuesses = ()=>	{
 				response.incorrect = [];
 				response.correct = [];
+				response.guesses = 0;
 			};
 
 			return response;

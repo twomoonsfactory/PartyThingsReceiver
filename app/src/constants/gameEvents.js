@@ -20,6 +20,8 @@ export default ngModule => {
 		welcomeLoaded: "welcomeLoaded",
 		winnersDecided: "winnersDecided",
 		endView: "endView",
-		newGameRequested: "newGameRequested"
+		newGameRequested: "newGameRequested",
+		responseRegistered: "responseRegistered",
+		playerRegistered: "playerRegistered"
 	});
 }

@@ -12,7 +12,8 @@ export default ngModule => {
       this.messageProvider = messageProvider;
       this.$log = $log;
       this.winningScore = 100; //the score that, when reached, ends the game
-
+      this.rightGuessPoints = 10;
+      this.uguessedPoints = 5;
 
       //local variables
       this.players = [];          //contains all players of the game
