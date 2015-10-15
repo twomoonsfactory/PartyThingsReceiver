@@ -5,4 +5,4 @@ Custom receiver application for a Chromecast app.  Built with AngularJS.
 
 The Sender applications for this Chromecast party game are in progress for both iOS and Android, and will should be available soon.
 
-For a button click testable page (all interaction in production will be done via the mobile sender apps) visit: http://twomoonsfactory.github.io/PartyThingsReceiver/
+Note: You will see buttons in the UI which will not be in the production release of this application, as all interaction with this Receiver application will be done VIA the Chromecast API and the players' mobile devices.
