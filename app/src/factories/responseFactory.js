@@ -10,10 +10,12 @@ export default ngModule => {
 			response.correct = [];
 			response.incorrect = [];
 			response.guesses = 0;
+			response.guessed = false;
 
 			response.addGoodGuess = (guesser, writer) => {
 				response.correct.push({guesser: guesser, guessedWriter: writer});
 				response.guesses ++;
+				response.guessed = true;
 			}
 			response.addWrongGuess = (guesser, writer) => {
 				response.incorrect.push({guesser: guesser, guessedWriter: writer});

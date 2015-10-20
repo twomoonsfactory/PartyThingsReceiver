@@ -1,5 +1,5 @@
 export default ngModule => {
-  ngModule.directive('playerGuessDisplay', ['$rootScope', '$q', '$timeout', 'gameEvents', ($rootScope, $q, $timeout, gameEvents)=>{
+  ngModule.directive('playerGuessDisplay', ['$rootScope', '$q', '$timeout', 'gameEvents', 'gameNumbers', ($rootScope, $q, $timeout, gameEvents, gameNumbers)=>{
     return{
       restrict: 'A',
       scope:{
@@ -7,12 +7,64 @@ export default ngModule => {
       },
       link: (scope, elem, attrs)=>{
 
-        scope.checkIfGuessed = (guess)=>{
-
+        scope.checkIfGuessed = (prompt)=>{
+          //checks if this player was guessed correctly for the current prompt
+          if(prompt.playerId===scope.player.playerId && prompt.correct.length > 0)
+            scope.animateGuess(true);
+          //checks if this player had guessed this prompt wrong
+          else if(_.findWhere(prompt.incorrect, {guessedWriter: scope.player.playerId}))
+            scope.animateGuess(false);
         }
 
-        scope.checkIfScored = (guess)=>{
-          
+        scope.checkIfScored = (prompt)=>{
+          if(_.findWhere(prompt.correct, {guesser: scope.player.playerId}))
+            scope.player.addScore(Math.floor(gameNumbers.guessScore/prompt.correct.length));
+        }
+
+        scope.checkIfUnguessed = ()=>{
+          if(!scope.player.guessed)
+            scope.player.addScore(gameNumbers.unguessedScore);
+        }
+
+        scope.animateGuess = (right)=>{
+          $q.when()
+          .then(()=>{
+            let defer = $q.defer();
+            elem.addClass('beingGuessed guess1');
+            $timeout(()=>{defer.resolve()}, 500);
+            return defer.promise;
+          })
+          .then(()=>{
+            let defer = $q.defer();
+            elem.addClass('guessMid');
+            $timeout(()=>{defer.resolve()}, 500);
+            return defer.promise;
+          })
+          .then(()=>{
+            let defer = $q.defer();
+            elem.removeClass('guessMid guess1').addClass('guess2');
+            $timeout(()=>{defer.resolve()}, 500);
+            return defer.promise;
+          })
+          .then(()=>{
+            let defer = $q.defer();
+            elem.addClass('guessMid');
+            $timeout(()=>{defer.resolve()}, 500);
+            return defer.promise;
+          })
+          .then(()=>{
+            let defer = $q.defer();
+            elem.removeClass('guessMid guess2').addClass(right ? 'guessRight' : 'guessWrong');
+            $timeout(()=>{defer.resolve()}, 1000);
+            return defer.promise;
+          })
+          .then(()=>{
+            let defer = $q.defer();
+            if(right)
+              scope.player.wasGuessed();
+            elem.removeClass('beingGuessed guessRight guessWrong');
+            $timeout(()=>{defer.resolve()}, 500);
+          });
         }
 
         // scope.updatePlayerStyle = ()=>{

@@ -22,6 +22,8 @@ export default ngModule => {
 		endView: "endView",
 		newGameRequested: "newGameRequested",
 		responseRegistered: "responseRegistered",
-		playerRegistered: "playerRegistered"
+		responseSlipRegistered: "responseSlipRegistered",
+		playerRegistered: "playerRegistered",
+		responseGuessed: "responseGuessed"
 	});
 }

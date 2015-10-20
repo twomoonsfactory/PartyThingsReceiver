@@ -41,7 +41,7 @@ export default ngModule => {
 
     //gets responses for display
     $scope.getResponses = ()=>{
-      $scope.responses = responseHandler.getResponses();
+      $scope.responses = responseHandler.getResponsesForDisplay();
       $scope.currentState = gameStates.ResponsesReceived;
       $scope.currentlyGuessing = true;
     }
@@ -49,7 +49,7 @@ export default ngModule => {
 
     //gets guesses for display and resolution
     $scope.getGuesses = (args) => {
-      $scope.guesses = args;
+      $scope.guesses = _.shuffle(args);
     }
     eventService.subscribe(gameEvents.guessesSorted, $scope.getGuesses);
 

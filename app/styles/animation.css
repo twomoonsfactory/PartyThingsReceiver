@@ -122,8 +122,8 @@
 .contentDetail.ng-leave-active{
   bottom: 1000px;
 }
-.guess1, .guess2, .guess3, .guessRight, .guessWrong, .unguessed{
-  -webkit-transition': all .5s;
+.guess1, .guess2, .guessMid{
+  -webkit-transition: all 0.5s;
 }
 .guess1{
   background-color: #00FF00;
@@ -131,15 +131,40 @@
 .guess2{
   background-color: #FF0000;
 }
-.guess3{
+.guessMid{
   background-color: #FFFFFF;
 }
+.guessRight, .guessWrong, .unguessed{
+  -webkit-transition: all 1s;
+}
 .guessRight{
-  background-color: #0000FF;
+  background-color: #00FF00;
 }
 .guessWrong{
-
+ background-color: #FF0000;
 }
 .unguessed{
-
+  background-color: #0000FF;
+}
+.messageContainer{
+  position: relative;
+  text-align: center;
+  height: 100%;
+  width: 100%;
+}
+.messageFront, .messageBack{
+  position: absolute;
+  top: 0;
+  left: 0;
+  -webkit-backface-visibility: hidden;
+  -webkit-transition: -webkit-transform 0.3s;
+}
+.messageBack{
+  -webkit-transform: rotateX(-180deg);
+}
+.messageContainer.flipped .messageFront{
+  -webkit-transform: rotateX(-180deg);
+}
+.messageContainer.flipped .messageBack{
+  -webkit-transform: rotateX(0);
 }

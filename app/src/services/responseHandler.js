@@ -27,12 +27,24 @@ export default ngModule => {
       this.responseCounter++;
     }
 
+    wipeGuesses(){
+      _.each(this.responses, response => {
+        response.wipeGuesses();
+      });
+      this.shuffled = false;
+    }
+
+    //returns list of responses to displays
+    getResponsesForDisplay(){
+      return this.responses;
+    }
+
     //returns list of responses to send to players
     getResponses(){
       if(!this.shuffled){
         this.responseList = [];
         _.each(this.responses, currentresponse => {
-          this.responseList.push({response: currentresponse.response, responseId: currentresponse.responseId});
+          if(!currentresponse.guessed) this.responseList.push({response: currentresponse.response, responseId: currentresponse.responseId});
         });
         this.responseList = _.shuffle(this.responseList);
         this.shuffled = true;

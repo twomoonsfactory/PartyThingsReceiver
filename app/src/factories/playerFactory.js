@@ -9,6 +9,7 @@ export default ngModule => {
 			player.playerName = playerName;
 			player.senderId = senderId;
 			player.score = 0;
+			player.scoreToAdd = 0;
 			player.state = ""; //playerStates.js
 			player.playerId = playerId;
 			player.guessed = false;
@@ -16,6 +17,7 @@ export default ngModule => {
 			player.waitingForAction = 0; //for ease of ngswitch -- positive means needs action. Zero does not. Negative is quit/incoming
 
 			player.addPoints = (points) => player.score = player.score + points;
+			player.addScore = (score) => player.scoreToAdd = score;
 			player.wasGuessed = () => player.guessed = true;
 			player.freshRound = () => {
 				player.guessed = false;
