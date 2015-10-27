@@ -1,69 +1,56 @@
-<div class='container-fluid tall' player-names player-data='players'>
-	<div class='filler row'>
-		<div class='col-lg-4'>
-			<div class="banner row">
-				<div class="filler col-lg-12">
-					<h3>Players Joined</h3>
-				</div>
-			</div>
-			<div class="welcomeplayer row">
-				<div class='welcomeplayercol col-lg-6'>
-					<table>
-						<tr ng-repeat="player in joinedPlayers|limitTo:10:10">
-							<td>{{player.playerName}}</td>
-						</tr>
-					</table>
-				</div>
-				<div class='welcomeplayercol col-lg-6'>
-					<table>
-						<tr ng-repeat="player in joinedPlayers|limitTo:10">
-							<td>{{player.playerName}}</td>
-						</tr>
-					</table>
-				</div>
-			</div>
+<div layout-fill>
+	<md-toolbar class="md-tall" layout="column" layout-align="end">
+		<div class="md-toolbar-tools" layout="row" layout-align="space-around end">
+			<div class="md-headline">Players Joined</div>
+			<div class="md-display-1">Thanks for playing {{gameName}}!</div>
+			<div class="md-headline">Players Ready</div>
 		</div>
-		<div class='col-lg-4'>
-			<div class='top row'>
-			</div>
-			<div class='mid row'>
-				<div class='col-lg-12 sign'>
-					<h1>Thanks for playing {{gameName}}!</h1>
-					<button ng-click="incomingPlayer()">PendPlayer</button>
-			    <button ng-click="plusPlayer()">AddPlayer</button>
-			    <button ng-click="removePlayer()">DropPlayer</button>
-			    <button ng-click="readyPlayer()">Ready</button>
-			    <h3>{{message}}</h3>
-          <h2 ng-repeat="winner in winners">{{winner}}</h2>
-          <h3>{{banner}}</h3>
-				</div>
-			</div>
-			<div class='bot row'>
-			</div>
+	</md-toolbar>
+	<md-content layout="row" layout-align="space-between center top" layout-fill>
+		<div flex="30" layout="row" layout-align="space-around start" layout-fill>
+			<md-list flex="50">
+				<md-list-item class="md-1-line joined" ng-repeat="player in joinedPlayers|limitTo:10:10">
+					<md-card layout-fill>
+						{{player.playerName}}
+					</md-card>
+				</md-list-item>
+			</md-list>
+			<md-list flex="50">
+				<md-list-item class="md-1-line joined" ng-repeat="player in joinedPlayers|limitTo:10">
+					<md-card layout-fill>
+						{{player.playerName}}
+					</md-card>
+				</md-list-item>
+			</md-list>
 		</div>
-		<div class='col-lg-4'>
-			<div class="banner row">
-				<div class="filler col-lg-12">
-					<h3>Players Ready</h3>
-				</div>
+		<md-card layout="column" layout-align="top center" flex>
+			<div>
+				<md-button class="md-raised md-primary" ng-click="nameIt()">NameIt</md-button>
+				<md-button class="md-raised md-primary" ng-click="incomingPlayer()">PendPlayer</md-button>
+			  <md-button class="md-raised md-primary" ng-click="plusPlayer()">AddPlayer</md-button><br />
+			  <md-button class="md-raised md-primary" ng-click="removePlayer()">RoseQuit</md-button>
+			  <md-button class="md-raised md-primary" ng-click="readyPlayer()">Ready</md-button>
+				<md-button class="md-raised md-primary" ng-click="primeIt()">Prime</md-button>
 			</div>
-			<div class="welcomeplayer row">
-				<div class='welcomeplayercol col-lg-6'>
-					<table>
-						<tr ng-repeat="player in readyPlayers|limitTo:10">
-							<td>{{player.playerName}}</td>
-						</tr>
-					</table>
-				</div>
-				<div class='welcomeplayercol col-lg-6'>
-					<table>
-						<tr ng-repeat="player in readyPlayers|limitTo:10:10">
-							<td>{{player.playerName}}</td>
-						</tr>
-					</table>
-				</div>
-			</div>
-
+		  <h3 class="md-headline">{{message}}</h3>
+			<h2 ng-repeat="winner in winners">{{winner}}</h2>
+			<h3>{{banner}}</h3>
+		</md-card>
+		<div flex="30" layout="row" layout-align="space-around start">
+			<md-list flex="50">
+				<md-list-item class="md-1-line readied" ng-repeat="player in readyPlayers|limitTo:10">
+					<md-card layout-fill>
+						{{player.playerName}}
+					</md-card>
+				</md-list-item>
+			</md-list>
+			<md-list flex="50">
+				<md-list-item class="md-1-line readied" ng-repeat="player in readyPlayers|limitTo:10:10">
+					<md-card layout-fill>
+						{{player.playerName}}
+					</md-card>
+				</md-list-item>
+			</md-list>
 		</div>
-	</div>
+	</md-content>
 </div>

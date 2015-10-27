@@ -3,7 +3,8 @@ export default ngModule => {
 		return {
 			restrict: 'A',
 			scope: {
-				players: '=players'
+				players: '=players',
+        guessing: '=guessing'
 			},
 			templateUrl: 'src/directives/playerDisplay.html'
 		}

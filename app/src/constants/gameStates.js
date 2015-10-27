@@ -5,6 +5,7 @@ export default ngModule => {
 		ReadyToStart: "ReadyToStart",
 		PromptChosen: "PromptChosen",
 		ResponsesReceived: "ResponsesReceived",
+		GuessesDisplayed: "GuessesDisplayed",
 		RoundEnd: "RoundEnd",
 		GameEnd: "GameEnd"
 	});

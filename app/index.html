@@ -1,12 +1,13 @@
 <!doctype html>
-<html lang="en" ng-app="gameMaster">  
+<html lang="en" ng-app="gameMaster">
 <head>
   <meta charset="UTF-8">
   <title>Party Things!</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
-<body>
+<body layout="row">
 	<script src="bundle.js"></script>
-	<ng-view></ng-view>
+  <div layout-fill flex>
+  	<ng-view class="slideup"></ng-view>
+  </div>
 </body>
 </html>

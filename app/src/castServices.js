@@ -1,6 +1,6 @@
 module.exports = angular.module('castServices', [])
   // THIS IS REAL
-  //.constant('cast', window.cast)
+  // .constant('cast', window.cast)
   //THIS IS NOT
     .constant('cast', (()=>{
 

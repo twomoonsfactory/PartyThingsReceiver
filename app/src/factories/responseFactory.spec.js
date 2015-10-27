@@ -4,7 +4,7 @@
 describe('responseFactory', ()=>{
 	let responseFactory, rawResponse, rawResponseID, rawPlayerId, guessedBy, guessedBy2;
 
-	beforeEach(angular.mock.module(require('../app.js').name));
+	beforeEach(angular.mock.module('gameMaster');
 
 	beforeEach(angular.mock.inject(($injector)=>{
 		responseFactory = $injector.get('responseFactory', responseFactory);

@@ -1,9 +1,78 @@
-<div class="playerList" ng-repeat="player in players | orderBy: '-score'">
-<p class="playerInfo">
-	<div ng-switch on="player.waitingForAction">
-		<div ng-switch-when="0" class="playerSlip"><span class="playerName">{{player.playerName}}</span> ~ <span class="score">{{player.score}} Points</span></div>
-		<div ng-switch-when="1" class="playerSlip waitingForAction"><span class="playerName">{{player.playerName}}</span> ~ <span class="score">{{player.score}} Points</span></div>
-		<div ng-switch-when="-1" class="playerSlip suppressed"><span class="playerName">{{player.playerName}}</span> ~ <span class="score">{{player.score}} Points</span></div>
+<div ng-if="players.length<=10" layout-fill layout="column">
+	<div layout="row" layout-align="space-between start">
+		<div flex="30">
+			<h3>Player Name</h3>
+		</div>
+		<div flex="30">
+			<h3>Score</h3>
+		</div>
 	</div>
-</p>
+	<md-list layout-fill layout="column">
+		<md-list-item class="md-1-line" ng-repeat="player in players | orderBy: '-score'">
+			<md-whiteframe class="playerSlip" player-guess-display="player" ng-class="{readyToAct:player.waitingForAction>0, supressed:player.waitingForAction<0, ready:player.waitingForAction===0, inactive:player.guessed}" layout="row" layout-align="space-between center" layout-fill>
+				<div flex="30">
+					{{player.playerName}}
+				</div>
+				<div flex="30" layout="row">
+					<span flex="70">
+						{{player.score}}
+					</span>
+					<span flex="30" number-iterator="player.scoreToAdd" base-number="player.score">
+					</span>
+				</div>
+			</md-whiteframe>
+		</md-list-item>
+	</md-list>
+</div>
+<div ng-if="players.length>10" layout-fill layout="row" layout-align="space-between start">
+	<div flex="50">
+		<div layout="row" layout-align="space-between start">
+			<div flex="50">
+				<h3>Player Name</h3>
+			</div>
+			<div flex="20" ng-if="guessing">
+				<h3 class="guessed">Guessed</h3>
+			</div>
+			<div flex="20">
+				<h3>Score</h3>
+			</div>
+		</div>
+		<md-list layout-fill layout="column">
+			<md-list-item class="md-1-line" ng-repeat="player in players | orderBy: '-score' | limitTo:10">
+				<md-whiteframe class="playerSlip" player-guess-display="player" ng-class="{readyToAct:player.waitingForAction>0, supressed:player.waitingForAction<0, ready:player.waitingForAction===0}" layout="row" layout-align="space-between center" layout-fill>
+					<div flex="50">
+						{{player.playerName}}
+					</div>
+					<div flex="20" ng-if="guessing">
+						<h3 class="guessed">Guessed</h3>
+					</div>
+					<div flex="20">
+						{{player.score}}
+					</div>
+				</md-whiteframe>
+			</md-list-item>
+		</md-list>
+	</div>
+	<div flex="50">
+		<div layout="row" layout-align="space-between start">
+			<div flex="50">
+				<h3>Player Name</h3>
+			</div>
+			<div flex="20">
+				<h3>Score</h3>
+			</div>
+		</div>
+		<md-list layout-fill layout="column">
+			<md-list-item class="md-1-line" ng-repeat="player in players | orderBy: '-score' | limitTo:10:10">
+				<md-whiteframe class="playerSlip" player-guess-display="player" ng-class="{readyToAct:player.waitingForAction>0, supressed:player.waitingForAction<0, ready:player.waitingForAction===0}" layout="row" layout-align="space-between center" layout-fill>
+					<div flex="50">
+						{{player.playerName}}
+					</div>
+					<div flex="20">
+						{{player.score}}
+					</div>
+				</md-whiteframe>
+			</md-list-item>
+		</md-list>
+	</div>
 </div>

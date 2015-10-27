@@ -1,7 +1,7 @@
 'use strict'
 describe('playerFactory', ()=>{
 	let playerFactory, playerStates, $log, playerName, senderId, playerId, myPlayer;
-	beforeEach(angular.mock.module(require('../app.js').name));
+	beforeEach(angular.mock.module('gameMaster');
 
 	beforeEach(angular.mock.inject(($injector)=>{
 		playerFactory = $injector.get('playerFactory', playerFactory);

@@ -10,7 +10,7 @@ export default ngModule => {
         this.prompts = [];
         this.currentprompts = [];
         this.prompt = "";
-        this.votes = [];
+        this.votes = [0,0,0];
 
         this.subscribeToGameEvents();
       }
@@ -44,7 +44,6 @@ export default ngModule => {
 
       //votes handled
       tallyVotes(){
-        this.votes = [0,0,0];
         let promptIndex = [];
         for(let i = 0; i < this.votes.length; i++){
           if(this.votes[i]===_.max(this.votes))
@@ -53,9 +52,9 @@ export default ngModule => {
         if(promptIndex.length === 1)
           this.prompt = this.currentprompts[promptIndex[0]];
         else if(promptIndex.length ===2)
-          this.prompt = this.currentprompts[promptIndex[_.sample([promptIndex[0],promptIndex[1]])]];
+          this.prompt = this.currentprompts[promptIndex[_.random(1)]];
         else
-          this.prompt = this.currentprompts[_.random(0,2)];
+          this.prompt = this.currentprompts[promptIndex[_.random(2)]];
       }
     }
   promptProvider.$inject = ['$log', 'eventService', 'gameEvents', 'gameStates', '$http'];

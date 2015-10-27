@@ -2,7 +2,7 @@
 
 describe('messageProvider', ()=>{
 	let messageProvider, $httpBackend, messages, nameGame, url, pname, correct;
-	beforeEach(angular.mock.module(require('../app.js').name));
+	beforeEach(angular.mock.module('gameMaster'));
 	beforeEach(angular.mock.inject(($injector)=>{
 		messageProvider = $injector.get('messageProvider', messageProvider);
 		$httpBackend = $injector.get('$httpBackend', $httpBackend);

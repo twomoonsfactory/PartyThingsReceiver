@@ -1,7 +1,7 @@
 'use strict'
 describe('responseProvider', ()=>{
 	let responseProvider, $log, eventService, gameStates, $httpBackend, url, responsesProvided;
-	beforeEach(angular.mock.module(require('../app.js').name));
+	beforeEach(angular.mock.module('gameMaster'));
 	beforeEach(angular.mock.inject(($injector)=>{
 		responseProvider = $injector.get('responseProvider', responseProvider);
 		$log = $injector.get('$log', 'log');

@@ -1,7 +1,7 @@
 'use strict'
 describe('gameDriver', ()=>{
 	let gameDriver, eventService, gameEvents, stateManager, gameStates, messageSender, messageProvider, messageNames, playerHandler, playerStates, responseHandler, guessHandler, $log;
-	beforeEach(angular.mock.module(require('../app.js').name));
+	beforeEach(angular.mock.module('gameMaster');
 	beforeEach(function() {
       angular.mock.module(function($provide) {
         $provide.constant('cast', (()=>{

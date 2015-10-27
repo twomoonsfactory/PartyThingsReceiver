@@ -1,6 +1,6 @@
 export default ngModule => {
   class playerHandler{
-    constructor(eventService, playerFactory, messageSender, stateManager, gameEvents, gameStates, playerStates, messageNames, messageProvider, $log){
+    constructor(gameNumbers, eventService, playerFactory, messageSender, stateManager, gameEvents, gameStates, playerStates, messageNames, messageProvider, $log){
       this.eventService = eventService;
       this.playerFactory = playerFactory;
       this.messageSender = messageSender;
@@ -11,13 +11,14 @@ export default ngModule => {
       this.messageNames = messageNames;
       this.messageProvider = messageProvider;
       this.$log = $log;
+      this.winningScore = gameNumbers.winningScore; //the score that, when reached, ends the game
 
       //local variables
       this.players = [];          //contains all players of the game
       this.playerCounter = 0;     //keeps players assigned sequentially
       this.actedPlayersCount = 0;        //how many players have participated in the current state
       this.activePlayers = 0;     //the number of players currently playing -- should it be moved to the playerHandler?
-      this.minimumPlayers = 5;    //the minimum number of players to start the game
+      this.minimumPlayers = gameNumbers.minimumPlayers;    //the minimum number of players to start the game
       this.joinedPlayers = 0;     //the number of players joined, named or not.  Used for "incoming player"
       this.incoming = this.playerFactory.newPlayer("Incoming Player", 111, -1);
       this.incoming.setState(this.playerStates.incoming);
@@ -29,13 +30,12 @@ export default ngModule => {
       this.eventService.subscribe(this.gameEvents.playerJoined, this.addPlayer.bind(this));
       this.eventService.subscribe(this.gameEvents.gamenameReceived, this.gameNamed.bind(this));
       this.eventService.subscribe(this.gameEvents.playernameReceived, this.playerNamed.bind(this));
-      this.eventService.subscribe(this.gameStates.RoundEnd, this.freshRound.bind(this));
-      this.eventService.subscribe(this.gameStates.GameEnd, this.freshGame.bind(this));
       this.eventService.subscribe(this.gameEvents.quitReceived, this.playerQuit.bind(this));
       this.eventService.subscribe(this.gameEvents.newGameRequested, this.dropQuitPlayers.bind(this));
       this.eventService.subscribe(this.gameStates.ReadyToStart, this.dropQuitPlayers.bind(this));
       this.eventService.subscribe(this.gameEvents.playerUpdated, this.playerUpdated.bind(this));
       this.eventService.subscribe(this.gameEvents.welcomeLoaded, this.playerUpdated.bind(this));
+      this.eventService.subscribe(this.gameStates.RoundEnd, this.freshRound.bind(this));
     }
 
     addPlayer(args){
@@ -95,7 +95,7 @@ export default ngModule => {
 
     //gives players their points, determined in the response handler
     assignPoints(args){
-      _.findWhere(this.players, {playerId: args.playerId}).addPoints(args.points);
+      _.findWhere(this.players, {playerId: args.playerId}).addScore(args.points);
       this.eventService.publish(this.gameEvents.playerUpdated, "");
     }
 
@@ -128,21 +128,29 @@ export default ngModule => {
     //returns the player names of the winning player(s)
     getWinners(){
       let winners = [];
-      _.each(this.players, player => {
-        if(player.score===this.highScore())
-          winners.push(player.playerName);
-      });
+      if(this.highScore()>=this.winningScore){
+        _.each(this.players, player => {
+          if(player.score===this.highScore())
+            winners.push(player.playerName);
+        });
+      }
       return winners;
+    }
+
+    //emits winners if any
+    winnersChosen(){
+      if(this.getWinners().length>0)
+        return this.getWinners();
+      else
+        return false;
     }
 
     //at the end of round, sets all players to unguessed
     freshRound(){
-      if(this.getWinners().length===0){
-        _.each(this.players, player => {
-          player.freshRound();
-        });
-      }
-      this.playerUpdated();
+      _.each(this.players, player => {
+        player.freshRound();
+      });
+      this.eventService.publish(this.gameEvents.playersUpdated, this.players);
     }
 
     //at the end of game, sets all scores to zero, all players to unguessed
@@ -150,7 +158,7 @@ export default ngModule => {
       _.each(this.players, player => {
           player.freshGame();
         });
-      this.playerUpdated();
+      this.eventService.publish(this.gameEvents.playersUpdated, this.players);
     }
 
     //allows the players to quit at any point without seriously disrupting gameplay.  Will still allow for submitted things to be guessed
@@ -175,7 +183,7 @@ export default ngModule => {
           toDrop.push(player);
       });
       this.players = _.difference(this.players, toDrop);
-      this.eventService.publish(this.gameEvents.playersUpdated, "");
+      this.eventService.publish(this.gameEvents.playersUpdated, this.players);
     }
 
 
@@ -204,6 +212,6 @@ export default ngModule => {
       this.eventService.publish(this.gameEvents.playersUpdated, this.players);
     }
   }
-  playerHandler.$inject = ['eventService', 'playerFactory', 'messageSender', 'stateManager', 'gameEvents', 'gameStates', 'playerStates', 'messageNames', 'messageProvider', '$log'];
+  playerHandler.$inject = ['gameNumbers', 'eventService', 'playerFactory', 'messageSender', 'stateManager', 'gameEvents', 'gameStates', 'playerStates', 'messageNames', 'messageProvider', '$log'];
   ngModule.service('playerHandler', playerHandler);
 }

@@ -3,7 +3,7 @@
 describe('eventService', ()=>{
 	let eventService, test, newEvent, otherEvent, $log, gameEvents, gameStates;
 
-	beforeEach(angular.mock.module(require('../app.js').name));
+	beforeEach(angular.mock.module('gameMaster');
 	beforeEach(angular.mock.inject(($injector)=>{
 		eventService = $injector.get('eventService', eventService);
 		$log = $injector.get('$log', $log);

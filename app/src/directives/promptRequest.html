@@ -1,1 +1,11 @@
-<p ng-repeat="prompt in prompts">{{prompt}}</p>
+<md-list flex="60">
+  <md-list-item class="md-1-line" ng-repeat="prompt in prompts">
+    <div flex="15" layout="row" layout-align="center end">
+      <h3><b>Option {{$index + 1 }}:</b></h3>
+    </div>
+    <md-card flex="60">
+      <h2>{{prompt}}</h2>
+    </md-card>
+  </md-list-item>
+</md-list>
+<!-- <p ng-repeat="prompt in prompts">{{prompt}}</p> -->

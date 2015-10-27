@@ -2,7 +2,7 @@
 
 describe('playerHandler', ()=>{
 	let playerHandler, eventService, player, messageSender, stateManager, gameEvents, gameStates, playerStates, messageNames, $log;
-	beforeEach(angular.mock.module(require('../app.js').name));
+	beforeEach(angular.mock.module('gameMaster'));
 	beforeEach(function() {
       angular.mock.module(function($provide) {
         $provide.constant('cast', (()=>{

@@ -9,14 +9,13 @@ export default ngModule => {
         this.promptProvider = promptProvider;
         this.$log = $log;
 
-        this.gameName = 'PartyThigs';
+        this.gameName = 'Party Things';
         this.ownerName = null;
         this.state = null;
         this.banner = '';
         this.message = '';
         this.winners = [];
         this.score = 0;
-
         this.subscribeToGameEvents();
     }
 
@@ -104,6 +103,12 @@ export default ngModule => {
     guessMessageUpdate(){
       this.message = this.messageProvider.getMessage({messageName:this.messageNames.screenRoundResults, prompt: this.promptProvider.prompt});
       this.banner = this.messageProvider.getMessage({messageName:this.messageNames.bannerRoundResults});
+      this.eventService.publish(this.gameEvents.messagesUpdated, {message:this.message, banner:this.banner});
+    }
+
+    endRoundMessageUpdate(winners){
+      this.message = this.messageProvider.getMessage({messageName: winners ? this.messageNames.gameOver : this.messageNames.anotherRound});
+      this.banner = this.messageProvider.getMessage({messageName:this.messageNames.allGuessed});
       this.eventService.publish(this.gameEvents.messagesUpdated, {message:this.message, banner:this.banner});
     }
 

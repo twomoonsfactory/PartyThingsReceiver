@@ -14,8 +14,6 @@ export default ngModule =>{
       this.promptProvider = promptProvider;
       this.guessHandler = guessHandler;
 
-      this.winningScore = 100; //the score that, when reached, ends the game
-
       this.subscribeToGameEvents();
     }
 
@@ -50,15 +48,10 @@ export default ngModule =>{
       readyPlayer.setState(this.playerStates.ready);
       this.playerHandler.playerActed();
       this.eventService.publish(this.gameEvents.playerUpdated, "");
-      if(this.playerHandler.actedPlayersCount < this.playerHandler.activePlayers){
-        this.messageSender.requestReady({senderId: readyPlayer.senderId, message: this.messageProvider.getMessage({messageName: this.messageNames.readyConfirm, pname: readyPlayer.playerName})});
-      }
-      else{
-        this.messageSender.requestReady({senderId: readyPlayer.senderId, message: this.messageProvider.getMessage({messageName: this.messageNames.lastReadyConfirm, pname: readyPlayer.playerName})});
-        this.stateManager.setState(this.gameStates.ReadyToStart);
-
+      if(this.playerHandler.actedPlayersCount >= this.playerHandler.activePlayers){
          //sets statecount back to 0
         this.playerHandler.resetPlayerActedCount();
+        this.stateManager.setState(this.gameStates.ReadyToStart);
       }
     }
 
@@ -102,6 +95,7 @@ export default ngModule =>{
       let responseWriter = this.playerHandler.findPlayer(args.senderId);
       this.responseHandler.newResponse({response: args.message.response, playerId:responseWriter.playerId});
       responseWriter.setState(this.playerStates.ready);
+      responseWriter.written = true;
       this.messageSender.requestResponse({senderId:responseWriter.senderId, message: this.messageProvider.getMessage({messageName: this.messageNames.responseConfirm, pname: responseWriter.playerName, resp: args.message.thing})});
       this.playerHandler.playerActed();
       if(this.playerHandler.actedPlayersCount===this.playerHandler.activePlayers){
@@ -138,17 +132,18 @@ export default ngModule =>{
       if(this.playerHandler.unguessedPlayers())
         this.stateManager.resetState(this.gameStates.ResponsesReceived);
       else
-        this.stateManager.setState(this.gameStates.RoundEnd);
+        this.stateManager.setState(this.gameStates.GuessesDisplayed);
     }
 
     //function to either roll things back to a fresh round with all the active players and players standing by, or
     //sends the game on to end game.
     nextRound(){
-      if(this.playerHandler.highScore()>=this.winningScore){
+      if(this.playerHandler.highScore()>=this.playerHandler.winningScore){
         let winners = this.playerHandler.getWinners();
         let score = this.playerHandler.highScore();
         this.eventService.publish(this.gameEvents.winnersDecided, {winners: winners, score: score});
         this.stateManager.setState(this.gameStates.GameEnd);
+        this.playerHandler.freshGame();
       }
       else{
         _.each(this.playerHandler.players, player => {
@@ -158,6 +153,7 @@ export default ngModule =>{
             this.playerHandler.activePlayers++;
           }
         });
+        this.playerHandler.freshRound();
         this.stateManager.setState(this.gameStates.ReadyToStart);
       }
     }

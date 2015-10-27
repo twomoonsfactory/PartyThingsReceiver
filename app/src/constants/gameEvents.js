@@ -18,8 +18,13 @@ export default ngModule => {
 		quitReceived: "quitReceived",
 		stateUpdated: "stateUpdated",
 		welcomeLoaded: "welcomeLoaded",
+		winnersChosen: "winnersChosen",
 		winnersDecided: "winnersDecided",
 		endView: "endView",
-		newGameRequested: "newGameRequested"
+		newGameRequested: "newGameRequested",
+		responseRegistered: "responseRegistered",
+		responseSlipRegistered: "responseSlipRegistered",
+		playerRegistered: "playerRegistered",
+		responseGuessed: "responseGuessed"
 	});
 }

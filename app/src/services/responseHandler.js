@@ -27,12 +27,24 @@ export default ngModule => {
       this.responseCounter++;
     }
 
+    wipeGuesses(){
+      _.each(this.responses, response => {
+        response.wipeGuesses();
+      });
+      this.shuffled = false;
+    }
+
+    //returns list of responses to displays
+    getResponsesForDisplay(){
+      return this.responses;
+    }
+
     //returns list of responses to send to players
     getResponses(){
       if(!this.shuffled){
         this.responseList = [];
         _.each(this.responses, currentresponse => {
-          this.responseList.push({response: currentresponse.response, responseId: currentresponse.responseId});
+          if(!currentresponse.guessed) this.responseList.push({response: currentresponse.response, responseId: currentresponse.responseId});
         });
         this.responseList = _.shuffle(this.responseList);
         this.shuffled = true;
@@ -47,7 +59,8 @@ export default ngModule => {
 
     //adds correct guess
     goodGuess(args){
-      _.findWhere(this.responses, {responseId: args.responseId}).addGoodGuess(args.guesser);
+      let response = _.findWhere(this.responses, {responseId: args.responseId});
+      response.addGoodGuess(args.guesser,_.findWhere(this.playerHandler.players, {playerId: response.playerId}).playerId);
     }
 
     //adds incorrect guess
@@ -57,28 +70,29 @@ export default ngModule => {
 
     //resolves correct and incorrect guessers, called by resolveGuesses
     resolveResponses(){
-      let correctlyGuessedResponses = [];
-      let incorrectlyGuessedResponses = [];
-      let toRemove = [];
-      _.each(this.responses, response => {
-        if(response.incorrect.length>0){
-          //adds to incorrect guess array
-          incorrectlyGuessedResponses.push(response);
-        }
-
-        //assigns points
-        if(response.correct.length>0){
-          //adds to correct guess array
-          correctlyGuessedResponses.push(response);
-          toRemove.push(_.where(this.responses, {responseId: response.responseId})[0]);
-        }
-      });
-      this.sortResponses({right: correctlyGuessedResponses, wrong: incorrectlyGuessedResponses});
-      //remove guessedresponses from the array
-      this.responses = _.difference(this.responses, toRemove);
-      _.each(this.responses, response => {
-        response.wipeGuesses();
-      });
+      this.eventService.publish(this.gameEvents.guessesSorted ,this.responses);
+      // let correctlyGuessedResponses = [];
+      // let incorrectlyGuessedResponses = [];
+      // let toRemove = [];
+      // _.each(this.responses, response => {
+      //   if(response.incorrect.length>0){
+      //     //adds to incorrect guess array
+      //     incorrectlyGuessedResponses.push(response);
+      //   }
+      //
+      //   //assigns points
+      //   if(response.correct.length>0){
+      //     //adds to correct guess array
+      //     correctlyGuessedResponses.push(response);
+      //     toRemove.push(_.where(this.responses, {responseId: response.responseId})[0]);
+      //   }
+      // });
+      // this.sortResponses({right: correctlyGuessedResponses, wrong: incorrectlyGuessedResponses});
+      // //remove guessedresponses from the array
+      // this.responses = _.difference(this.responses, toRemove);
+      // _.each(this.responses, response => {
+      //   response.wipeGuesses();
+      // });
     }
 
     //gathers in the guessed responses by whether they were guessed correctly or not and gathers all information needed for display and scoring before publishing them
@@ -90,7 +104,7 @@ export default ngModule => {
       _.each(right, goodGuess => {
         correct.push({response: goodGuess.response, writer: this.playerHandler.players[goodGuess.playerId].playerName, writerId:goodGuess.playerId, guessers: []});
         _.each(goodGuess.correct, rightGuesser => {
-          _.last(correct).guessers.push({guesser: this.playerHandler.players[rightGuesser].playerName, guesserId: rightGuesser});
+          _.last(correct).guessers.push({guesser: this.playerHandler.players[rightGuesser.guesser].playerName, guesserId: rightGuesser});
         });
       });
       _.each(wrong, badGuess => {

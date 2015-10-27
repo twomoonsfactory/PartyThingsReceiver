@@ -7,9 +7,10 @@ export default ngModule => {
   	$scope.ownerName = stateManager.ownerName;
   	$scope.players = playerHandler.players;
     $scope.currentState = null;
+    $scope.currentlyGuessing = false;
   	$scope.prompts = promptProvider.currentprompts;
     $scope.finalPrompt;
-    $scope.resposes = [];
+    $scope.responses = [];
   	$scope.guesses = [];
     $scope.winners = [];
 
@@ -40,21 +41,29 @@ export default ngModule => {
 
     //gets responses for display
     $scope.getResponses = ()=>{
-      $scope.responses = responseHandler.getResponses();
+      $scope.responses = responseHandler.getResponsesForDisplay();
       $scope.currentState = gameStates.ResponsesReceived;
+      $scope.currentlyGuessing = true;
     }
     eventService.subscribe(gameStates.ResponsesReceived, $scope.getResponses);
 
     //gets guesses for display and resolution
     $scope.getGuesses = (args) => {
-      $scope.guesses = args;
-      $scope.currentState = gameEvents.guessesSorted;
+      $scope.guesses = _.shuffle(args);
     }
     eventService.subscribe(gameEvents.guessesSorted, $scope.getGuesses);
+
+    //sets screen for end-round
+    $scope.endRound = ()=>{
+      $scope.currentState = gameStates.GuessesDisplayed;
+    }
+    eventService.subscribe(gameStates.GuessesDisplayed, $scope.endRound);
 
     //restarts the round
     $scope.newRound = ()=>{
       $scope.currentState = gameStates.ReadyToStart;
+      $scope.guesses = [];
+      $scope.currentlyGuessing = false;
     }
     eventService.subscribe(gameStates.ReadyToStart, $scope.newRound);
 

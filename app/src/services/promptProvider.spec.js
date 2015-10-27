@@ -2,7 +2,7 @@
 
 describe('promptProvider', ()=>{
 	let promptProvider, $log, eventService, gameStates, $httpBackend, url, promptsProvided;
-	beforeEach(angular.mock.module(require('../app.js').name));
+	beforeEach(angular.mock.module('gameMaster'));
 	beforeEach(angular.mock.inject(($injector)=>{
 		promptProvider = $injector.get('promptProvider', promptProvider);
 		$log = $injector.get('$log', $log);
@@ -10,24 +10,25 @@ describe('promptProvider', ()=>{
 		gameStates = $injector.get('gameStates', gameStates);
 		$httpBackend = $injector.get('$httpBackend', $httpBackend);
 		url = '../src/resources/prompts.json';
-		promptsProvided = [
+		promptsProvided = {prompts:[
 	"Things that don't belong together.",
 	"Things you will always say yes to.",
 	"Things your stunt double could do for you.",
-	"Things that keep you up at night."];
+	"Things that keep you up at night."]};
 	}));
 
 	beforeEach(()=>{
 		$httpBackend.whenGET(url).respond(200, promptsProvided);
+		promptProvider.loadPrompts();
 		$httpBackend.flush();
 		promptProvider.getPrompts();
 	});
 
 	it('gets the prompts', ()=>{
-	// 	$httpBackend.whenGET(url).respond(200, promptsProvided);
-	// 	promptProvider.loadPrompts();
-	// 	$httpBackend.flush();
-	//
+		// $httpBackend.whenGET(url).respond(200, promptsProvided);
+		// promptProvider.loadPrompts();
+		// $httpBackend.flush();
+
 		expect(promptProvider.prompts.length).toBe(4);
 	});
 	//

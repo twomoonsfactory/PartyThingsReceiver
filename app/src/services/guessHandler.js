@@ -20,6 +20,7 @@ export default ngModule => {
     }
     //sorts existing guesses
     tallyGuesses(){
+      this.responseHandler.wipeGuesses();
       _.each(this.guesses, guess => {
         if(guess.isWriter(this.responseHandler.getWriter(guess.responseId))){
           this.responseHandler.goodGuess({responseId:guess.responseId,guesser:guess.guesser});
