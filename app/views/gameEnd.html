@@ -8,16 +8,6 @@
 	</md-toolbar>
 	<md-content layout="row" layout-align="space-between center top" layout-fill>
 		<div flex="30" layout="row" layout-align="space-around start" layout-fill>
-			<!-- <table flex="50">
-				<tr class="joined" ng-repeat="player in joinedPlayers|limitTo:10:10">
-					<td>{{player.playerName}}</td>
-				</tr>
-			</table>
-			<table>
-				<tr ng-repeat="player in joinedPlayers|limitTo:10">
-					<td><md-card class="joined">{{player.playerName}}</md-card></td>
-				</tr>
-			</table> -->
 			<md-list flex="50">
 				<md-list-item class="md-1-line joined" ng-repeat="player in joinedPlayers|limitTo:10:10">
 					<md-card layout-fill>
@@ -61,16 +51,6 @@
 					</md-card>
 				</md-list-item>
 			</md-list>
-			<!-- <table>
-				<tr ng-repeat="player in readyPlayers|limitTo:10">
-					<td>{{player.playerName}}</td>
-				</tr>
-			</table>
-			<table>
-				<tr ng-repeat="player in readyPlayers|limitTo:10:10">
-					<td>{{player.playerName}}</td>
-				</tr>
-			</table> -->
 		</div>
 	</md-content>
 </div>
