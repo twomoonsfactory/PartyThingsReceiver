@@ -1,5 +1,4 @@
 export default ngModule => {
-  require('./gameEnd.js')(ngModule);
   require('./gameMessageSlip.js')(ngModule);
   require('./guessDisplay.js')(ngModule);
   require('./guessesDisplayed.js')(ngModule);
