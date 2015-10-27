@@ -2,7 +2,7 @@ export default ngModule => {
   require('./gameEnd.js')(ngModule);
   require('./gameMessageSlip.js')(ngModule);
   require('./guessDisplay.js')(ngModule);
-  require('./guessesSorted.js')(ngModule);
+  require('./guessesDisplayed.js')(ngModule);
   require('./guessRequest.js')(ngModule);
   require('./numberIterator.js')(ngModule);
   require('./playerDisplay.js')(ngModule);

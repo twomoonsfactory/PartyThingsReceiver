@@ -18,6 +18,7 @@ export default ngModule => {
 		quitReceived: "quitReceived",
 		stateUpdated: "stateUpdated",
 		welcomeLoaded: "welcomeLoaded",
+		winnersChosen: "winnersChosen",
 		winnersDecided: "winnersDecided",
 		endView: "endView",
 		newGameRequested: "newGameRequested",

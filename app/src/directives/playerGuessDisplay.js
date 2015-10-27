@@ -63,7 +63,7 @@ export default ngModule => {
             if(right)
               scope.player.wasGuessed();
             elem.removeClass('beingGuessed guessRight guessWrong');
-            $timeout(()=>{defer.resolve()}, 500);
+            $timeout(()=>{defer.resolve()}, 1500);
           });
         }
 

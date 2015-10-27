@@ -132,7 +132,7 @@ export default ngModule =>{
       if(this.playerHandler.unguessedPlayers())
         this.stateManager.resetState(this.gameStates.ResponsesReceived);
       else
-        this.stateManager.setState(this.gameStates.RoundEnd);
+        this.stateManager.setState(this.gameStates.GuessesDisplayed);
     }
 
     //function to either roll things back to a fresh round with all the active players and players standing by, or

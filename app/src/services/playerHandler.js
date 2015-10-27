@@ -128,11 +128,21 @@ export default ngModule => {
     //returns the player names of the winning player(s)
     getWinners(){
       let winners = [];
-      _.each(this.players, player => {
-        if(player.score===this.highScore())
-          winners.push(player.playerName);
-      });
+      if(this.highScore()>=this.winningScore){
+        _.each(this.players, player => {
+          if(player.score===this.highScore())
+            winners.push(player.playerName);
+        });
+      }
       return winners;
+    }
+
+    //emits winners if any
+    winnersChosen(){
+      if(this.getWinners().length>0)
+        return this.getWinners();
+      else
+        return false;
     }
 
     //at the end of round, sets all players to unguessed

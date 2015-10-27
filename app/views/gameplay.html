@@ -7,7 +7,7 @@
 		</div>
 	</md-toolbar>
   <div guess-display="guesses" layout-fill>
-    <md-content layout="row" layout-align="center start">
+    <md-content layout="row" layout-align="center start" layout-fill>
       <div flex="70" layout="column" layout-align="start center" layout-fill>
         <div layout="row" flex="15" layout-fill>
           <md-toolbar flex="80" class="md-accent md-short" layout-fill>
@@ -19,14 +19,13 @@
             <div game-message-slip="gameMessage"></div>
           </div>
         </div>
-        <div ng-switch on="currentState" flex="70" layout-fill>
-          <div class="gameContent" flex="70" ng-switch-when="ReadyToStart" prompt-request prompts="prompts"></div>
-          <div class="gameContent" flex="70" ng-switch-when="PromptChosen" response-request prompt="finalPrompt"></div>
-          <div class="gameContent" flex="70" ng-switch-when="ResponsesReceived" guess-request responses="responses"></div>
-          <!-- <div class="gameContent" ng-switch-when="guessesSorted" guesses-sorted guesses="guesses"></div> -->
-          <div class="gameContent" flex="70" ng-switch-when="RoundEnd" round-results></div>
-          <div class="gameContent" flex="70" ng-switch-when="GameEnd" game-end winners="winners"></div>
-          <div class="gameContent" flex="70" ng-switch-default prompt-request prompts="prompts"></div>
+        <div ng-switch class="gameContainer" on="currentState" flex="70" layout-fill>
+          <div class="gameContent" ng-switch-when="ReadyToStart" prompt-request prompts="prompts"></div>
+          <div class="gameContent" ng-switch-when="PromptChosen" response-request prompt="finalPrompt"></div>
+          <div class="gameContent" ng-switch-when="ResponsesReceived" guess-request responses="responses"></div>
+          <div class="gameContent" ng-switch-when="GuessesDisplayed" guesses-displayed></div>
+          <div class="gameContent" ng-switch-when="RoundEnd" round-results></div>
+          <div class="gameContent" ng-switch-default prompt-request prompts="prompts"></div>
         </div>
       </div>
       <div layout="column" flex="30" layout-fill layout-align="start start">

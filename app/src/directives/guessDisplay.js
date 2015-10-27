@@ -60,7 +60,7 @@ export default ngModule => {
 										response.checkIfGuessed(unguessed);
 									});
 								})
-							$timeout(()=>{deferred.resolve();}, 3500);
+							$timeout(()=>{deferred.resolve();}, 4500);
 							return deferred.promise;
 						}
 					})
@@ -98,7 +98,15 @@ export default ngModule => {
 						})
 					})
 				});
-				$scope.resolveGuesses(0);
+				$q.when()
+				.then(()=>{
+					let deferred = $q.defer();
+					$timeout(()=>{deferred.resolve();}, 3000);
+					return deferred.promise;
+				})
+				.then(()=>{
+					$scope.resolveGuesses(0);
+				});
 			};
 
 			//register emmitted reponse

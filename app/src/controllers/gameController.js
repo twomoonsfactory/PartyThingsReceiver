@@ -53,6 +53,12 @@ export default ngModule => {
     }
     eventService.subscribe(gameEvents.guessesSorted, $scope.getGuesses);
 
+    //sets screen for end-round
+    $scope.endRound = ()=>{
+      $scope.currentState = gameStates.GuessesDisplayed;
+    }
+    eventService.subscribe(gameStates.GuessesDisplayed, $scope.endRound);
+
     //restarts the round
     $scope.newRound = ()=>{
       $scope.currentState = gameStates.ReadyToStart;

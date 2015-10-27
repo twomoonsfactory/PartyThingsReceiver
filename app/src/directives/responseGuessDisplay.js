@@ -68,7 +68,7 @@ export default ngModule => {
               let defer = $q.defer();
               elem.removeClass('beingGuessed guessRight guessWrong unguessed').addClass('unguessedResponse');
               if(num>0)scope.responseSlip.mark();
-              $timeout(()=>{defer.resolve()}, 500);
+              $timeout(()=>{defer.resolve()}, 1500);
               return defer.promise;
             })
 
