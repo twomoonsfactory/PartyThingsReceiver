@@ -29645,7 +29645,7 @@
 
 	        //confirms player ready when received, continues on with the game when all active players have "readied"
 	        this.playerReady = function(args){
-	          let readyPlayer = playerHandler.findPlayer(args.senderId);
+	          let readyPlayer = playerHandler.findPlayerBySenderId(args.senderId);
 	          readyPlayer.setState(playerStates.ready);
 	          playerHandler.playerActed();
 	          if(playerHandler.actedPlayersCount < playerHandler.activePlayers){
@@ -29674,7 +29674,7 @@
 	        //manages incoming votes, assigning them to the right prompt, then calling the prompt provider to return the winning prompt when
 	        //all votes are received.
 	        this.voteReceived = function(args){
-	          let votingPlayer = playerHandler.findPlayer(args.senderId);
+	          let votingPlayer = playerHandler.findPlayerBySenderId(args.senderId);
 	          votingPlayer.setState(playerStates.ready);
 	          promptProvider.promptVote(args.message.promptIndex);
 	          messageSender.requestPrompt({senderId:votingPlayer.senderId, message: messageProvider.getMessage({messageName: messageNames.promptConfirm, pname: votingPlayer.playerName, prompt: promptProvider.prompt})});
@@ -29700,7 +29700,7 @@
 
 	        //manages incoming things, sending the new thing to the responseHandler, until all players have submitted their "things"
 	        this.receivedResponse = function(args){
-	          let responseWriter = playerHandler.findPlayer(args.senderId);
+	          let responseWriter = playerHandler.findPlayerBySenderId(args.senderId);
 	          responseHandler.newResponse({response: args.message.response, playerId:responseWriter.playerId});
 	          responseWriter.setState(playerStates.ready);
 	          messageSender.requestResponse({senderId:responseWriter.senderId, message: messageProvider.getMessage({messageName: messageNames.responseConfirm, pname: responseWriter.playerName, resp: args.message.thing})});
@@ -29725,7 +29725,7 @@
 
 	        //handles guesses -- iterates through rounds of guessing until there are no unguessed players or only one unguessed player.
 	        this.guessReceiver = function(args){
-	          let guesser = playerHandler.findPlayer(args.senderId)
+	          let guesser = playerHandler.findPlayerBySenderId(args.senderId)
 	          guessHandler.newGuess({guesser: guesser.playerId, playerId: args.message.playerId, responseId: args.message.responseId});
 	          guesser.setState(playerStates.ready);
 	          messageSender.requestGuess({senderId: guesser.senderId, message: messageProvider.getMessage({messageName: messageNames.guessConfirm, pname: playerHandler.players[args.message.playerId].playerName, resp: responseHandler.responses[args.message.responseId].response})});
@@ -30369,7 +30369,7 @@
 	  //allows the players to quit at any point without seriously disrupting gameplay.  Will still allow for submitted things to be guessed
 	  //for points, etc.
 	  this.playerQuit = function(args){
-	    let quitter = self.findPlayer(args.senderId);
+	    let quitter = self.findPlayerBySenderId(args.senderId);
 	    if(quitter.checkState(playerStates.ready))
 	      self.actedPlayersCount--;
 	    self.activePlayers--;
@@ -30387,7 +30387,7 @@
 	    self.actedPlayersCount = 0;
 	  }
 
-	  this.findPlayer = function(args){
+	  this.findPlayerBySenderId = function(args){
 	    let foundPlayer = _.find(self.players, function(player){return player.senderId===args;});
 	    return foundPlayer;
 	  }

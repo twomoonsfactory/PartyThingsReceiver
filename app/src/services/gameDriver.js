@@ -44,7 +44,7 @@ export default ngModule =>{
 
     //confirms player ready when received, continues on with the game when all active players have "readied"
     playerReady(args){
-      let readyPlayer = this.playerHandler.findPlayer(args.senderId);
+      let readyPlayer = this.playerHandler.findPlayerBySenderId(args.senderId);
       readyPlayer.setState(this.playerStates.ready);
       this.playerHandler.playerActed();
       this.eventService.publish(this.gameEvents.playerUpdated, "");
@@ -68,7 +68,7 @@ export default ngModule =>{
     //manages incoming votes, assigning them to the right prompt, then calling the prompt provider to return the winning prompt when
     //all votes are received.
     voteReceived(args){
-      let votingPlayer = this.playerHandler.findPlayer(args.senderId);
+      let votingPlayer = this.playerHandler.findPlayerBySenderId(args.senderId);
       votingPlayer.setState(this.playerStates.ready);
       this.promptProvider.promptVote(args.message.promptIndex);
       this.messageSender.requestPrompt({senderId:votingPlayer.senderId, message: this.messageProvider.getMessage({messageName: this.messageNames.promptConfirm, pname: votingPlayer.playerName, prompt: this.promptProvider.prompt})});
@@ -92,7 +92,7 @@ export default ngModule =>{
 
     //manages incoming things, sending the new thing to the this.responseHandler, until all players have submitted their "things"
     receivedResponse(args){
-      let responseWriter = this.playerHandler.findPlayer(args.senderId);
+      let responseWriter = this.playerHandler.findPlayerBySenderId(args.senderId);
       this.responseHandler.newResponse({response: args.message.response, playerId:responseWriter.playerId});
       responseWriter.setState(this.playerStates.ready);
       responseWriter.written = true;
@@ -116,7 +116,7 @@ export default ngModule =>{
 
     //handles guesses -- iterates through rounds of guessing until there are no unguessed players or only one unguessed player.
     guessReceiver(args){
-      let guesser = this.playerHandler.findPlayer(args.senderId)
+      let guesser = this.playerHandler.findPlayerBySenderId(args.senderId)
       this.guessHandler.newGuess({guesser: guesser.playerId, playerId: args.message.playerId, responseId: args.message.responseId});
       guesser.setState(this.playerStates.ready);
       // this.messageSender.requestGuess({senderId: guesser.senderId, message: this.messageProvider.getMessage({messageName: this.messageNames.guessConfirm, pname: this.playerHandler.players[args.message.playerId].playerName, resp: this.responseHandler.responses[args.message.responseId].response})});

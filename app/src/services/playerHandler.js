@@ -164,7 +164,7 @@ export default ngModule => {
     //allows the players to quit at any point without seriously disrupting gameplay.  Will still allow for submitted things to be guessed
     //for points, etc.
     playerQuit(args){
-      let quitter = this.findPlayer(args.senderId);
+      let quitter = this.findPlayerBySenderId(args.senderId);
       if(quitter.checkState(this.playerStates.ready))
         this.actedPlayersCount--;
       if(!quitter.checkState(this.playerStates.standingBy))
@@ -195,7 +195,12 @@ export default ngModule => {
       this.actedPlayersCount = 0;
     }
 
-    findPlayer(args){
+    findPlayerByPlayerId(args){
+      let foundPlayer = _.find(this.players, player => player.playerId===args);
+      return foundPlayer;
+    }
+
+    findPlayerBySenderId(args){
       let foundPlayer = _.find(this.players, player => player.senderId===args);
       return foundPlayer;
     }

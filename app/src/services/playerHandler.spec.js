@@ -285,9 +285,9 @@ describe('playerHandler', ()=>{
 		playerHandler.playerNamed(argz);
 		playerHandler.playerNamed(argss);
 
-		let foundPlayer = playerHandler.findPlayer(434);
-		let foundPlayer2 = playerHandler.findPlayer(123);
-		let foundPlayer3 = playerHandler.findPlayer(456);
+		let foundPlayer = playerHandler.findPlayerBySenderId(434);
+		let foundPlayer2 = playerHandler.findPlayerBySenderId(123);
+		let foundPlayer3 = playerHandler.findPlayerBySenderId(456);
 
 		expect(foundPlayer.playerName).toBe('frank');
 		expect(foundPlayer2.playerName).toBe('bob');
