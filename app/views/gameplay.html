@@ -6,48 +6,50 @@
 			<div class="md-headline">{{ownerName}} Game</div>
 		</div>
 	</md-toolbar>
-  <div guess-display="guesses" layout-fill>
-    <md-content layout="row" layout-align="center start" layout-fill>
-      <div flex="70" layout="column" layout-align="start center" layout-fill>
-        <div layout="row" flex="15" layout-fill>
-          <md-toolbar flex="80" class="md-accent md-short" layout-fill>
-            <div class="md-headline">{{gameHeader}}</div>
-          </md-toolbar>
-        </div>
-        <div layout="row" flex="15" layout-fill>
-          <div flex offset="5">
-            <div game-message-slip="gameMessage"></div>
+  <div layout-fill>
+    <div guess-display="guesses" layout-fill>
+      <md-content layout="row" layout-align="center start" layout-fill>
+        <div flex="70" layout="column" layout-align="start center" layout-fill>
+          <div layout="row" flex="15" layout-fill>
+            <md-toolbar flex="80" class="md-accent md-short" layout-fill>
+              <div class="md-headline">{{gameHeader}}</div>
+            </md-toolbar>
+          </div>
+          <div layout="row" flex="15" layout-fill>
+            <div flex offset="5">
+              <div game-message-slip="gameMessage"></div>
+            </div>
+          </div>
+          <div ng-switch class="gameContainer" on="currentState" flex="70" layout-fill>
+            <div class="gameContent" ng-switch-when="ReadyToStart" prompt-request prompts="prompts"></div>
+            <div class="gameContent" ng-switch-when="PromptChosen" response-request prompt="finalPrompt"></div>
+            <div class="gameContent" ng-switch-when="ResponsesReceived" guess-request responses="responses"></div>
+            <div class="gameContent" ng-switch-when="GuessesDisplayed" guesses-displayed></div>
+            <div class="gameContent" ng-switch-when="RoundEnd" round-results></div>
+            <div class="gameContent" ng-switch-default prompt-request prompts="prompts"></div>
           </div>
         </div>
-        <div ng-switch class="gameContainer" on="currentState" flex="70" layout-fill>
-          <div class="gameContent" ng-switch-when="ReadyToStart" prompt-request prompts="prompts"></div>
-          <div class="gameContent" ng-switch-when="PromptChosen" response-request prompt="finalPrompt"></div>
-          <div class="gameContent" ng-switch-when="ResponsesReceived" guess-request responses="responses"></div>
-          <div class="gameContent" ng-switch-when="GuessesDisplayed" guesses-displayed></div>
-          <div class="gameContent" ng-switch-when="RoundEnd" round-results></div>
-          <div class="gameContent" ng-switch-default prompt-request prompts="prompts"></div>
+        <div layout="column" flex="30" layout-fill layout-align="start start">
+          <md-toolbar class="md-accent md-short" layout-fill>
+            <div class="md-headline">Scoreboard</div>
+          </md-toolbar>
+          <div layout="row" layout-fill>
+            <md-button class="md-raised md-primary" ng-click="incomingPlayer()">PendPlayer</md-button>
+            <md-button class="md-raised md-primary" ng-click="plusPlayer()">AddPlayer</md-button>
+            <md-button class="md-raised md-primary" ng-click="morePoints()">5 points</md-button>
+            <md-button class="md-raised md-primary" ng-click="removePlayer()">DropPlayer</md-button>
+            <md-button class="md-raised md-primary" ng-click="sendVotes()">Vote</md-button>
+          </div>
+          <div layout="row" layout-fill>
+            <md-button class="md-raised md-primary" ng-click="sendResponses()">Respond</md-button>
+            <md-button class="md-raised md-primary" ng-click="sendGuesses()">Guess</md-button>
+            <md-button class="md-raised md-primary" ng-click="guessRight()">Right</md-button>
+            <md-button class="md-raised md-primary" ng-click="kingMaker()">Win</md-button>
+            <md-button class="md-raised md-primary" ng-click="skipToEnd()">SkipEnd</md-button>
+          </div>
+          <div player-display players="players" guessing="currentlyGuessing" layout-fill></div>
         </div>
-      </div>
-      <div layout="column" flex="30" layout-fill layout-align="start start">
-        <md-toolbar class="md-accent md-short" layout-fill>
-          <div class="md-headline">Scoreboard</div>
-        </md-toolbar>
-        <div layout="row" layout-fill>
-          <md-button class="md-raised md-primary" ng-click="incomingPlayer()">PendPlayer</md-button>
-          <md-button class="md-raised md-primary" ng-click="plusPlayer()">AddPlayer</md-button>
-          <md-button class="md-raised md-primary" ng-click="morePoints()">5 points</md-button>
-          <md-button class="md-raised md-primary" ng-click="removePlayer()">DropPlayer</md-button>
-          <md-button class="md-raised md-primary" ng-click="sendVotes()">Vote</md-button>
-        </div>
-        <div layout="row" layout-fill>
-          <md-button class="md-raised md-primary" ng-click="sendResponses()">Respond</md-button>
-          <md-button class="md-raised md-primary" ng-click="sendGuesses()">Guess</md-button>
-          <md-button class="md-raised md-primary" ng-click="guessRight()">Right</md-button>
-          <md-button class="md-raised md-primary" ng-click="kingMaker()">Win</md-button>
-          <md-button class="md-raised md-primary" ng-click="skipToEnd()">SkipEnd</md-button>
-        </div>
-        <div player-display players="players" guessing="currentlyGuessing" layout-fill></div>
-      </div>
-    </md-content>
+      </md-content>
+    </div>
   </div>
 </div>
