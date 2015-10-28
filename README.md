@@ -1,7 +1,7 @@
 # PartyThingsReceiver
 Custom receiver application for a Chromecast app.  Built with AngularJS.
 
-<b>The app is undergoing an overhaul to take advantage of Angular Material for a greatly improved UI.  While not 100% complete, to see the work in progress please visig the Working branch of this repository.</b>
+<b>The app is undergoing an overhaul to take advantage of Angular Material for a greatly improved UI.  The majority of the work is done, except for styling.  You can see the animations and flow of the game working on the Master branch.  For adjusted timings and improved styles, please see the Working branch.</b>
 
 The Sender applications for this Chromecast party game are in progress for both iOS and Android, and will should be available soon.
 
