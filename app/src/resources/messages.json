@@ -52,6 +52,39 @@
 		{"messageName" : "unguessedDisplay", "message" : "Now for the unguessed players..."},
 		{"messageName" : "noUnguessed", "message" : "There were no unguessed players."},
 		{"messageName" : "unguessedPlayers", "message" : "There were {PNAME} unguessed players, who each scored a {POINTS} point bonus!"},
-		{"messageName" : "oneUnguessedPlayer", "message" : "{PNAME} was the only unguessed player and gets a {POINTS} point bonus!"}
+		{"messageName" : "oneUnguessedPlayer", "message" : "{PNAME} was the only unguessed player and gets a {POINTS} point bonus!"},
+		{"messageName" : "multipleRightToast", "message" : [
+			"{PNAME} were all right! {POINTS} each!",
+			"{PNAME} split the points!",
+			"{POINTS} apiece for {PNAME}!",
+			"{PNAME} all guessed correctly!"
+			]},
+		{"messageName" : "oneRightToast", "message" : [
+			"{PNAME} has chosen wisely. {POINTS} points!",
+			"Nice {PNAME}, you get {POINTS}.",
+			"You're brighter than you look {PNAME}.",
+			"{PNAME} is raising the room's IQ. {POINTS} points."
+			]},
+		{"messageName" : "unguessedResponseToast", "message" : [
+			"I agree, not worth guessing.",
+			"Did you forget to guess something?"
+			]},
+		{"messageName" : "unguessedPlayersToast", "message" : [
+			"{POINTS} free points is nice.",
+			"Stay unguessed for {POINTS} points!",
+			"Free points are almost as good as free money."
+			]},
+		{"messageName" : "writerToast", "message" : [
+			"Own up {PNAME}, you said it.",
+			"{PNAME} speaks true.",
+			"{PNAME} wrote it!"
+			]},
+		{"messageName" : "wrongToast", "message" : [
+			"You should be ashamed of yourselves.",
+			"I expected a better showing.",
+			"I feel my IQ dropping.",
+			"Nothing right here...",
+			"Maybe next time?"
+			]}
 	]
 }

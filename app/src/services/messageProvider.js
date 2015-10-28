@@ -51,6 +51,23 @@ export default ngModule => {
 			}
 			return compiledMessage;
 		}
+
+		//args -> .messageType - the array to pull a message from
+		//				.pname : player name(s)
+		//				.points : numeric points
+		getToastMessage(args){
+			let compiledMessage = '';
+			if((_.findWhere(this.messages, {messageName: args.messageType}))!==undefined){
+				compiledMessage = _.sample(_.findWhere(this.messages, {messageName: args.messageType}).message);
+				compiledMessage = compiledMessage.indexOf("{PNAME}") >= 0 ? compiledMessage.replace("{PNAME}", args.pname) : compiledMessage;
+				compiledMessage = compiledMessage.indexOf("{POINTS}") >= 0 ? compiledMessage.replace("{POINTS}", args.points.toString()) : compiledMessage;
+			}
+			else{
+				this.$log.log("Message: " + args.messageName + "does not exist");
+				compiledMessage = null;
+			}
+			return compiledMessage;
+		}
 	}
 	messageProvider.$inject = ['$log', '$http', 'eventService', 'gameEvents'];
 	ngModule.service('messageProvider', messageProvider);

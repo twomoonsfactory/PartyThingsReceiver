@@ -50,6 +50,12 @@ export default ngModule => {
 		unguessedDisplay: "unguessedDisplay",
 		noUnguessed: "noUnguessed",
 		unguessedPlayers: "unguessedPlayers",
-		oneUnguessedPlayer: "oneUnguessedPlayer"
+		oneUnguessedPlayer: "oneUnguessedPlayer",
+		multipleRightToast: "multipleRightToast",
+		oneRightToast: "oneRightToast",
+		unguessedResponseToast: "unguessedResponseToast",
+		unguessedPlayersToast: "unguessedPlayersToast",
+		writerToast: "writerToast",
+		wrongToast: "wrongToast"
 	});
 }

@@ -1,6 +1,7 @@
 export default ngModule => {
 	ngModule.directive('guessDisplay', ()=>{
-		var controller = ['$scope', '$rootScope', '$q', '$timeout', 'eventService', 'gameEvents', '$mdToast', '$animate', 'gameNumbers', 'playerHandler', ($scope, $rootScope, $q, $timeout, eventService, gameEvents, $mdToast, $animate, gameNumbers, playerHandler)=>{
+		var controller = ['$scope', '$rootScope', '$q', '$timeout', 'eventService', 'gameEvents', '$mdToast', '$animate', 'gameNumbers', 'playerHandler', 'messageProvider', 'messageNames',
+											($scope, $rootScope, $q, $timeout, eventService, gameEvents, $mdToast, $animate, gameNumbers, playerHandler, messageProvider, messageNames)=>{
 			$scope.registeredResponses = [];
 			$scope.registeredResponseSlips = [];
 			$scope.registeredPlayers = [];
@@ -55,12 +56,12 @@ export default ngModule => {
 						//for correctly guessed
 						if(responseGuessed){
 							let writer = playerHandler.findPlayerByPlayerId(responseGuessed.response.playerId).playerName;
-							message = writer + ' wrote it!';
+							message = messageProvider.getToastMessage({messageType: messageNames.writerToast, pname: writer});
 							type = $scope.trueToast;
 						}
 						//for incorrectly guessed
 						else {
-							message = "You couldn't guess right?  Try harder!";
+							message = messageProvider.getToastMessage({messageType: messageNames.wrongToast});
 							type = $scope.falseToast;
 						}
 						$scope.showToast(message, 1000, true, type);
@@ -91,7 +92,7 @@ export default ngModule => {
 							let points=Math.floor(gameNumbers.guessScore/correctGuessers.length);
 							if(correctGuessers.length===1){
 								let player = playerHandler.findPlayerByPlayerId(correctGuessers[0].player.playerId).playerName;
-								message = 'Nice ' + player + ', you  get ' + points + ' points!';
+								message = messageProvider.getToastMessage({messageType: messageNames.oneRightToast, pname: player, points: points});
 							}
 							else{
 								let players = '';
@@ -103,7 +104,7 @@ export default ngModule => {
 									else
 										players+= ', ' + playerHandler.findPlayerByPlayerId(correctGuessers[i].player.playerId).playerName;
 								}
-								message = players + ' each get ' + points + ' for sharing the guess!';
+								message = messageProvider.getToastMessage({messageType: messageNames.multipleRightToast, pname: players, points: points});
 							}
 							$scope.showToast(message, 2000, false, type);
 							$timeout(()=>{deferred.resolve(correctGuessers);}, 1000);
@@ -150,7 +151,7 @@ export default ngModule => {
 						let deferred = $q.defer();
 						if(unguessed){
 							//toast for the unguessed
-							let message = "Nobody bothered guessing these..."
+							let message = messageProvider.getToastMessage({messageType: messageNames.unguessedResponseToast});
 							let type = $scope.unguessedToast;
 							$scope.showToast(message, 2000, true, type);
 
@@ -177,7 +178,7 @@ export default ngModule => {
 						//toast and score update accordingly
 						if(unguessedPlayers.length>0){
 							let deferred = $q.defer();
-							let message = 'Unguessed players get a free ' + gameNumbers.unguessedScore + ' points!';
+							let message = messageProvider.getToastMessage({messageType: messageNames.unguessedPlayersToast, points: gameNumbers.unguessedScore});
 							let type = $scope.trueToast;
 							$scope.showToast(message, 2000, false, type);
 							$timeout(()=>{deferred.resolve(unguessedPlayers);}, 1000);
