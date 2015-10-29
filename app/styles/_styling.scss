@@ -1,4 +1,5 @@
 @import "variables";
+
 body{
   background-color: $bodyBackground;
 }
@@ -36,6 +37,10 @@ body{
 .inactive{
   font-weight: lighter;
   color: #999999;
+}
+.supressed{
+  @extend .inactive;
+  background-color: #CCCCCC;
 }
 
 .responseCard{

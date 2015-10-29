@@ -1,3 +1,4 @@
+
 @import "variables";
 
 //animation for whole screen sliding in
@@ -68,18 +69,18 @@
 
 //gameMessage flip card
 .messageContainer{
-  perspective: 1000;
-  // position: relative;
+  position: relative;
+  // perspective: 1000;
   text-align: center;
   height: 100%;
   width: 100%;
 }
 .messageSide{
-  // position: absolute;
+  position: absolute;
   // height: 100%;
   // width: 100%;
-  // top: 0;
-  // left: 0;
+  top: 0;
+  left: 0;
   -webkit-backface-visibility: hidden;
   -webkit-transition: -webkit-transform 0.5s;
 }
