@@ -1,5 +1,6 @@
 export default ngModule => {
   ngModule.config(function($routeProvider, $locationProvider){
+    //sets the views
     $routeProvider
     //welcome page
     .when('/welcome', {
@@ -22,6 +23,6 @@ export default ngModule => {
     //default to welcome
     .otherwise({
       redirectTo: '/welcome'
-    })
+    });
   });
 }

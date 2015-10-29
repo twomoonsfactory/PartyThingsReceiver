@@ -8,17 +8,16 @@
 	</md-toolbar>
   <div layout-fill>
     <div guess-display="guesses" layout-fill>
-      <md-content layout="row" layout-align="center start" layout-fill>
-        <div flex="70" layout="column" layout-align="start center" layout-fill>
+      <div layout="row" layout-align="center start" layout-fill>
+        <div flex="70" layout="column" layout-align="space-between center" layout-fill>
           <div layout="row" flex="15" layout-fill>
-            <md-toolbar flex="80" class="md-accent md-short" layout-fill>
-              <div class="md-headline">{{gameHeader}}</div>
+            <md-toolbar flex="80" class="md-accent gameplayHeader" layout-fill>
+              <div flex offset="20" class="md-headline">{{gameHeader}}</div>
             </md-toolbar>
           </div>
           <div layout="row" flex="15" layout-fill>
-            <div flex offset="5">
-              <div game-message-slip="gameMessage"></div>
-            </div>
+            <div flex="10"></div>
+            <div game-message-slip="gameMessage"></div>
           </div>
           <div ng-switch class="gameContainer" on="currentState" flex="70" layout-fill>
             <div class="gameContent" ng-switch-when="ReadyToStart" prompt-request prompts="prompts"></div>
@@ -30,8 +29,8 @@
           </div>
         </div>
         <div layout="column" flex="30" layout-fill layout-align="start start">
-          <md-toolbar class="md-accent md-short" layout-fill>
-            <div class="md-headline">Scoreboard</div>
+          <md-toolbar class="md-accent playerHeader" layout-fill>
+            <div flex offset="40" class="md-headline">Scoreboard</div>
           </md-toolbar>
           <div layout="row" layout-fill>
             <md-button class="md-raised md-primary" ng-click="incomingPlayer()">PendPlayer</md-button>
@@ -49,7 +48,7 @@
           </div>
           <div player-display players="players" guessing="currentlyGuessing" layout-fill></div>
         </div>
-      </md-content>
+      </div>
     </div>
   </div>
 </div>

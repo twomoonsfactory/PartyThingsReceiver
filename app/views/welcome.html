@@ -6,38 +6,28 @@
 			<div class="md-headline">Players Ready</div>
 		</div>
 	</md-toolbar>
-	<md-content layout="row" layout-align="space-between center top" layout-fill>
+	<md-content class="md-accent md-hue-1" layout="row" layout-align="space-between center top" layout-fill>
 		<div flex="30" layout="row" layout-align="space-around start" layout-fill>
-			<!-- <table flex="50">
-				<tr class="joined" ng-repeat="player in joinedPlayers|limitTo:10:10">
-					<td>{{player.playerName}}</td>
-				</tr>
-			</table>
-			<table>
-				<tr ng-repeat="player in joinedPlayers|limitTo:10">
-					<td><md-card class="joined">{{player.playerName}}</md-card></td>
-				</tr>
-			</table> -->
 			<md-list flex="50">
 				<md-list-item class="md-1-line joined" ng-repeat="player in joinedPlayers|limitTo:10:10">
-					<md-card layout-fill>
+					<md-whiteframe class="md-whiteframe-2dp" layout-fill>
 						{{player.playerName}}
-					</md-card>
+					</md-whiteframe>
 				</md-list-item>
 			</md-list>
 			<md-list flex="50">
 				<md-list-item class="md-1-line joined" ng-repeat="player in joinedPlayers|limitTo:10">
-					<md-card layout-fill>
+					<md-whiteframe class="md-whiteframe-2dp" layout-fill>
 						{{player.playerName}}
-					</md-card>
+					</md-whiteframe>
 				</md-list-item>
 			</md-list>
 		</div>
 		<md-card layout="column" layout-align="top center" flex>
 			<div>
-				<md-button class="md-raised md-primary" ng-click="nameIt()">NameIt</md-button>
-				<md-button class="md-raised md-primary" ng-click="incomingPlayer()">PendPlayer</md-button>
-			  <md-button class="md-raised md-primary" ng-click="plusPlayer()">AddPlayer</md-button><br />
+				<md-button class="md-raised md-accent" ng-click="nameIt()">NameIt</md-button>
+				<md-button class="md-raised md-accent md-hue-1" ng-click="incomingPlayer()">PendPlayer</md-button>
+			  <md-button class="md-raised md-accent md-hue-2" ng-click="plusPlayer()">AddPlayer</md-button><br />
 			  <md-button class="md-raised md-primary" ng-click="removePlayer()">RoseQuit</md-button>
 			  <md-button class="md-raised md-primary" ng-click="readyPlayer()">Ready</md-button>
 				<md-button class="md-raised md-primary" ng-click="primeIt()">Prime</md-button>

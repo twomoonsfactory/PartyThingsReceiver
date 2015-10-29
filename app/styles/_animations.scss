@@ -1,0 +1,153 @@
+@import "variables";
+
+//animation for whole screen sliding in
+.slideup{
+  -webkit-transition:all 1s ease;
+  -moz-transition:all 1s ease;
+  -o-transition:all 1s ease;
+  transition:all 1s ease;
+  &.ng-enter{
+    top: 100%;
+  }
+  &.ng-enter-active{
+    top: 0;
+  }
+  &.ng-leave{
+    top: 0;
+  }
+  &.ng-leave-active{
+    top: -100%;
+  }
+}
+
+//animations for player slips on the welcome screen
+.sliderTimers{
+  -webkit-transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) .75s;
+  -moz-transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) .75s;
+  -o-transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) .75s;
+  transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) .75s;
+}
+.joined{
+  @extend .sliderTimers;
+  &.ng-enter{
+    opacity: 0;
+    bottom: -50px;
+  }
+  &.ng-enter-active{
+    opacity: 1;
+    bottom: 0;
+  }
+  &.ng-leave{
+    opacity: 1;
+    right: 0;
+  }
+  &.ng-leave-active{
+    opacity: 0;
+    right: -100px;
+  }
+}
+.readied{
+  @extend .sliderTimers;
+  &.ng-enter{
+    opacity: 0;
+    left: -100px;
+  }
+  &.ng-enter-active{
+    opacity: 1;
+    left: 0;
+  }
+  &.ng-leave{
+    opacity: 1;
+    bottom: 0;
+  }
+  &.ng-leave-acctive{
+    opacity: 0;
+    bottom: -50px;
+  }
+}
+
+//gameMessage flip card
+.messageContainer{
+  perspective: 1000;
+  // position: relative;
+  text-align: center;
+  height: 100%;
+  width: 100%;
+}
+.messageSide{
+  // position: absolute;
+  // height: 100%;
+  // width: 100%;
+  // top: 0;
+  // left: 0;
+  -webkit-backface-visibility: hidden;
+  -webkit-transition: -webkit-transform 0.5s;
+}
+.messageFront{
+  @extend .messageSide;
+  z-index: 2;
+  background-color: $frontSide;
+  .messageContainer.flipped &{
+    -webkit-transform: rotateX(-180deg);
+  }
+}
+.messageBack{
+  @extend .messageSide;
+  background-color: $backSide;
+  -webkit-transform: rotateX(-180deg);
+  .messageContainer.flipped &{
+    -webkit-transform: rotateX(0);
+  }
+}
+
+//gameContent swapping
+.gameContent{
+  -webkit-transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) .75s;
+  -moz-transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) .75s;
+  -o-transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) .75s;
+  transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) .75s;
+  &.ng-enter{
+    top: 1000px;
+  }
+  &.ng-enter-active{
+    top: 0;
+  }
+  &.ng-leave{
+    top: 0;
+  }
+  &.ng-leave{
+    top: -1000px;
+  }
+}
+
+//guessPulses during resolution
+.guessPulses{
+  -webkit-transition: all cubic-bezier(0.17, 0.67, 0.83, 0.67) 0.5s;
+  -moz-transition: all cubic-bezier(0.17, 0.67, 0.83, 0.67) 0.5s;
+  -o-transition: all cubic-bezier(0.17, 0.67, 0.83, 0.67) 0.5s;
+  transition: all cubic-bezier(0.17, 0.67, 0.83, 0.67) 0.5s;
+}
+.guess1{
+  @extend .guessPulses;
+  background-color: $firstGuessPulse;
+}
+.guessMid{
+  @extend .guessPulses;
+  background-color: $midGuessPulse;
+}
+.guess2{
+  @extend .guessPulses;
+  background-color: $endGuessPulse;
+}
+.guessRight{
+  @extend .guessPulses;
+  background-color: $rightGuess;
+}
+.guessWrong{
+  @extend .guessPulses;
+  background-color: $wrongGuess;
+}
+.unguessed{
+  @extend .guessPulses;
+  background-color: $unguessed;
+}

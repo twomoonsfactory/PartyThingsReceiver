@@ -13,7 +13,8 @@ var app = path.join(__dirname + '/app');
 		module: {
 			loaders: [
 				{test: /\.js$/, exclude: /node_modules/, loader: "babel-loader"},
-				{test: /\.css$/, loader: "style!css"}
+				{test: /\.css$/, loader: "style!css"},
+				{test: /\.scss$/, loader: "style!css!sass"}
 			]
 		},
 		plugins: [

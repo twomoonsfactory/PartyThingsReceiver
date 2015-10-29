@@ -7,9 +7,10 @@ module.exports = ()=>{
 	require('angular-material');
 	require('angular-animate');
 	require('../../node_modules/angular-material/angular-material.css');
-	require('../styles/animation.css');
-	require('../styles/cards.css');
+	// require('../styles/animation.css');
+	// require('../styles/cards.css');
 	// require('bootstrap');
+	require('../styles/index.scss');
 
 	/* Styles */
 	// require('../index.less');

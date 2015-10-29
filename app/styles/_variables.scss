@@ -1,0 +1,21 @@
+//colors for responses and players when resolving guesses
+$firstGuessPulse: #66FF66;
+$midGuessPulse: #FFFF66;
+$endGuessPulse: #FF6666;
+$rightGuess: #00FF00;
+$wrongGuess: #FF0000;
+$unguessed: #FFFF00;
+
+//subbanners on gameplay screen
+$subbannerBorderRadius: 2em;
+
+//toast colors
+$mutedRight: darken($rightGuess, 10%);
+$mutedWrong: darken($wrongGuess, 10%);
+
+//card colors
+$frontSide: #FFE082;
+$backSide: #FFD54F;
+
+$bodyBackground: #E8EAF6;
+$cardBackground: #FFF8E1;

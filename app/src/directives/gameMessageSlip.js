@@ -15,12 +15,12 @@ export default ngModule =>{
           if(scope.onMessage1){
             scope.message2 = scope.gameMessage;
             scope.onMessage1 = false;
-            elem.addClass('flipped');
+            elem.addClass('flipped md-accent');
           }
           else{
             scope.message1 = scope.gameMessage;
             scope.onMessage1 = true;
-            elem.removeClass('flipped');
+            elem.removeClass('flipped md-accent');
           }
         });
       }
