@@ -45,7 +45,7 @@ export default ngModule => {
 							if(wasGuessed) //if the player was the writer of a correclty guessed prompt, true was returned
 								playerGuessed = player;
 						});
-						$timeout(()=>{deferred.resolve(responseGuessed);}, 3500);
+						$timeout(()=>{deferred.resolve(responseGuessed);}, 5000);//4 secs left w/results up
 						return deferred.promise;
 					})
 					.then(()=>{
@@ -64,8 +64,8 @@ export default ngModule => {
 							message = messageProvider.getToastMessage({messageType: messageNames.wrongToast});
 							type = $scope.falseToast;
 						}
-						$scope.showToast(message, 1000, true, type);
-						$timeout(()=>{deferred.resolve();}, 1000);
+						$scope.showToast(message, 2500, true, type);
+						$timeout(()=>{deferred.resolve();}, 2500); //1.5 sec with original results up
 						return deferred.promise;
 					})
 					.then(()=>{
@@ -100,14 +100,14 @@ export default ngModule => {
 									if(i===0)
 										players += playerHandler.findPlayerByPlayerId(correctGuessers[i].player.playerId).playerName;
 									else if(i===correctGuessers.length-1)
-										players+= '& ' + playerHandler.findPlayerByPlayerId(correctGuessers[i].player.playerId).playerName;
+										players+= ' & ' + playerHandler.findPlayerByPlayerId(correctGuessers[i].player.playerId).playerName;
 									else
 										players+= ', ' + playerHandler.findPlayerByPlayerId(correctGuessers[i].player.playerId).playerName;
 								}
 								message = messageProvider.getToastMessage({messageType: messageNames.multipleRightToast, pname: players, points: points});
 							}
 							$scope.showToast(message, 2000, false, type);
-							$timeout(()=>{deferred.resolve(correctGuessers);}, 1000);
+							$timeout(()=>{deferred.resolve(correctGuessers);}, 1500);//original results drop
 							return deferred.promise;
 						}
 					})
@@ -141,7 +141,7 @@ export default ngModule => {
 											unguessedResponses.push(response);
 									});
 								})
-							$timeout(()=>{deferred.resolve(true);}, 3000);
+							$timeout(()=>{deferred.resolve(true);}, 8000);
 							return deferred.promise;
 						}
 						deferred.resolve(false);

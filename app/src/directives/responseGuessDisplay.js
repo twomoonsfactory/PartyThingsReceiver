@@ -52,32 +52,62 @@ export default ngModule => {
           $q.when()
           .then(()=>{
             let defer = $q.defer();
-            elem.removeClass('unguessedResponse cardHue').addClass('beingGuessed guess1');
+            elem.removeClass('unguessedResponse cardHue').addClass('beingGuessed guessMid');
             $timeout(()=>{defer.resolve()}, 500);
             return defer.promise;
           })
           .then(()=>{
             let defer = $q.defer();
-            elem.addClass('guessMid');
+            elem.removeClass('guessMid').addClass('guess1');
             $timeout(()=>{defer.resolve()}, 500);
             return defer.promise;
           })
           .then(()=>{
             let defer = $q.defer();
-            elem.removeClass('guessMid guess1').addClass('guess2');
+            elem.removeClass('guess1').addClass('guessMid');
             $timeout(()=>{defer.resolve()}, 500);
             return defer.promise;
           })
           .then(()=>{
             let defer = $q.defer();
-            elem.addClass('guessMid');
+            elem.removeClass('guessMid').addClass('guess2');
             $timeout(()=>{defer.resolve()}, 500);
             return defer.promise;
           })
           .then(()=>{
             let defer = $q.defer();
-            elem.removeClass('guessMid guess2').addClass(num>0?'guessRight':num<0?'guessWrong':'unguessed');
-            $timeout(()=>{defer.resolve()}, 1000);
+            elem.removeClass('guess2').addClass('guessMid');
+            $timeout(()=>{defer.resolve()}, 500);
+            return defer.promise;
+          })
+          .then(()=>{
+            let defer = $q.defer();
+            elem.removeClass('guessMid').addClass('guess1');
+            $timeout(()=>{defer.resolve()}, 500);
+            return defer.promise;
+          })
+          .then(()=>{
+            let defer = $q.defer();
+            elem.removeClass('guess1').addClass('guessMid');
+            $timeout(()=>{defer.resolve()}, 500);
+            return defer.promise;
+          })
+          .then(()=>{
+            let defer = $q.defer();
+            elem.removeClass('guessMid').addClass('guess2');
+            $timeout(()=>{defer.resolve()}, 500);
+            return defer.promise;
+          })
+          .then(()=>{
+            let defer = $q.defer();
+            elem.removeClass('guess2').addClass('guessMid');
+            $timeout(()=>{defer.resolve()}, 500);
+            return defer.promise;
+          })
+          .then(()=>{
+            let defer = $q.defer();
+            elem.removeClass('guessMid').addClass(num>0?'guessRight':num<0?'guessWrong':'unguessed');
+            $timeout(()=>{defer.resolve()}, 5000);
             return defer.promise;
           });
         };
@@ -86,6 +116,7 @@ export default ngModule => {
         scope.resolveAnimation=()=>{
           elem.removeClass('beingGuessed guessRight guessWrong unguessed').addClass('unguessedResponse cardHue');
           if(scope.wasGuessed)scope.responseSlip.mark();
+          scope.wasGuessed = false;
         }
 
         $rootScope.$emit(gameEvents.responseRegistered, scope);

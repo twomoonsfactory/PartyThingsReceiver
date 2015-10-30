@@ -1,3 +1,4 @@
+
 //colors for responses and players when resolving guesses
 $firstGuessPulse: #66FF66;
 $midGuessPulse: #FFFF66;
@@ -16,3 +17,9 @@ $displayBackground: #FFECB3;
 
  //card colors
 $messageColor: darken($displayBackground, 10%);
+
+//shared across
+.cardHue{
+  @extend .fastReturn;
+  background-color: $cardBackground;
+}
