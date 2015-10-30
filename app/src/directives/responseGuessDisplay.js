@@ -52,7 +52,7 @@ export default ngModule => {
           $q.when()
           .then(()=>{
             let defer = $q.defer();
-            elem.removeClass('unguessedResponse').addClass('beingGuessed guess1');
+            elem.removeClass('unguessedResponse cardHue').addClass('beingGuessed guess1');
             $timeout(()=>{defer.resolve()}, 500);
             return defer.promise;
           })
@@ -84,7 +84,7 @@ export default ngModule => {
 
         //returns the response slip to the proper state
         scope.resolveAnimation=()=>{
-          elem.removeClass('beingGuessed guessRight guessWrong unguessed').addClass('unguessedResponse');
+          elem.removeClass('beingGuessed guessRight guessWrong unguessed').addClass('unguessedResponse cardHue');
           if(scope.wasGuessed)scope.responseSlip.mark();
         }
 

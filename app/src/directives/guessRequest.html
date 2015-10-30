@@ -2,9 +2,9 @@
   <div flex offset="15">
     <md-list>
       <md-list-item class="md-1-line" ng-repeat="response in responses">
-        <md-whiteframe class="unguessedResponse" flex="80" response-guess-display="response" layout-align="space-between center">
-          <h4 class="responseCard" response-slip="response"></h4>
-        </md-whiteframe>
+        <div class="responseCard cardHue unguessedResponse" flex="80" response-guess-display="response" layout-align="space-between center">
+          <div response-slip="response"></div>
+        </div>
       </md-list-item>
     </md-list>
   </div>
@@ -14,18 +14,18 @@
   <div flex="45" offset="5">
     <md-list>
       <md-list-item class="md-1-line" ng-repeat="response in responses | limitTo:7">
-        <md-whiteframe class="unguessedResponse" flex="80" response-guess-display="response">
-          <h4>{{ response.response }}</h4>
-        </md-whiteframe>
+        <div class="responseCard cardHue unguessedResponse" flex="80" response-guess-display="response" layout-align="space-between center">
+          <div response-slip="response"></div>
+        </div>
       </md-list-item>
     </md-list>
   </div>
   <div flex="45">
       <md-list>
         <md-list-item class="md-1-line" ng-repeat="response in responses | limitTo:7:7">
-          <md-whiteframe class="unguessedResponse" flex="80" response-guess-display="response">
-            <h4>{{ response.response }}</h4>
-          </md-whiteframe>
+          <div class="responseCard cardHue unguessedResponse" flex="80" response-guess-display="response" layout-align="space-between center">
+            <div response-slip="response"></div>
+          </div>
         </md-list-item>
       </md-list>
     </div>
@@ -34,27 +34,27 @@
   <div flex="33">
     <md-list>
       <md-list-item class="md-1-line" ng-repeat="response in responses | limitTo:7">
-        <md-whiteframe class="unguessedResponse" flex="80" response-guess-display="response">
-          <h4>{{ response.response }}</h4>
-        </md-whiteframe>
+        <div class="responseCard cardHue unguessedResponse" flex="80" response-guess-display="response" layout-align="space-between center">
+          <div response-slip="response"></div>
+        </div>
       </md-list-item>
     </md-list>
   </div>
   <div flex="33">
     <md-list>
       <md-list-item class="md-1-line" ng-repeat="response in responses | limitTo:7:7">
-        <md-whiteframe class="unguessedResponse" flex="80" response-guess-display="response">
-          <h4>{{ response.response }}</h4>
-        </md-whiteframe>
+        <div class="responseCard cardHue unguessedResponse" flex="80" response-guess-display="response" layout-align="space-between center">
+          <div response-slip="response"></div>
+        </div>
       </md-list-item>
     </md-list>
   </div>
   <div flex="33">
     <md-list>
       <md-list-item class="md-1-line" ng-repeat="response in responses | limitTo:7:14">
-        <md-whiteframe class="unguessedResponse" flex="80" response-guess-display="response">
-          <h4>{{ response.response }}</h4>
-        </md-whiteframe>
+        <div class="responseCard cardHue unguessedResponse" flex="80" response-guess-display="response" layout-align="space-between center">
+          <div response-slip="response"></div>
+        </div>
       </md-list-item>
     </md-list>
   </div>

@@ -1,9 +1,9 @@
 <div layout-fill>
-  <md-toolbar class="md-tall" layout="column" layout-align="end">
+  <md-toolbar class="header md-tall" layout="column" layout-align="end">
 		<div class="md-toolbar-tools" layout="row" layout-align="space-around end">
 			<div></div>
-			<div class="md-display-1">{{gameName}}!</div>
-			<div class="md-headline">{{ownerName}} Game</div>
+			<div class="titleBar">{{gameName}}!</div>
+			<div class="subtitle">{{ownerName}} Game</div>
 		</div>
 	</md-toolbar>
   <div layout-fill>
@@ -12,11 +12,11 @@
         <div flex="70" layout="column" layout-align="space-between center" layout-fill>
           <div layout="row" flex="15" layout-fill>
             <md-toolbar flex="80" class="md-accent gameplayHeader" layout-fill>
-              <div flex offset="20" class="md-headline">{{gameHeader}}</div>
+              <div flex offset="20">{{gameHeader}}</div>
             </md-toolbar>
           </div>
-          <div layout="row" flex="15" layout-fill>
-            <div flex="10"></div>
+          <div layout="column" flex="10" layout-align="space-around-center" layout-fill>
+            <div flex="30"></div>
             <div game-message-slip="gameMessage"></div>
           </div>
           <div ng-switch class="gameContainer" on="currentState" flex="70" layout-fill>
@@ -30,21 +30,21 @@
         </div>
         <div layout="column" flex="30" layout-fill layout-align="start start">
           <md-toolbar class="md-accent playerHeader" layout-fill>
-            <div flex offset="40" class="md-headline">Scoreboard</div>
+            <div flex offset="40">Scoreboard</div>
           </md-toolbar>
           <div layout="row" layout-fill>
-            <md-button class="md-raised md-primary" ng-click="incomingPlayer()">PendPlayer</md-button>
-            <md-button class="md-raised md-primary" ng-click="plusPlayer()">AddPlayer</md-button>
-            <md-button class="md-raised md-primary" ng-click="morePoints()">5 points</md-button>
-            <md-button class="md-raised md-primary" ng-click="removePlayer()">DropPlayer</md-button>
+            <!-- <md-button class="md-raised md-primary" ng-click="incomingPlayer()">PendPlayer</md-button> -->
+            <!-- <md-button class="md-raised md-primary" ng-click="plusPlayer()">AddPlayer</md-button> -->
+            <!-- <md-button class="md-raised md-primary" ng-click="removePlayer()">DropPlayer</md-button> -->
             <md-button class="md-raised md-primary" ng-click="sendVotes()">Vote</md-button>
+            <md-button class="md-raised md-primary" ng-click="sendResponses()">Respond</md-button>
+            <md-button class="md-raised md-primary" ng-click="sendGuesses()">Random Guess</md-button>
           </div>
           <div layout="row" layout-fill>
-            <md-button class="md-raised md-primary" ng-click="sendResponses()">Respond</md-button>
-            <md-button class="md-raised md-primary" ng-click="sendGuesses()">Guess</md-button>
-            <md-button class="md-raised md-primary" ng-click="guessRight()">Right</md-button>
-            <md-button class="md-raised md-primary" ng-click="kingMaker()">Win</md-button>
-            <md-button class="md-raised md-primary" ng-click="skipToEnd()">SkipEnd</md-button>
+            <md-button class="md-raised md-primary" ng-click="guessRight()">Guess Right</md-button>
+            <md-button class="md-raised md-primary" ng-click="morePoints()">+5 points</md-button>
+            <md-button class="md-raised md-primary" ng-click="kingMaker()">+100 points</md-button>
+            <!-- <md-button class="md-raised md-primary" ng-click="skipToEnd()">SkipEnd</md-button> -->
           </div>
           <div player-display players="players" guessing="currentlyGuessing" layout-fill></div>
         </div>

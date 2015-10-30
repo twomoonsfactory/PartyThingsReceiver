@@ -41,6 +41,7 @@ export default ngModule => {
           $q.when()
           .then(()=>{
             let defer = $q.defer();
+            elem.removeClass('cardHue');
             elem.addClass('beingGuessed guess1');
             $timeout(()=>{defer.resolve()}, 500);
             return defer.promise;
@@ -74,6 +75,7 @@ export default ngModule => {
         //returns the player slip to the proper state
         scope.resolveAnimation = ()=>{
           elem.removeClass('beingGuessed guessRight guessWrong');
+          elem.addClass('cardHue');
           if(scope.wasGuessed)
             scope.player.wasGuessed();
         }

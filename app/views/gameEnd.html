@@ -6,49 +6,55 @@
 			<div class="md-headline">Players Ready</div>
 		</div>
 	</md-toolbar>
-	<md-content layout="row" layout-align="space-between center top" layout-fill>
+	<md-content class="welcomeContainer md-accent md-hue-1" layout="row" layout-align="space-between center top" layout-fill>
 		<div flex="30" layout="row" layout-align="space-around start" layout-fill>
 			<md-list flex="50">
 				<md-list-item class="md-1-line joined" ng-repeat="player in joinedPlayers|limitTo:10:10">
-					<md-card layout-fill>
+					<div class="newPlayer" layout-fill>
 						{{player.playerName}}
-					</md-card>
+					</div>
 				</md-list-item>
 			</md-list>
 			<md-list flex="50">
 				<md-list-item class="md-1-line joined" ng-repeat="player in joinedPlayers|limitTo:10">
-					<md-card layout-fill>
+					<div class="newPlayer" layout-fill>
 						{{player.playerName}}
-					</md-card>
+					</div>
 				</md-list-item>
 			</md-list>
 		</div>
-		<md-card layout="column" layout-align="top center" flex>
-			<div>
-				<md-button class="md-raised md-primary" ng-click="nameIt()">NameIt</md-button>
-				<md-button class="md-raised md-primary" ng-click="incomingPlayer()">PendPlayer</md-button>
-			  <md-button class="md-raised md-primary" ng-click="plusPlayer()">AddPlayer</md-button><br />
-			  <md-button class="md-raised md-primary" ng-click="removePlayer()">RoseQuit</md-button>
-			  <md-button class="md-raised md-primary" ng-click="readyPlayer()">Ready</md-button>
-				<md-button class="md-raised md-primary" ng-click="primeIt()">Prime</md-button>
+		<div class="welcomeBox" layout="column" layout-align="space-around center" flex>
+			<div class="welcomeText">
+				<div>
+					<!-- <md-button class="md-raised md-accent" ng-click="nameIt()">NameIt</md-button> -->
+					<md-button class="md-raised md-accent" ng-click="incomingPlayer()">PendPlayer</md-button>
+				  <md-button class="md-raised md-accent" ng-click="plusPlayer()">AddPlayer</md-button>
+				  <!-- <md-button class="md-raised md-accent" ng-click="removePlayer()">RoseQuit</md-button> -->
+				  <md-button class="md-raised md-accent" ng-click="readyPlayer()">Ready</md-button>
+					<!-- <md-button class="md-raised md-accent" ng-click="primeIt()">Prime</md-button> -->
+				</div>
+		  	{{message}}<br />
+				<p ng-repeat="winner in winners">{{winner}}</p>
+				{{banner}}
 			</div>
-		  <h3 class="md-headline">{{message}}</h3>
-			<h2 ng-repeat="winner in winners">{{winner}}</h2>
-			<h3>{{banner}}</h3>
-		</md-card>
+			<div>
+			</div>
+			<div>
+			</div>
+		</div>
 		<div flex="30" layout="row" layout-align="space-around start">
 			<md-list flex="50">
 				<md-list-item class="md-1-line readied" ng-repeat="player in readyPlayers|limitTo:10">
-					<md-card layout-fill>
+					<div class="newPlayer" layout-fill>
 						{{player.playerName}}
-					</md-card>
+					</div>
 				</md-list-item>
 			</md-list>
 			<md-list flex="50">
 				<md-list-item class="md-1-line readied" ng-repeat="player in readyPlayers|limitTo:10:10">
-					<md-card layout-fill>
+					<div class="newPlayer" layout-fill>
 						{{player.playerName}}
-					</md-card>
+					</div>
 				</md-list-item>
 			</md-list>
 		</div>

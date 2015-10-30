@@ -1,11 +1,13 @@
-<md-list flex="60">
+<div flex="60" layout="column">
+  <div flex="10"></div>
+<md-list>
   <md-list-item class="md-1-line" ng-repeat="prompt in prompts">
-    <div flex="15" layout="row" layout-align="center end">
-      <h3><b>Option {{$index + 1 }}:</b></h3>
+    <div class="potentialPromptLeader" flex="15" layout="row" layout-align="center end">
+      Option {{$index + 1 }}:
     </div>
-    <md-card flex="60">
-      <h2>{{prompt}}</h2>
-    </md-card>
+    <div class="potentialPrompt" flex="60">
+      {{prompt}}
+    </div>
   </md-list-item>
 </md-list>
-<!-- <p ng-repeat="prompt in prompts">{{prompt}}</p> -->
+</div>

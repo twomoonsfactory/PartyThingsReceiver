@@ -1,5 +1,13 @@
 //index for all the styles in the app
 
+@import "angular-material";
 @import "animations";
 @import "variables";
-@import "styling";
+@import "gameplay";
+@import "welcome";
+
+body{
+  background-color: $bodyBackground;
+  overflow: hidden;
+  font-family: $font-family;
+}

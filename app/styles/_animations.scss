@@ -8,7 +8,7 @@
   -o-transition:all 1s ease;
   transition:all 1s ease;
   &.ng-enter{
-    top: 100%;
+    top: 1000px;
   }
   &.ng-enter-active{
     top: 0;
@@ -17,7 +17,7 @@
     top: 0;
   }
   &.ng-leave-active{
-    top: -100%;
+    top: -1000px;
   }
 }
 
@@ -32,7 +32,7 @@
   @extend .sliderTimers;
   &.ng-enter{
     opacity: 0;
-    bottom: -50px;
+    bottom: -500px;
   }
   &.ng-enter-active{
     opacity: 1;
@@ -44,14 +44,14 @@
   }
   &.ng-leave-active{
     opacity: 0;
-    right: -100px;
+    right: -800px;
   }
 }
 .readied{
   @extend .sliderTimers;
   &.ng-enter{
     opacity: 0;
-    left: -100px;
+    left: -800px;
   }
   &.ng-enter-active{
     opacity: 1;
@@ -63,7 +63,7 @@
   }
   &.ng-leave-acctive{
     opacity: 0;
-    bottom: -50px;
+    bottom: -500px;
   }
 }
 
@@ -72,29 +72,31 @@
   position: relative;
   // perspective: 1000;
   text-align: center;
-  height: 100%;
+  height: 2em;
   width: 100%;
-}
-.messageSide{
-  position: absolute;
-  // height: 100%;
-  // width: 100%;
-  top: 0;
-  left: 0;
-  -webkit-backface-visibility: hidden;
-  -webkit-transition: -webkit-transform 0.5s;
+  z-index: 3;
+  & .messageSide{
+    @extend .slightlyRounded;
+    @extend .md-whiteframe-2dp;
+    background-color: $messageColor;
+    position: absolute;
+    // height: 60%;
+    width: 66%;
+    top: 20%;
+    left: 0;
+    -webkit-backface-visibility: hidden;
+    -webkit-transition: -webkit-transform 0.5s;
+  }
 }
 .messageFront{
   @extend .messageSide;
   z-index: 2;
-  background-color: $frontSide;
   .messageContainer.flipped &{
     -webkit-transform: rotateX(-180deg);
   }
 }
 .messageBack{
   @extend .messageSide;
-  background-color: $backSide;
   -webkit-transform: rotateX(-180deg);
   .messageContainer.flipped &{
     -webkit-transform: rotateX(0);

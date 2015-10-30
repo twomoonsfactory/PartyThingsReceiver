@@ -1,18 +1,30 @@
 @import "variables";
+@import "angular-material";
 
-body{
-  background-color: $bodyBackground;
+
+.gameplaySubtitle{
+  @extend .md-headline;
+  @extend .md-whiteframe-2dp;
+  padding-top: .25em;
+  z-index: 9;
 }
 
+//subbanners on gameplay screen
+$subbannerBorderRadius: 2em;
 //subbanner above gameplay area
 .gameplayHeader{
+  @extend .gameplaySubtitle;
   border-bottom-right-radius: $subbannerBorderRadius;
 }
 //subbanner above scoreboard/playerlist
 .playerHeader{
+  @extend .gameplaySubtitle;
   border-bottom-left-radius: $subbannerBorderRadius;
 }
 
+.scoreboardTitle{
+  @extend .md-headline;
+}
 //box shadows used
 .lowBoxShadow{
   box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 2px 1px -1px rgba(0, 0, 0, 0.12);
@@ -26,13 +38,13 @@ body{
 
 //player slip and response slip styles
 .readyToAct{
-  @extend .midBoxShadow;
+  @extend .md-whiteframe-12dp;
 }
 .ready, .unguessedResponse{
-  @extend .lowBoxShadow;
+  @extend .md-whiteframe-2dp;
 }
 .beingGuessed{
-  @extend .highBoxShadow;
+  @extend .md-whiteframe-15dp;
 }
 .inactive{
   font-weight: lighter;
@@ -43,20 +55,37 @@ body{
   background-color: #CCCCCC;
 }
 
+.slightlyRounded{
+  border-radius: .5em;
+}
 .responseCard{
-  font-size: 16px;
+  @extend .slightlyRounded;
+  z-index: 1;
+  padding: .25em;
+  font-size: 1.5em;
   font-weight: bold;
-  text-decoration: underline;
-  -webkit-text-decoration: underline;
 }
 
-// .messageContainer{
-//   @extend .lowBoxShadow;
-//   background-color: #666666;
-// }
+.potentialPromptLeader{
+  @extend .md-headline;
+  font-weight: bold;
+}
+.potentialPrompt{
+  @extend .responseCard;
+  @extend .cardHue;
+  @extend .md-whiteframe-6dp;
+  padding: .75em;
+  margin: .75em;
+}
+
+.finalPrompt{
+  @extend .potentialPrompt;
+  font-weight: bolder;
+}
 
 .gameContainer{
   position: relative;
+  overflow: visible;
 }
 
 .gameContent{
