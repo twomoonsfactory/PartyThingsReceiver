@@ -56,6 +56,7 @@ export default ngModule => {
 		unguessedResponseToast: "unguessedResponseToast",
 		unguessedPlayersToast: "unguessedPlayersToast",
 		writerToast: "writerToast",
-		wrongToast: "wrongToast"
+		wrongToast: "wrongToast",
+		rules: "rules"
 	});
 }

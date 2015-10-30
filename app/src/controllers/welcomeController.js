@@ -4,12 +4,13 @@ export default ngModule => {
 		$scope.joinedPlayers = [];
 		$scope.gameName = "Party Things";
 		$scope.message = "";
+		$scope.rules = "";
 
-		//loads the screen message
-		// $scope.loadMessage = ()=>{
-		// 	$scope.message = messageProvider.getMessage({messageName: messageNames.screenInitialize, pname: $scope.ownerName});
-		// }
-		// eventService.subscribe(gameEvents.messageLoaded, $scope.loadMessage);
+		//grabs the rules when messages are loaded
+		$scope.loadRules = function(){
+			$scope.rules = messageProvider.getMessage({messageName: messageNames.rules});
+		}
+		eventService.subscribe(gameEvents.messagesUpdated, $scope.loadRules);
 
 		//udate screen message
 		$scope.updateMessage = function(args){

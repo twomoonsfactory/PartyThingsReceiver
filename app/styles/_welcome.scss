@@ -22,6 +22,16 @@
   @extend .md-whiteframe-4dp;
   background-color: $displayBackground;
   z-index: 9;
+  & .rulesBox{
+    @extend .md-title;
+    background-color: $messageColor;
+    text-align: center;
+    border-style: solid;
+    border-width: medium;
+    border-color: darken($messageColor, 20%);
+    // height:30%;
+    width:60%;
+  }
 }
 
 .welcomeText{

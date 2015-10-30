@@ -34,10 +34,13 @@ export default ngModule => {
 		//        .prompt : the prompt selected (if needed)
 		//        .resp : the response (if needed)
 		//        .points : numeric points (if needed)
+		// added support such that the "message" can be an array of possible messages instead of just one, and one will be pulled at random.
 		getMessage(args){
+			let source = '';
 			let compiledMessage = '';
 			if((_.findWhere(this.messages, {messageName: args.messageName}))!==undefined){
-				compiledMessage = _.findWhere(this.messages, {messageName: args.messageName}).message;
+				source = _.findWhere(this.messages, {messageName: args.messageName}).message;
+				compiledMessage = Array.isArray(source) ? _.sample(source) : source;
 				compiledMessage = compiledMessage.indexOf("{PNAME}") >= 0 ? compiledMessage.replace("{PNAME}", args.pname) : compiledMessage;
 				compiledMessage = compiledMessage.indexOf("{PNAME2}") >= 0 ? compiledMessage.replace("{PNAME2}", args.pname2) : compiledMessage;
 				compiledMessage = compiledMessage.indexOf("{GNAME}") >= 0 ? compiledMessage.replace("{GNAME}", args.gname) : compiledMessage;
