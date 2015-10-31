@@ -5,7 +5,7 @@ var path = require('path');
 var app = path.join(__dirname + '/app');
 	module.exports = {
 		context: app,
-		entry: ['webpack/hot/dev-server', './index.js'],
+		entry: ['./index.js'],
 		output: {
 			path: app,
 			filename: 'bundle.js'
@@ -14,7 +14,8 @@ var app = path.join(__dirname + '/app');
 			loaders: [
 				{test: /\.js$/, exclude: /node_modules/, loader: "babel-loader"},
 				{test: /\.css$/, loader: "style!css"},
-				{test: /\.scss$/, loader: "style!css!sass"}
+				{test: /\.scss$/, loader: "style!css!sass"},
+				{test: /\.html$/, loader: "raw"}
 			]
 		},
 		plugins: [

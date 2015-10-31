@@ -6,7 +6,7 @@ export default ngModule => {
 				players: '=players',
         guessing: '=guessing'
 			},
-			templateUrl: 'src/directives/playerDisplay.html'
+			templateUrl: require('./playerDisplay.html')
 		}
 	})
 }

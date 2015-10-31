@@ -15,6 +15,7 @@
 
 .welcomeContainer{
   overflow: hidden;
+  @extend .layout-fill;
 }
 
 .welcomeBox{

@@ -1,60 +1,59 @@
-<div layout-fill>
-	<md-toolbar class="header md-tall" layout="column" layout-align="end">
-		<div class="md-toolbar-tools" layout="row" layout-align="space-around end">
-			<div class="subtitle">Players Joined</div>
-			<div class="titleBar">Welcome to {{gameName}}!</div>
-			<div class="subtitle">Players Ready</div>
-		</div>
-	</md-toolbar>
-	<md-content class="welcomeContainer md-accent md-hue-1" layout="row" layout-align="space-between center top" layout-fill>
-		<div flex="30" layout="row" layout-align="space-around start" layout-fill>
-			<md-list flex="50">
-				<md-list-item class="md-1-line joined" ng-repeat="player in joinedPlayers|limitTo:10:10">
-					<div class="newPlayer" layout-fill>
-						{{player.playerName}}
-					</div>
-				</md-list-item>
-			</md-list>
-			<md-list flex="50">
-				<md-list-item class="md-1-line joined" ng-repeat="player in joinedPlayers|limitTo:10">
-					<div class="newPlayer" layout-fill>
-						{{player.playerName}}
-					</div>
-				</md-list-item>
-			</md-list>
-		</div>
-		<div class="welcomeBox" layout="column" layout-align="space-around center" flex>
-			<div class="welcomeText">
-				<div>
-					<md-button class="md-raised md-accent" ng-click="nameIt()">NameIt</md-button>
-					<md-button class="md-raised md-accent" ng-click="incomingPlayer()">PendPlayer</md-button>
-				  <md-button class="md-raised md-accent" ng-click="plusPlayer()">AddPlayer</md-button>
-				  <!-- <md-button class="md-raised md-accent" ng-click="removePlayer()">RoseQuit</md-button> -->
-				  <md-button class="md-raised md-accent" ng-click="readyPlayer()">Ready</md-button><br />
-					<md-button class="md-raised md-accent" ng-click="primeIt()">Click FIRST to skip to Gameplay</md-button>
+
+<md-toolbar class="header md-tall" layout="column" layout-align="end">
+	<div class="md-toolbar-tools" layout="row" layout-align="space-around end">
+		<div class="subtitle">Players Joined</div>
+		<div class="titleBar">Welcome to {{gameName}}!</div>
+		<div class="subtitle">Players Ready</div>
+	</div>
+</md-toolbar>
+<div class="welcomeContainer" layout="row" layout-align="space-between start">
+	<div flex="30" layout="row" layout-align="space-around start">
+		<md-list flex="50">
+			<md-list-item class="md-1-line joined" ng-repeat="player in joinedPlayers|limitTo:10:10">
+				<div class="newPlayer" layout-fill>
+					{{player.playerName}}
 				</div>
-		  	{{message}}
+			</md-list-item>
+		</md-list>
+		<md-list flex="50">
+			<md-list-item class="md-1-line joined" ng-repeat="player in joinedPlayers|limitTo:10">
+				<div class="newPlayer" layout-fill>
+					{{player.playerName}}
+				</div>
+			</md-list-item>
+		</md-list>
+	</div>
+	<div class="welcomeBox" layout="column" layout-align="space-around center" flex="grow">
+		<div class="welcomeText">
+			<div>
+				<md-button class="md-raised md-accent" ng-click="nameIt()">NameIt</md-button>
+				<md-button class="md-raised md-accent" ng-click="incomingPlayer()">PendPlayer</md-button>
+			  <md-button class="md-raised md-accent" ng-click="plusPlayer()">AddPlayer</md-button>
+			  <!-- <md-button class="md-raised md-accent" ng-click="removePlayer()">RoseQuit</md-button> -->
+			  <md-button class="md-raised md-accent" ng-click="readyPlayer()">Ready</md-button><br />
+				<md-button class="md-raised md-accent" ng-click="primeIt()">Click FIRST to skip to Gameplay</md-button>
 			</div>
-			<div class="rulesBox">
-				{{rules}}
-			</div>
-			<div></div>
+	  	{{message}}
 		</div>
-		<div flex="30" layout="row" layout-align="space-around start">
-			<md-list flex="50">
-				<md-list-item class="md-1-line readied" ng-repeat="player in readyPlayers|limitTo:10">
-					<div class="newPlayer" layout-fill>
-						{{player.playerName}}
-					</div>
-				</md-list-item>
-			</md-list>
-			<md-list flex="50">
-				<md-list-item class="md-1-line readied" ng-repeat="player in readyPlayers|limitTo:10:10">
-					<div class="newPlayer" layout-fill>
-						{{player.playerName}}
-					</div>
-				</md-list-item>
-			</md-list>
+		<div class="rulesBox">
+			{{rules}}
 		</div>
-	</md-content>
+		<div></div>
+	</div>
+	<div flex="30" layout="row" layout-align="space-around start">
+		<md-list flex="50">
+			<md-list-item class="md-1-line readied" ng-repeat="player in readyPlayers|limitTo:10">
+				<div class="newPlayer" layout-fill>
+					{{player.playerName}}
+				</div>
+			</md-list-item>
+		</md-list>
+		<md-list flex="50">
+			<md-list-item class="md-1-line readied" ng-repeat="player in readyPlayers|limitTo:10:10">
+				<div class="newPlayer" layout-fill>
+					{{player.playerName}}
+				</div>
+			</md-list-item>
+		</md-list>
+	</div>
 </div>

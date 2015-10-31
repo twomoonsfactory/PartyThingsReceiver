@@ -5,7 +5,7 @@ export default ngModule =>{
 			scope: {
 				responses: '=responses'
 			},
-			templateUrl: 'src/directives/guessRequest.html'
+			template: require('./guessRequest.html')
 		}
 	})
 }
