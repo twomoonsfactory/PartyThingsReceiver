@@ -6,7 +6,6 @@ export default ngModule => {
   require('./numberIterator.js')(ngModule);
   require('./playerDisplay.js')(ngModule);
   require('./playerGuessDisplay.js')(ngModule);
-  require('./playerNames.js')(ngModule);
   require('./promptRequest.js')(ngModule);
   require('./responseGuessDisplay.js')(ngModule);
   require('./responseRequest.js')(ngModule);

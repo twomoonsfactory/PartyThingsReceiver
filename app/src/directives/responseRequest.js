@@ -5,7 +5,7 @@ export default ngModule => {
 			scope: {
 				prompt: '=prompt'
 			},
-			templateUrl: require('./responseRequest.html')
+			template: require('./responseRequest.html')
 		}
 	})
 }
