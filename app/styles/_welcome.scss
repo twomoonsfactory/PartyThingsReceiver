@@ -3,7 +3,21 @@
 
 .header{
   @extend .md-shadow-bottom-z-2;
+  @extend .md-tall;
   z-index:10;
+  //flex properties
+  flex: auto;
+  display: flex;
+  flex-flow: column;
+  align-items: baseline;
+  justify-content: flex-end;
+}
+
+.toolbar{
+  @extend .md-toolbar-tools;
+  flex-flow: row;
+  align-items: flex-end;
+  justify-content: space-around;
 }
 
 .titleBar{
@@ -13,18 +27,30 @@
   @extend .md-display-1;
 }
 
-.welcomeContainer{
+.gameContainer{
   overflow: hidden;
-  @extend .layout-fill;
+  flex: auto;
+  display: flex;
+  flex-flow: row;
+  align-items : stretch;
 }
 
 .welcomeBox{
-  @extend .layout-fill;
+  flex: 4 0 auto;
+  order: 2;
+  width: 0;
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  justify-content: space-around;
+
   @extend .md-whiteframe-4dp;
+  padding-top: 2em;
   background-color: $displayBackground;
   z-index: 9;
   & .rulesBox{
     @extend .md-title;
+    // flex: auto;
     background-color: $messageColor;
     text-align: center;
     border-style: solid;
@@ -35,10 +61,40 @@
   }
 }
 
+.spacer{
+  flex: 2 0 auto;
+  width: 0;
+}
+
 .welcomeText{
   @extend .subtitle;
+  flex: auto;
   font-weight: bolder;
   text-align: center;
+}
+
+.joinedList{
+  flex: 3 0 auto;
+  width: 0;
+  display: flex;
+  flex-flow: row;
+}
+
+.readyList{
+  flex: 3 0 auto;
+  order: 3;
+  width: 0;
+  display: flex;
+  flex-flow: row;
+}
+
+.sublist{
+ flex: 1 0 auto;
+ width: 0;
+}
+
+.newPlayer{
+  @extend .layout-fill;
 }
 
 .offsetRoundedEdges{
