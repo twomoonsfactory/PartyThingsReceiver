@@ -1,12 +1,21 @@
 @import "variables";
 @import "angular-material";
 
+.gameplayContainer{
+  flex: 7 0 auto;
+  display: flex;
+  flex-flow: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
 
 .gameplaySubtitle{
   @extend .md-headline;
   @extend .md-whiteframe-2dp;
   padding-top: .25em;
+  width: 80%;
   z-index: 9;
+  text-indent: 2em;
 }
 
 //subbanners on gameplay screen
@@ -16,6 +25,21 @@ $subbannerBorderRadius: 2em;
   @extend .gameplaySubtitle;
   border-bottom-right-radius: $subbannerBorderRadius;
 }
+
+.gameMessageContainer{
+  @extend .layout-fill;
+  padding-left: 2em;
+  padding-bottom: 2em;
+}
+
+.playerContainer{
+  flex: 3 0 auto;
+  display: flex;
+  flex-flow: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
 //subbanner above scoreboard/playerlist
 .playerHeader{
   @extend .gameplaySubtitle;
@@ -83,15 +107,16 @@ $subbannerBorderRadius: 2em;
   font-weight: bolder;
 }
 
-.gameContainer{
-  position: relative;
+.currentPhase{
+  flex: 8 0 auto;
+  padding-right: 3em;
+  padding-left: 1em;
   overflow: visible;
+  position: absolute;
 }
 
 .gameContent{
-  position: absolute;
-  top: 50px;
-  width: 100%;
+  @extend .layout-fill;
 }
 
 //message toasts

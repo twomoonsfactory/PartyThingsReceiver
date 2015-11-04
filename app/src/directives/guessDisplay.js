@@ -253,7 +253,7 @@ export default ngModule => {
 			$scope.$watch('guessDisplay', $scope.kickOffResolve, true);
 		}]
 		return{
-			template: '<div ng-transclude></div>',
+			template: '<div ng-transclude class="gameContainer"></div>',
 			restrict: 'A',
 			scope:{
 				guessDisplay: "="

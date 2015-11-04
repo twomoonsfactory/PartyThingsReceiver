@@ -11,3 +11,13 @@ body{
   overflow: hidden;
   font-family: $font-family;
 }
+
+.flexRow{
+  display: flex;
+  flex-flow: row;
+}
+
+.flexItem{
+  @extend .layout-fill; 
+  flex: auto;
+}
