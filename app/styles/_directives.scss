@@ -90,6 +90,7 @@
 .potentialPromptLeader{
   @extend .md-headline;
   font-weight: bold;
+  flex: 1;
 }
 
 .potentialPrompt{
@@ -98,6 +99,7 @@
   @extend .md-whiteframe-6dp;
   padding: .75em;
   margin: .75em;
+  flex: 4;
 }
 
 .finalPrompt{
