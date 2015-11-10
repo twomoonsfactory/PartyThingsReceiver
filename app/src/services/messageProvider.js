@@ -13,9 +13,12 @@ export default ngModule => {
 		subscribeToGameEvents(){
 			this.eventService.subscribe(this.gameEvents.welcomeLoaded, this.loadMessages.bind(this));
 		}
+
+
 		//pulls messages from server
 		loadMessages(){
-			this.$http.get("https://drive.google.com/file/d/0B_DuTdjS_hLtZ3I2dUFycFFUdTQ/view?usp=sharing")
+			let url = 'https://drive.google.com/file/d/0B_DuTdjS_hLtZ3I2dUFycFFUdTQ/view?usp=sharing?callback=JSON_CALLBACK';
+			this.$http.jsonp(url)
 				.success(data => {
 					this.messages = data.messages;
 					this.$log.log("Messages loaded in...");

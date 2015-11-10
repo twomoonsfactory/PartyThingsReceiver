@@ -70464,7 +70464,8 @@
 				value: function loadMessages() {
 					var _this = this;
 
-					this.$http.get("https://drive.google.com/file/d/0B_DuTdjS_hLtZ3I2dUFycFFUdTQ/view?usp=sharing").success(function (data) {
+					var url = 'https://drive.google.com/file/d/0B_DuTdjS_hLtZ3I2dUFycFFUdTQ/view?usp=sharing?callback=JSON_CALLBACK';
+					this.$http.jsonp(url).success(function (data) {
 						_this.messages = data.messages;
 						_this.$log.log("Messages loaded in...");
 						_this.eventService.publish(_this.gameEvents.messageLoaded, "");
