@@ -34,21 +34,11 @@ export default ngModule => {
 
 	  	      	//TEST VIA BUTTON
 		$scope.count = 0;
-		$scope.list = [{senderId:52,message:{playerName:"Franky"}},
-					{senderId:15,message:{playerName:"Rose"}},
-					{senderId:25234,message:{playerName:"N3tSlayùù│A"}},
-					{senderId:157,message:{playerName:"Billy"}},
-					{senderId:972343,message:{playerName:"Geraldine"}},
-					{senderId:5122,message:{playerName:"Milly"}},
-					{senderId:125,message:{playerName:"Joe"}},
-					{senderId:255234,message:{playerName:"AlanParsons"}},
-					{senderId:1547,message:{playerName:"Mary Jane"}},
-					{senderId:9872343,message:{playerName:"Peter Parker"}},
-					{senderId:572,message:{playerName:"Steve Rodgers"}},
-					{senderId:157,message:{playerName:"Nick Fury"}},
-					{senderId:258234,message:{playerName:"Professor Xavier"}},
-					{senderId:1557,message:{playerName:"Derpina"}},
-					{senderId:9762343,message:{playerName:"Derp"}}];
+		$scope.list = [{senderId:522,message:{playerName:"Fran"}},
+					{senderId:152,message:{playerName:"Rosalina"}},
+					{senderId:2215234,message:{playerName:"Sir Alec Guiness"}},
+					{senderId:15147,message:{playerName:"Billybob Thornton"}},
+					{senderId:9721343,message:{playerName:"Geriatric"}}];
 		$scope.plusPlayer = ()=>{
 			eventService.publish(gameEvents.playernameReceived, $scope.list[$scope.count]);
 			$scope.count++;

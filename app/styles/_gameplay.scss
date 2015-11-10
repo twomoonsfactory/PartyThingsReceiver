@@ -64,16 +64,32 @@ $subbannerBorderRadius: 2em;
 }
 
 //message toasts
+$toastBorderRadius: 1.25em;
+.customToast{
+  @extend .md-display-1;
+}
 .trueToast{
+  @extend .customToast;
   background-color: $mutedRight;
 }
 .falseToast{
+  @extend .customToast;
   background-color: $mutedWrong;
 }
 .unguessedToast{
+  @extend .customToast;
   background-color: $unguessed;
   color: #000000;
 }
-.toastContents{
-    @extend .md-display-1;
+.responseToast{
+  border-bottom-left-radius: $toastBorderRadius/2;
+  border-bottom-right-radius: $toastBorderRadius/2;
+  border-top-right-radius: $toastBorderRadius;
+  border-top-left-radius: $toastBorderRadius/2;
+}
+.playerToast{
+  border-bottom-left-radius: $toastBorderRadius/2;
+  border-bottom-right-radius: $toastBorderRadius/2;
+  border-top-right-radius: $toastBorderRadius/2;
+  border-top-left-radius: $toastBorderRadius;
 }

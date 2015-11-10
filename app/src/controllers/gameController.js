@@ -1,5 +1,6 @@
 export default ngModule => {
-  ngModule.controller('gameController', ['$scope', '$log', '$location', 'gameStates', 'eventService', 'gameEvents', 'playerHandler', 'stateManager', 'promptProvider', 'responseHandler', ($scope, $log, $location, gameStates, eventService, gameEvents, playerHandler, stateManager, promptProvider, responseHandler) => {
+  ngModule.controller('gameController', ['$scope', '$log', '$location', 'gameStates', 'eventService', 'gameEvents', 'playerHandler', 'stateManager', 'promptProvider', 'responseHandler', 'responseProvider',
+                                          ($scope, $log, $location, gameStates, eventService, gameEvents, playerHandler, stateManager, promptProvider, responseHandler, responseProvider) => {
     //many of these dependencies can be chunked once button testing is no loner in use
    	$scope.gameMessage = stateManager.message;
    	$scope.gameHeader = stateManager.banner;
@@ -110,8 +111,7 @@ export default ngModule => {
       eventService.publish(gameEvents.voteReceived, {senderId:_.sample(_.filter(playerHandler.players, function(player){return player.state==="voting"})).senderId, message:{promptIndex:_.sample([1,2,3])}});
     }
     $scope.sendResponses = ()=>{
-      let responses = ["The ministry of silly walks.", "The first dog president.", "Foo", "Bar", "I have no idea."];
-      eventService.publish(gameEvents.responseReceived, {senderId: _.sample(_.filter(playerHandler.players, function(player){return player.state==='writing'})).senderId, message: {response: _.sample(responses)}});
+      eventService.publish(gameEvents.responseReceived, {senderId: _.sample(_.filter(playerHandler.players, function(player){return player.state==='writing'})).senderId, message: {response: responseProvider.getRandomResponse()}});
     }
     $scope.sendGuesses = ()=>{
       eventService.publish(gameEvents.guessReceived, {senderId: _.sample(_.filter(playerHandler.players, function(player){return player.state==='guessing'})).senderId, message: {playerId: _.sample(_.filter(playerHandler.players, function(player){return player.guessed===false})).playerId, responseId:_.sample(responseHandler.getResponses()).responseId}})

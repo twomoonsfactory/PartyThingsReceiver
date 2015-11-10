@@ -242,7 +242,7 @@ export default ngModule => {
 				$q.when()
 					.then(()=>{
 						$mdToast.show({
-								template: '<md-toast class="md-toast toastContents ' + responseToast.type + '">' + responseToast.message + '</md-toast>',
+								template: '<md-toast class="md-toast responseToast ' + responseToast.type + '">' + responseToast.message + '</md-toast>',
 								position: 'bottom left',
 								hideDelay: time/2
 							});
@@ -255,7 +255,7 @@ export default ngModule => {
 					.then(()=>{
 						if(playerToast){
 							$mdToast.show({
-								template: '<md-toast class="md-toast toastContents ' + playerToast.type + '">' + playerToast.message + '</md-toast>',
+								template: '<md-toast class="md-toast playerToast ' + playerToast.type + '">' + playerToast.message + '</md-toast>',
 								position: 'bottom right',
 								hideDelay: time/2
 							})
