@@ -16,7 +16,7 @@ export default ngModule => {
     }
 
     loadResponses(){
-      this.$http.get("../src/resources/responses.json")
+      this.$http.get("/src/resources/responses.json")
         .success(data => {
           this.responses = data.responses;
           this.$log.log("Responses loaded in...");

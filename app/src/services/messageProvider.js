@@ -15,7 +15,7 @@ export default ngModule => {
 		}
 		//pulls messages from server
 		loadMessages(){
-			this.$http.get("../src/resources/messages.json")
+			this.$http.get("/src/resources/messages.json")
 				.success(data => {
 					this.messages = data.messages;
 					this.$log.log("Messages loaded in...");

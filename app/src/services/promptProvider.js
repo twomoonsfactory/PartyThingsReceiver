@@ -22,7 +22,7 @@ export default ngModule => {
       }
 
       loadPrompts(){
-        this.$http.get("../src/resources/prompts.json")
+        this.$http.get("/src/resources/prompts.json")
           .success(data => {
             this.prompts = data.prompts;
             this.$log.log("Prompts loaded in...");

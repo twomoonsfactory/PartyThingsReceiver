@@ -70464,7 +70464,7 @@
 				value: function loadMessages() {
 					var _this = this;
 
-					this.$http.get("../src/resources/messages.json").success(function (data) {
+					this.$http.get("/src/resources/messages.json").success(function (data) {
 						_this.messages = data.messages;
 						_this.$log.log("Messages loaded in...");
 						_this.eventService.publish(_this.gameEvents.messageLoaded, "");
@@ -70853,7 +70853,7 @@
 	      value: function loadPrompts() {
 	        var _this = this;
 
-	        this.$http.get("../src/resources/prompts.json").success(function (data) {
+	        this.$http.get("/src/resources/prompts.json").success(function (data) {
 	          _this.prompts = data.prompts;
 	          _this.$log.log("Prompts loaded in...");
 	        }).error(function (data) {
@@ -71116,7 +71116,7 @@
 	      value: function loadResponses() {
 	        var _this = this;
 
-	        this.$http.get("../src/resources/responses.json").success(function (data) {
+	        this.$http.get("/src/resources/responses.json").success(function (data) {
 	          _this.responses = data.responses;
 	          _this.$log.log("Responses loaded in...");
 	        }).error(function (data) {
