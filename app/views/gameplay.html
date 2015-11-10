@@ -1,6 +1,6 @@
 <md-toolbar class="header">
 	<div class="toolbar">
-		<div class="flexItem"></div>
+		<div class="subtitle"></div>
 		<div class="titleBar">{{gameName}}!</div>
 		<div class="subtitle">{{ownerName}} Game</div>
 	</div>
@@ -36,6 +36,6 @@
       <md-button class="md-raised md-primary" ng-click="morePoints()">+5 points</md-button>
       <md-button class="md-raised md-primary" ng-click="kingMaker()">+100 points</md-button>
     </div>
-    <div player-display players="players" guessing="currentlyGuessing"></div>
+    <div class="flexItem" player-display players="players" guessing="currentlyGuessing"></div>
   </div>
 </div>

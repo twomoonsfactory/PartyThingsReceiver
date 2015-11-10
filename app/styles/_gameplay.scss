@@ -2,7 +2,7 @@
 @import "angular-material";
 
 .gameplayContainer{
-  flex: 7 0 auto;
+  flex: 8 0 auto;
   display: flex;
   flex-flow: column;
   align-items: flex-start;
@@ -13,7 +13,6 @@
   @extend .md-headline;
   @extend .md-whiteframe-2dp;
   padding-top: .25em;
-  width: 80%;
   z-index: 9;
   text-indent: 2em;
 }
@@ -23,6 +22,7 @@ $subbannerBorderRadius: 2em;
 //subbanner above gameplay area
 .gameplayHeader{
   @extend .gameplaySubtitle;
+  width: 80%;
   border-bottom-right-radius: $subbannerBorderRadius;
 }
 
@@ -38,6 +38,7 @@ $subbannerBorderRadius: 2em;
   flex-flow: column;
   align-items: flex-start;
   justify-content: flex-start;
+  overflow: hidden;
 }
 
 //subbanner above scoreboard/playerlist
@@ -46,77 +47,20 @@ $subbannerBorderRadius: 2em;
   border-bottom-left-radius: $subbannerBorderRadius;
 }
 
-.scoreboardTitle{
-  @extend .md-headline;
-}
-//box shadows used
-.lowBoxShadow{
-  box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 2px 1px -1px rgba(0, 0, 0, 0.12);
-}
-.midBoxShadow{
-  box-shadow: 0px 5px 6px -3px rgba(0, 0, 0, 0.2), 0px 9px 12px 1px rgba(0, 0, 0, 0.14), 0px 3px 16px 2px rgba(0, 0, 0, 0.12);
-}
-.highBoxShadow{
-  box-shadow: 0px 7px 8px -4px rgba(0, 0, 0, 0.2), 0px 13px 19px 2px rgba(0, 0, 0, 0.14), 0px 5px 24px 4px rgba(0, 0, 0, 0.12);
-}
-
-//player slip and response slip styles
-.readyToAct{
-  @extend .md-whiteframe-12dp;
-}
-.ready, .unguessedResponse{
-  @extend .md-whiteframe-2dp;
-}
-.beingGuessed{
-  @extend .md-whiteframe-15dp;
-}
-.inactive{
-  font-weight: lighter;
-  color: #999999;
-}
-.supressed{
-  @extend .inactive;
-  background-color: #CCCCCC;
-}
-
-.slightlyRounded{
-  border-radius: .5em;
-}
-.responseCard{
-  @extend .slightlyRounded;
-  z-index: 1;
-  padding: .25em;
-  font-size: 1.5em;
-  font-weight: bold;
-}
-
-.potentialPromptLeader{
-  @extend .md-headline;
-  font-weight: bold;
-}
-.potentialPrompt{
-  @extend .responseCard;
-  @extend .cardHue;
-  @extend .md-whiteframe-6dp;
-  padding: .75em;
-  margin: .75em;
-}
-
-.finalPrompt{
-  @extend .potentialPrompt;
-  font-weight: bolder;
-}
-
 .currentPhase{
+  position: relative;
   flex: 8 0 auto;
   padding-right: 3em;
   padding-left: 1em;
   overflow: visible;
-  position: absolute;
+  height: inherit;
+  width: 60%;
 }
 
 .gameContent{
-  @extend .layout-fill;
+  position: absolute;
+  top: 5px;
+  width: 100%;
 }
 
 //message toasts

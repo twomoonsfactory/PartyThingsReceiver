@@ -1,0 +1,107 @@
+
+//playerDisplay.html styles
+.tenPlayerColumn{
+  @extend .layout-fill;
+  display: flex;
+  flex-flow: column;
+}
+
+.playerListRow{
+  @extend .layout-fill;
+  display: flex;
+  flex-flow: row;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.scoreboardTitle{
+  @extend .md-headline;
+  flex: auto;
+  display: flex;
+  flex-flow: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.scoreboardItem{
+  @extend .flexItem;
+  padding-left: 2em;
+}
+
+.playerList{
+  @extend .flexItem;
+  display: flex;
+  flex-flow: column;
+}
+
+.playerSlip{
+  @extend .layout-fill;
+  display: flex;
+  flex-flow: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.playerScore{
+  flex: 2 0 auto;
+}
+
+.morePlayersName{
+  width: 75%;
+  flex: 2 0 auto;
+}
+
+.morePlayersScore{
+  @extend .layout-fill;
+  flex: 10 auto;
+}
+
+//player slip and response slip styles
+.readyToAct{
+  @extend .md-whiteframe-12dp;
+}
+.ready, .unguessedResponse{
+  @extend .md-whiteframe-2dp;
+}
+.beingGuessed{
+  @extend .md-whiteframe-15dp;
+}
+.inactive{
+  font-weight: lighter;
+  color: #999999;
+}
+.supressed{
+  @extend .inactive;
+  background-color: #CCCCCC;
+}
+
+.slightlyRounded{
+  border-radius: .5em;
+}
+
+.responseCard{
+  @extend .slightlyRounded;
+  z-index: 1;
+  padding: .25em;
+  font-size: 1.5em;
+  font-weight: bold;
+}
+
+.potentialPromptLeader{
+  @extend .md-headline;
+  font-weight: bold;
+}
+
+.potentialPrompt{
+  @extend .responseCard;
+  @extend .cardHue;
+  @extend .md-whiteframe-6dp;
+  padding: .75em;
+  margin: .75em;
+}
+
+.finalPrompt{
+  @extend .potentialPrompt;
+  width: 75%;
+  font-weight: bolder;
+}

@@ -5,7 +5,7 @@ export default ngModule =>{
       scope: {
         gameMessage: "=gameMessageSlip"
       },
-			template: '<div class="messageFront"><h3>{{message1}}</h3></div><div class="messageBack"><h3>{{message2}}</h3></div>',
+			template: '<div class="messageFront"><h3 class="messageText">{{message1}}</h3></div><div class="messageBack"><h3 class="messageText">{{message2}}</h3></div>',
       link: (scope, elem, attrs) =>{
         scope.message1 = scope.gameMessage;
         scope.message2 = "";

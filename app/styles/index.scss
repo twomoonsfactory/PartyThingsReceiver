@@ -5,6 +5,7 @@
 @import "variables";
 @import "gameplay";
 @import "welcome";
+@import "directives";
 
 body{
   background-color: $bodyBackground;
@@ -18,6 +19,6 @@ body{
 }
 
 .flexItem{
-  @extend .layout-fill; 
+  @extend .layout-fill;
   flex: auto;
 }
