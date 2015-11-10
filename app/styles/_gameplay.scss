@@ -74,3 +74,6 @@ $subbannerBorderRadius: 2em;
   background-color: $unguessed;
   color: #000000;
 }
+.toastContents{
+    @extend .md-display-1;
+}

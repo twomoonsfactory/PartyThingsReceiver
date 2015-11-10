@@ -171,7 +171,10 @@ export default ngModule => {
 							playerToast.message = messageProvider.getToastMessage({messageType: messageNames.unguessedPlayersToast, points: gameNumbers.unguessedScore});
 							playerToast.type = $scope.trueToast;
 						}
-						else playerToast = messageProvider.getToastMessage({messageType: messageNames.noUnguessedPlayersToast});
+						else{
+							playerToast.message = messageProvider.getToastMessage({messageType: messageNames.noUnguessedPlayersToast});
+							playerToast.type = $scope.falseToast;
+						}
 						$scope.showToast(responseToast, playerToast, 8000);
 						$timeout(()=>{deferred.resolve(unguessedPlayers);}, 4000);
 						return deferred.promise
@@ -239,7 +242,7 @@ export default ngModule => {
 				$q.when()
 					.then(()=>{
 						$mdToast.show({
-								template: '<md-toast class="md-toast ' + responseToast.type + '"><h3>' + responseToast.message + '</h3></md-toast>',
+								template: '<md-toast class="md-toast toastContents ' + responseToast.type + '">' + responseToast.message + '</md-toast>',
 								position: 'bottom left',
 								hideDelay: time/2
 							});
@@ -252,7 +255,7 @@ export default ngModule => {
 					.then(()=>{
 						if(playerToast){
 							$mdToast.show({
-								template: '<md-toast class="md-toast ' + playerToast.type + '"><h3>' + playerToast.message + '</h3></md-toast>',
+								template: '<md-toast class="md-toast toastContents ' + playerToast.type + '">' + playerToast.message + '</md-toast>',
 								position: 'bottom right',
 								hideDelay: time/2
 							})
