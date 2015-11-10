@@ -21,7 +21,7 @@ export default ngModule =>{
         //kicked off by watch
         scope.startIteration = ()=>{
           scope.iterate(scope.numberToAdd);
-          let firstTimeThrough = true;
+          firstTimeThrough = true;
         }
         //iterates through increasing the baseNumber while steppig down the numberToAdd
         scope.iterate = (number)=>{

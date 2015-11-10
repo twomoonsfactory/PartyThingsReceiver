@@ -69378,7 +69378,7 @@
 	        //kicked off by watch
 	        scope.startIteration = function () {
 	          scope.iterate(scope.numberToAdd);
-	          var firstTimeThrough = true;
+	          firstTimeThrough = true;
 	        };
 	        //iterates through increasing the baseNumber while steppig down the numberToAdd
 	        scope.iterate = function (number) {
