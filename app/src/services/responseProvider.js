@@ -16,7 +16,7 @@ export default ngModule => {
     }
 
     loadResponses(){
-      this.$http.get("/src/resources/responses.json")
+      this.$http.get("https://drive.google.com/open?id=0B_DuTdjS_hLtREhrMDI5SE9ubDQ")
         .success(data => {
           this.responses = data.responses;
           this.$log.log("Responses loaded in...");
