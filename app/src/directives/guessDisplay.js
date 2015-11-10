@@ -48,10 +48,12 @@ export default ngModule => {
 							if(wasGuessed) //if the player was the writer of a correclty guessed prompt, true was returned
 								playerGuessed = player;
 						});
-						$timeout(()=>{deferred.resolve();}, 5000);//4 secs left w/results up
+						$timeout(()=>{deferred.resolve();}, 3500);
 						return deferred.promise;
 					})
 					.then(()=>{
+						let deferred = $q.defer();
+
 						//toast generated for the response
 						//for correctly guessed
 						if(responseGuessed){
@@ -64,9 +66,7 @@ export default ngModule => {
 							responseToast.message = messageProvider.getToastMessage({messageType: messageNames.wrongToast});
 							responseToast.type = $scope.falseToast;
 						}
-					})
-					.then(()=>{
-						let deferred = $q.defer();
+
 						//find the correct guessers
 						_.each($scope.registeredPlayers, player=>{
 							let guessedCorrectly = player.checkIfScored($scope.guessedResponses[index]);
@@ -99,7 +99,7 @@ export default ngModule => {
 							playerToast.type = $scope.falseToast;
 						}
 						$scope.showToast(responseToast, playerToast, 8000);
-						$timeout(()=>{deferred.resolve();}, 4000);
+						$timeout(()=>{deferred.resolve();}, 5000);
 						return deferred.promise;
 					})
 					.then(()=>{
@@ -119,7 +119,7 @@ export default ngModule => {
 								guesser.addPoints(Math.floor(gameNumbers.guessScore/correctGuessers.length));
 							});
 						}
-						$timeout(()=>{deferred.resolve();}, 4000);
+						$timeout(()=>{deferred.resolve();}, 3000);
 						return deferred.promise;
 					})
 					.then(()=>{

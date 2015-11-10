@@ -83,7 +83,7 @@
 			"Nice {PNAME}, you get {POINTS} points.",
 			"You're brighter than you look {PNAME}. {POINTS} points.",
 			"{PNAME} is raising the room's IQ. {POINTS} points.",
-			"{POINTS} to Gryffindor!"
+			"{POINTS} points to Gryffindor!"
 			]},
 		{"messageName" : "unguessedResponseToast", "message" : [
 			"I agree, not worth guessing.",

@@ -42,7 +42,7 @@ export default ngModule =>{
                           'font-weight':'normal'});
               }
               scope.textToDisplay = "+" + number;
-              $timeout(()=>{deferred.resolve();},firstTimeThrough?1000:50);
+              $timeout(()=>{deferred.resolve();},firstTimeThrough?2000:50);
               return deferred.promise;
             })
             .then(()=>{
