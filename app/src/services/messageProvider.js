@@ -17,7 +17,7 @@ export default ngModule => {
 
 		//pulls messages from server
 		loadMessages(){
-			let url = 'https://drive.google.com/file/d/0B_DuTdjS_hLtZ3I2dUFycFFUdTQ/view?usp=sharing?callback=JSON_CALLBACK';
+			let url = 'https://drive.google.com/open?id=0B_DuTdjS_hLtZ3I2dUFycFFUdTQ?callback=JSON_CALLBACK';
 			this.$http.jsonp(url)
 				.success(data => {
 					this.messages = data.messages;

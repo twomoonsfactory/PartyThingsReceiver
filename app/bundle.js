@@ -70464,7 +70464,7 @@
 				value: function loadMessages() {
 					var _this = this;
 
-					var url = 'https://drive.google.com/file/d/0B_DuTdjS_hLtZ3I2dUFycFFUdTQ/view?usp=sharing?callback=JSON_CALLBACK';
+					var url = 'https://drive.google.com/open?id=0B_DuTdjS_hLtZ3I2dUFycFFUdTQ?callback=JSON_CALLBACK';
 					this.$http.jsonp(url).success(function (data) {
 						_this.messages = data.messages;
 						_this.$log.log("Messages loaded in...");
