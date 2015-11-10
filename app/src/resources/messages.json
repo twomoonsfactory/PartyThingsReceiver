@@ -1,3 +1,4 @@
+angular.callbacks._0 (
 {
 	"messages": [
 		{"messageName" : "nameGame", "message" : "Welcome to the party!  Please enter your name, and name your game!"},
@@ -117,3 +118,4 @@
 		{"messageName" : "rules", "message" : "This is a game of \"Who said it?\" where players pick a prompt, respond to it and try and guess who said what! Earn points by guessing correctly, and more by being the only one to guess right.  Get even more points for every round you stump the competition and remain unguessed.  Good luck!"}
 	]
 }
+)

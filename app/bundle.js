@@ -70464,8 +70464,7 @@
 				value: function loadMessages() {
 					var _this = this;
 
-					var url = 'https://drive.google.com/open?id=0B_DuTdjS_hLtZ3I2dUFycFFUdTQ?callback=JSON_CALLBACK';
-					this.$http.jsonp(url).success(function (data) {
+					this.$http.jsonp("http://www.twomoonsfactory.com/resources/jsons/messages.json?callback=JSON_CALLBACK").success(function (data) {
 						_this.messages = data.messages;
 						_this.$log.log("Messages loaded in...");
 						_this.eventService.publish(_this.gameEvents.messageLoaded, "");
@@ -70854,7 +70853,7 @@
 	      value: function loadPrompts() {
 	        var _this = this;
 
-	        this.$http.get("https://drive.google.com/open?id=0B_DuTdjS_hLtdE9SRWR2eTNWSmc").success(function (data) {
+	        this.$http.jsonp("http://www.twomoonsfactory.com/resources/jsons/prompts.json?callback=JSON_CALLBACK").success(function (data) {
 	          _this.prompts = data.prompts;
 	          _this.$log.log("Prompts loaded in...");
 	        }).error(function (data) {
@@ -71117,7 +71116,7 @@
 	      value: function loadResponses() {
 	        var _this = this;
 
-	        this.$http.get("https://drive.google.com/open?id=0B_DuTdjS_hLtREhrMDI5SE9ubDQ").success(function (data) {
+	        this.$http.jsonp("http://www.twomoonsfactory.com/resources/jsons/responses.json?callback=JSON_CALLBACK").success(function (data) {
 	          _this.responses = data.responses;
 	          _this.$log.log("Responses loaded in...");
 	        }).error(function (data) {

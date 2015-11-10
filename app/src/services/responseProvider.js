@@ -16,7 +16,7 @@ export default ngModule => {
     }
 
     loadResponses(){
-      this.$http.get("https://drive.google.com/open?id=0B_DuTdjS_hLtREhrMDI5SE9ubDQ")
+      this.$http.jsonp("http://www.twomoonsfactory.com/resources/jsons/responses.json?callback=JSON_CALLBACK")
         .success(data => {
           this.responses = data.responses;
           this.$log.log("Responses loaded in...");

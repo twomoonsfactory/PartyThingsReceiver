@@ -14,11 +14,9 @@ export default ngModule => {
 			this.eventService.subscribe(this.gameEvents.welcomeLoaded, this.loadMessages.bind(this));
 		}
 
-
 		//pulls messages from server
 		loadMessages(){
-			let url = 'https://drive.google.com/open?id=0B_DuTdjS_hLtZ3I2dUFycFFUdTQ?callback=JSON_CALLBACK';
-			this.$http.jsonp(url)
+			this.$http.jsonp("http://www.twomoonsfactory.com/resources/jsons/messages.json?callback=JSON_CALLBACK")
 				.success(data => {
 					this.messages = data.messages;
 					this.$log.log("Messages loaded in...");

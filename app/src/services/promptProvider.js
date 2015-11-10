@@ -22,7 +22,7 @@ export default ngModule => {
       }
 
       loadPrompts(){
-        this.$http.get("https://drive.google.com/open?id=0B_DuTdjS_hLtdE9SRWR2eTNWSmc")
+        this.$http.jsonp("http://www.twomoonsfactory.com/resources/jsons/prompts.json?callback=JSON_CALLBACK")
           .success(data => {
             this.prompts = data.prompts;
             this.$log.log("Prompts loaded in...");
