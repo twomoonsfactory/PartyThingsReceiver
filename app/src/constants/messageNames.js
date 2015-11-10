@@ -24,12 +24,14 @@ export default ngModule => {
 		screenRequestResponse: "screenRequestResponse",
 		screenRequestGuess: "screenRequestGuess",
 		screenRoundResults: "screenRoundResults",
-		screenGameResults: "screenGameResults",
+		screenGameResultsOneWinner: "screenGameResultsOneWinner",
+		screenGameResultsMultipleWinners: "screenGameResultsMultipleWinners",
 		bannerRequestPrompt: "bannerRequestPrompt",
 		bannerRequestResponse: "bannerRequestResponse",
 		bannerRequestGuess: "bannerRequestGuess",
 		bannerRoundResults: "bannerRoundResults",
-		bannerGameResults: "bannerGameResults",
+		bannerGameResultsOneWinner: "bannerGameResultsOneWinner",
+		bannerGameResultsMultipleWinners: "bannerGameResultsMultipleWinners",
 		moreGuessing: "moreGuessing",
 		allGuessed: "allGuessed",
 		gameOver: "gameOver",
@@ -55,8 +57,10 @@ export default ngModule => {
 		oneRightToast: "oneRightToast",
 		unguessedResponseToast: "unguessedResponseToast",
 		unguessedPlayersToast: "unguessedPlayersToast",
+		noUnguessedPlayersToast: "noUnguessedPlayersToast",
 		writerToast: "writerToast",
 		wrongToast: "wrongToast",
+		wrongPlayerToast: "wrongPlayerToast",
 		rules: "rules"
 	});
 }

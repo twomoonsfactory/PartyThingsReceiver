@@ -26,6 +26,9 @@ export default ngModule => {
 			};
 
 			$scope.resolveGuesses = (index) => {
+				let responseToast = {};
+				let playerToast = {};
+				//loops through each guessed response
 				if($scope.guessedResponses.length>index){
 					let responseGuessed = null;
 					let playerGuessed = null;
@@ -45,27 +48,58 @@ export default ngModule => {
 							if(wasGuessed) //if the player was the writer of a correclty guessed prompt, true was returned
 								playerGuessed = player;
 						});
-						$timeout(()=>{deferred.resolve(responseGuessed);}, 5000);//4 secs left w/results up
+						$timeout(()=>{deferred.resolve();}, 5000);//4 secs left w/results up
 						return deferred.promise;
 					})
 					.then(()=>{
-						let deferred = $q.defer();
-						//toasts displayed
-						let type = "";
-						let message = "";
+						//toast generated for the response
 						//for correctly guessed
 						if(responseGuessed){
 							let writer = playerHandler.findPlayerByPlayerId(responseGuessed.response.playerId).playerName;
-							message = messageProvider.getToastMessage({messageType: messageNames.writerToast, pname: writer});
-							type = $scope.trueToast;
+							responseToast.message = messageProvider.getToastMessage({messageType: messageNames.writerToast, pname: writer});
+							responseToast.type = $scope.trueToast;
 						}
 						//for incorrectly guessed
 						else {
-							message = messageProvider.getToastMessage({messageType: messageNames.wrongToast});
-							type = $scope.falseToast;
+							responseToast.message = messageProvider.getToastMessage({messageType: messageNames.wrongToast});
+							responseToast.type = $scope.falseToast;
 						}
-						$scope.showToast(message, 2500, true, type);
-						$timeout(()=>{deferred.resolve();}, 2500); //1.5 sec with original results up
+					})
+					.then(()=>{
+						let deferred = $q.defer();
+						//find the correct guessers
+						_.each($scope.registeredPlayers, player=>{
+							let guessedCorrectly = player.checkIfScored($scope.guessedResponses[index]);
+							if(guessedCorrectly) //if the player guessed right, true was returned
+								correctGuessers.push(player);
+						});
+						//toasts generated for the correct guessers (if any)
+						if(correctGuessers.length>0){
+							playerToast.type = $scope.trueToast;
+							let points=Math.floor(gameNumbers.guessScore/correctGuessers.length);
+							if(correctGuessers.length===1){
+								let player = playerHandler.findPlayerByPlayerId(correctGuessers[0].player.playerId).playerName;
+								playerToast.message = messageProvider.getToastMessage({messageType: messageNames.oneRightToast, pname: player, points: points});
+							}
+							else{
+								let players = '';
+								for(let i = 0; i < correctGuessers.length; i++){
+									if(i===0)
+										players += playerHandler.findPlayerByPlayerId(correctGuessers[i].player.playerId).playerName;
+									else if(i===correctGuessers.length-1)
+										players+= ' & ' + playerHandler.findPlayerByPlayerId(correctGuessers[i].player.playerId).playerName;
+									else
+										players+= ', ' + playerHandler.findPlayerByPlayerId(correctGuessers[i].player.playerId).playerName;
+								}
+								playerToast.message = messageProvider.getToastMessage({messageType: messageNames.multipleRightToast, pname: players, points: points});
+							}
+						}
+						else{
+							playerToast.message = messageProvider.getToastMessage({messageType: messageNames.wrongPlayerToast});
+							playerToast.type = $scope.falseToast;
+						}
+						$scope.showToast(responseToast, playerToast, 8000);
+						$timeout(()=>{deferred.resolve();}, 4000);
 						return deferred.promise;
 					})
 					.then(()=>{
@@ -79,56 +113,25 @@ export default ngModule => {
 					})
 					.then(()=>{
 						let deferred = $q.defer();
-						//find the correct guessers
-						_.each($scope.registeredPlayers, player=>{
-							let guessedCorrectly = player.checkIfScored($scope.guessedResponses[index]);
-							if(guessedCorrectly) //if the player guessed right, true was returned
-								correctGuessers.push(player);
-						});
-						//toasts displayed for the correct guessers (if any)
 						if(correctGuessers.length>0){
-							let message = '';
-							let type = $scope.trueToast;
-							let points=Math.floor(gameNumbers.guessScore/correctGuessers.length);
-							if(correctGuessers.length===1){
-								let player = playerHandler.findPlayerByPlayerId(correctGuessers[0].player.playerId).playerName;
-								message = messageProvider.getToastMessage({messageType: messageNames.oneRightToast, pname: player, points: points});
-							}
-							else{
-								let players = '';
-								for(let i = 0; i < correctGuessers.length; i++){
-									if(i===0)
-										players += playerHandler.findPlayerByPlayerId(correctGuessers[i].player.playerId).playerName;
-									else if(i===correctGuessers.length-1)
-										players+= ' & ' + playerHandler.findPlayerByPlayerId(correctGuessers[i].player.playerId).playerName;
-									else
-										players+= ', ' + playerHandler.findPlayerByPlayerId(correctGuessers[i].player.playerId).playerName;
-								}
-								message = messageProvider.getToastMessage({messageType: messageNames.multipleRightToast, pname: players, points: points});
-							}
-							$scope.showToast(message, 2000, false, type);
-							$timeout(()=>{deferred.resolve(correctGuessers);}, 1500);//original results drop
-							return deferred.promise;
-						}
-					})
-					.then((correctGuessers)=>{
-						let deferred = $q.defer();
-						if(correctGuessers){
 							//points updated if there were
 							_.each(correctGuessers, guesser=>{
 								guesser.addPoints(Math.floor(gameNumbers.guessScore/correctGuessers.length));
 							});
-							$timeout(()=>{deferred.resolve();}, 1000);
-							return deferred.promise;
 						}
+						$timeout(()=>{deferred.resolve();}, 4000);
+						return deferred.promise;
 					})
 					.then(()=>{
 						//iterate next guess
 						$scope.resolveGuesses(index+1);
 					});
 				}
+
+				//loops through IF there were guessed responses
 				else if($scope.guessedResponses.length>0){
 					let unguessedResponses = [];
+					let unguessedPlayers = [];
 					//displays any unguessed responses
 					$q.when()
 					.then(()=>{
@@ -141,34 +144,21 @@ export default ngModule => {
 											unguessedResponses.push(response);
 									});
 								})
-							$timeout(()=>{deferred.resolve(true);}, 8000);
+							$timeout(()=>{deferred.resolve();}, 8000);
 							return deferred.promise;
 						}
 						deferred.resolve(false);
 						return deferred.promise;
 					})
-					.then((unguessed)=>{
+					.then(()=>{
 						let deferred = $q.defer();
-						if(unguessed){
-							//toast for the unguessed
-							let message = messageProvider.getToastMessage({messageType: messageNames.unguessedResponseToast});
-							let type = $scope.unguessedToast;
-							$scope.showToast(message, 2000, true, type);
-
-							$timeout(()=>{deferred.resolve(unguessed);}, 1000);
-							return deferred.promise;
-						}
-					})
-					.then((unguessed)=>{
-						if(unguessed){
-							//return it to the proper state
-							_.each(unguessedResponses, response=>{
-								response.resolveAnimation();
-							});
+						if(unguessedResponses.length>0){
+							//generates toast for the unguessed
+							responseToast.message = messageProvider.getToastMessage({messageType: messageNames.unguessedResponseToast});
+							responseToast.type = $scope.unguessedToast;
 						}
 					})
 					.then(()=>{
-						let unguessedPlayers = [];
 						_.each($scope.registeredPlayers, player=>{
 							//checks each player to see if unguessed
 							let playerUnguessed =	player.checkIfUnguessed();
@@ -176,24 +166,34 @@ export default ngModule => {
 								unguessedPlayers.push(player);
 						});
 						//toast and score update accordingly
+						let deferred = $q.defer();
 						if(unguessedPlayers.length>0){
-							let deferred = $q.defer();
-							let message = messageProvider.getToastMessage({messageType: messageNames.unguessedPlayersToast, points: gameNumbers.unguessedScore});
-							let type = $scope.trueToast;
-							$scope.showToast(message, 2000, false, type);
-							$timeout(()=>{deferred.resolve(unguessedPlayers);}, 1000);
-							return deferred.promise
+							playerToast.message = messageProvider.getToastMessage({messageType: messageNames.unguessedPlayersToast, points: gameNumbers.unguessedScore});
+							playerToast.type = $scope.trueToast;
+						}
+						else playerToast = messageProvider.getToastMessage({messageType: messageNames.noUnguessedPlayersToast});
+						$scope.showToast(responseToast, playerToast, 8000);
+						$timeout(()=>{deferred.resolve(unguessedPlayers);}, 4000);
+						return deferred.promise
+					})
+					.then(()=>{
+						if(unguessedResponses.length>0){
+							//return it to the proper state
+							_.each(unguessedResponses, response=>{
+								response.resolveAnimation();
+							});
 						}
 					})
-					.then((unguessedPlayers)=>{
-						if(unguessedPlayers){
-							let deferred = $q.defer();
+					.then(()=>{
+						let deferred = $q.defer();
+						if(unguessedPlayers.length>0){
 							_.each(unguessedPlayers, player=>{
 								player.addPoints(gameNumbers.unguessedScore);
 							});
-							$timeout(()=>{deferred.resolve();}, 1250);
-							return deferred.promise;
+							$timeout(()=>{deferred.resolve();}, 3500);
 						}
+						else $timeout(()=>{deferred.resolve();},4500);
+						return deferred.promise;
 					})
 					.then(()=>{
 						//if guesses are resolved (and the $watch was tripped by added guesses) publish the completion
@@ -231,13 +231,33 @@ export default ngModule => {
 				});
 			};
 
-			$scope.showToast = (message, time, left, type)=>{
-				$mdToast.show({
-						template: '<md-toast class="md-toast ' + type + '"><h3>' + message + '</h3></md-toast>',
-						position: left?'bottom left':'bottom right',
-						hideDelay: time
-					}
-				);
+			//displays the "responseToast" on the left, then the "playerToast" on the right,
+			//after 1/2 of the time value have elapsed, so that each toast displays equally.
+			//right now angular-material doesn't support simultaneous toasts, but the code
+			//has been written for easy implementation when it is supported post-1.0.
+			$scope.showToast = (responseToast, playerToast, time)=>{
+				$q.when()
+					.then(()=>{
+						$mdToast.show({
+								template: '<md-toast class="md-toast ' + responseToast.type + '"><h3>' + responseToast.message + '</h3></md-toast>',
+								position: 'bottom left',
+								hideDelay: time/2
+							});
+					})
+					.then(()=>{
+						let deferred = $q.defer();
+						$timeout(()=>{deferred.resolve();}, time/2);
+						return deferred.promise;
+					})
+					.then(()=>{
+						if(playerToast){
+							$mdToast.show({
+								template: '<md-toast class="md-toast ' + playerToast.type + '"><h3>' + playerToast.message + '</h3></md-toast>',
+								position: 'bottom right',
+								hideDelay: time/2
+							})
+						}
+					});
 			};
 
 			//register emmitted reponse

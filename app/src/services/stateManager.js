@@ -92,8 +92,20 @@ export default ngModule => {
           this.banner = this.messageProvider.getMessage({messageName:this.messageNames.bannerRoundResults});
           break;
         case this.gameStates.GameEnd:
-          this.message = this.messageProvider.getMessage({messageName:this.messageNames.screenGameResults});
-          this.banner = this.messageProvider.getMessage({messageName:this.messageNames.bannerGameResults, points: this.score});
+          if(this.winners.length===1){
+            this.message = this.messageProvider.getMessage({messageName:this.messageNames.screenGameResultsOneWinner, pname: this.winners[0]});
+            this.banner = this.messageProvider.getMessage({messageName:this.messageNames.bannerGameResultsOneWinner, points: this.score});
+          }
+          else{
+            let winnersText = "";
+            for(let i=0; i<this.winners.length; i++){
+              if(i===0) winnersText += this.winners[i];
+              else if(i===this.winners.length-1) winnersText += " & " + this.winners[i];
+              else winnersText += ", " + this.winners[i];
+            }
+            this.message = this.messageProvider.getMessage({messageName:this.messageNames.screenGameResultsMultipleWinners, pname: winnersText});
+            this.banner = this.messageProvider.getMessage({messageName:this.messageNames.bannerGameResultsMultipleWinners, points: this.score});
+          }
           break;
         default:
       }

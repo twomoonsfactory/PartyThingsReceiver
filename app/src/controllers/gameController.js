@@ -15,8 +15,10 @@ export default ngModule => {
     $scope.winners = [];
 
     $scope.updateMessages = (args) => {
-      $scope.gameMessage = args.message;
-      $scope.gameHeader = args.banner;
+      if(!stateManager.checkState(gameStates.GameEnd)){
+        $scope.gameMessage = args.message;
+        $scope.gameHeader = args.banner;
+      }
     }
     eventService.subscribe(gameEvents.messagesUpdated, $scope.updateMessages);
 

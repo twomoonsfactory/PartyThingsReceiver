@@ -1,5 +1,6 @@
 export default ngModule => {
-	ngModule.controller('welcomeController', ['$scope', '$log', '$location', 'gameStates', 'playerStates', 'eventService', 'gameEvents', 'messageProvider', 'messageNames', 'playerHandler', 'gameDriver', ($scope, $log, $location, gameStates, playerStates, eventService, gameEvents, messageProvider, messageNames, playerHandler, gameDriver) => {
+	ngModule.controller('welcomeController', ['$scope', '$log', '$location', 'gameStates', 'playerStates', 'eventService', 'gameEvents', 'messageProvider', 'messageNames', 'playerHandler', 'gameDriver', 'stateManager',
+																							($scope, $log, $location, gameStates, playerStates, eventService, gameEvents, messageProvider, messageNames, playerHandler, gameDriver, stateManager) => {
 		$scope.readyPlayers = [];
 		$scope.joinedPlayers = [];
 		$scope.gameName = "Party Things";
@@ -14,7 +15,7 @@ export default ngModule => {
 
 		//udate screen message
 		$scope.updateMessage = function(args){
-			$scope.message = args.message;
+			if(!stateManager.checkState(gameStates.ReadyToStart)) $scope.message = args.message;
 		}
 		eventService.subscribe(gameEvents.messagesUpdated, $scope.updateMessage);
 

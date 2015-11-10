@@ -33,7 +33,28 @@
 		{"messageName" : "screenRequestResponse", "message" : "So what do you think about this:"},
 		{"messageName" : "screenRequestGuess", "message" : "You wrote about \"{PROMPT}\"  Who said what?"},
 		{"messageName" : "screenRoundResults", "message" : "Here are the results for this round... Your prompt was \"{PROMPT}\" --"},
-		{"messageName" : "screenGameResults", "message" : "Congratulations to"},
+		{"messageName" : "screenGameResultsOneWinner", "message" : [
+			"Congratulations to {PNAME}!",
+			"All hail {PNAME}, who is mighty!",
+			"Bow before {PNAME}!",
+			"Nicely done {PNAME}.",
+			"{PNAME} done showed all y'all up."
+			]},
+		{"messageName" : "bannerGameResultsOneWinner", "message" : [
+			"{POINTS} points was the winning score. Ready up to try for better!",
+			"Squeaked by with {POINTS} points. Can you do better in another game?",
+			"{POINTS} is a respectable score... NOT! Beat it in the next game!"
+			]},
+		{"messageName" : "screenGameResultsMultipleWinners", "message" : [
+			"{PNAME}, you sure you guys didn't just vote for eachother the whole game?",
+			"A tie?!?! Nice {PNAME}.",
+			"{PNAME}... a draw? Someone didn't try hard enough."
+			]},
+		{"messageName" : "bannerGameResultsMultipleWinners", "message" : [
+			"{POINTS} apiece. Well done. Don't tie next game.",
+			"You each had {POINTS}. One of you do better next time.",
+			"Only {POINTS} points. I expected better."
+			]},
 		{"messageName" : "bannerRequestPrompt", "message" : "It's time to choose a prompt!"},
 		{"messageName" : "bannerRequestResponse", "message" : "You've chosen your prompt..."},
 		{"messageName" : "bannerRequestGuess", "message" : "The Players have spoken!"},
@@ -72,6 +93,10 @@
 			"Stay unguessed for {POINTS} points!",
 			"Free points are almost as good as free money."
 			]},
+		{"messageName" : "noUnguessedPlayersToast", "message" : [
+			"Gotta stay unguessed to get points!",
+			"Y'all guessed everyone?"
+			]},
 		{"messageName" : "writerToast", "message" : [
 			"Own up {PNAME}, you said it.",
 			"{PNAME} speaks true.",
@@ -79,11 +104,14 @@
 			]},
 		{"messageName" : "wrongToast", "message" : [
 			"You should be ashamed of yourselves.",
-			"I expected a better showing.",
-			"I feel my IQ dropping.",
 			"Nothing right here...",
 			"Maybe next time?",
 			"Somebody dropped the ball."
+			]},
+		{"messageName" : "wrongPlayerToast", "message" : [
+			"I expected a better showing.",
+			"I feel my IQ dropping.",
+			"No points for a bad guess."
 			]},
 		{"messageName" : "rules", "message" : "This is a game of \"Who said it?\" where players pick a prompt, respond to it and try and guess who said what! Earn points by guessing correctly, and more by being the only one to guess right.  Get even more points for every round you stump the competition and remain unguessed.  Good luck!"}
 	]
