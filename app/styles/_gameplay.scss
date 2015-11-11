@@ -2,11 +2,12 @@
 @import "angular-material";
 
 .gameplayContainer{
-  flex: 8 0 auto;
+  flex: 0 0 70%;
   display: flex;
   flex-flow: column;
   align-items: flex-start;
   justify-content: flex-start;
+  overflow: hidden;
 }
 
 .gameplaySubtitle{
@@ -33,7 +34,7 @@ $subbannerBorderRadius: 2em;
 }
 
 .playerContainer{
-  flex: 3 0 auto;
+  flex: 0 0 30%;
   display: flex;
   flex-flow: column;
   align-items: flex-start;

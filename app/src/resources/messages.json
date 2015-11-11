@@ -30,10 +30,28 @@ angular.callbacks._0 (
 			"Still accepting applicants -- but the game starts when everyone is \"Ready\".",
 			"Ready up, let's get moving!"
 			]},
-		{"messageName" : "screenRequestPrompt", "message" : "Vote for your favorite!"},
-		{"messageName" : "screenRequestResponse", "message" : "So what do you think about this:"},
-		{"messageName" : "screenRequestGuess", "message" : "You wrote about \"{PROMPT}\"  Who said what?"},
-		{"messageName" : "screenRoundResults", "message" : "Here are the results for this round... Your prompt was \"{PROMPT}\" --"},
+		{"messageName" : "screenRequestPrompt", "message" : [
+			"Vote for your favorite!",
+			"You have your options... Pick one to write about!",
+			"What would you like to write about?",
+			"What would the player on your left NOT want to write about?"
+			]},
+		{"messageName" : "screenRequestResponse", "message" : [
+			"So what do you think about this:",
+			"You've got your topic... Write about it!",
+			"You don't have to write a novel... just say what you think.",
+			"What would the player to your right say?"
+			]},
+		{"messageName" : "screenRequestGuess", "message" : [
+			"You wrote about \"{PROMPT}\"  Who said what?",
+			"The subject was \"{PROMPT}\"... Who came up with what?",
+			"This was the best you could come up with for \"{PROMPT}\"?"
+			]},
+		{"messageName" : "screenRoundResults", "message" : [
+			"Here are the results for this round... Your prompt was \"{PROMPT}\" --",
+			"\"{PROMPT}\" was the prompt. Here are the results...",
+			"Did you guess right about who said what about \"{PROMPT}\"?"
+			]},
 		{"messageName" : "screenGameResultsOneWinner", "message" : [
 			"Congratulations to {PNAME}!",
 			"All hail {PNAME}, who is mighty!",
@@ -56,12 +74,30 @@ angular.callbacks._0 (
 			"You each had {POINTS}. One of you do better next time.",
 			"Only {POINTS} points. I expected better."
 			]},
-		{"messageName" : "bannerRequestPrompt", "message" : "It's time to choose a prompt!"},
-		{"messageName" : "bannerRequestResponse", "message" : "You've chosen your prompt..."},
-		{"messageName" : "bannerRequestGuess", "message" : "The Players have spoken!"},
-		{"messageName" : "bannerRoundResults", "message" : "Guess Results"},
-		{"messageName" : "moreGuessing", "message" : "It's time for another round of guessing!"},
-		{"messageName" : "allGuessed", "message" : "That's it for this round!  Onward and upward..."},
+		{"messageName" : "bannerRequestPrompt", "message" : [
+			"It's time to choose a prompt!",
+			"Vote, vote vote!"
+			]},
+		{"messageName" : "bannerRequestResponse", "message" : [
+			"You've chosen your prompt...",
+			"Time to write."
+			]},
+		{"messageName" : "bannerRequestGuess", "message" : [
+			"The Players have spoken!",
+			"Pick your poison."
+			]},
+		{"messageName" : "bannerRoundResults", "message" : [
+			"Guess Results",
+			"Time for points - if you earned any."
+			]},
+		{"messageName" : "moreGuessing", "message" : [
+			"It's time for another round of guessing!",
+			"We still have players to eliminate..."
+			]},
+		{"messageName" : "allGuessed", "message" : [
+			"That's it for this round!  Onward and upward...",
+			"That's it, time to move on."
+			]},
 		{"messageName" : "gameOver", "message" : [
 			"What? To the end of the game?!?",
 			"Someone had to go and get the winning score.",
