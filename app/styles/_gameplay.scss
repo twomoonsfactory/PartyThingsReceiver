@@ -22,12 +22,15 @@
 .gameplaySubtitle{
   @extend .md-whiteframe-2dp;
   font-size: $headline-font-size-base;
-  font-weight: bold;
+  font-weight: bolder;
   padding-top: .25em;
   z-index: 9;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
+  & div{
+    text-indent: 3em;
+  }
 }
 
 //subbanners on gameplay screen

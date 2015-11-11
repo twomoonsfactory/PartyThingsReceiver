@@ -4,4 +4,5 @@ export default ngModule => {
   require('./gameStates.js')(ngModule);
   require('./messageNames.js')(ngModule);
   require('./playerStates.js')(ngModule);
+  require('./uiStates.js')(ngModule);
 }

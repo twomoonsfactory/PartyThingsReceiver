@@ -1,6 +1,6 @@
 export default ngModule => {
-  ngModule.controller('gameController', ['$scope', '$log', '$location', 'gameStates', 'eventService', 'gameEvents', 'playerHandler', 'stateManager', 'promptProvider', 'responseHandler', 'responseProvider',
-                                          ($scope, $log, $location, gameStates, eventService, gameEvents, playerHandler, stateManager, promptProvider, responseHandler, responseProvider) => {
+  ngModule.controller('gameController', ['$scope', '$log', '$state', 'uiStates', 'gameStates', 'eventService', 'gameEvents', 'playerHandler', 'stateManager', 'promptProvider', 'responseHandler', 'responseProvider',
+                                          ($scope, $log, $state, uiStates, gameStates, eventService, gameEvents, playerHandler, stateManager, promptProvider, responseHandler, responseProvider) => {
     //many of these dependencies can be chunked once button testing is no loner in use
    	$scope.gameMessage = stateManager.message;
    	$scope.gameHeader = stateManager.banner;
@@ -80,7 +80,7 @@ export default ngModule => {
     $scope.changeView = ()=>{
       eventService.publish(gameEvents.newGameRequested, "");
       stateManager.updateMessages();
-  		$location.path('/gameEnd');
+  		$state.go(uiStates.gameend);
   	}
   	eventService.subscribe(gameEvents.endView, $scope.changeView);
 

@@ -1,5 +1,5 @@
 export default ngModule => {
-  ngModule.config(function($routeProvider, $locationProvider, $mdThemingProvider){
+  ngModule.config(function($mdThemingProvider){
     //sets the theming
     $mdThemingProvider.theme('default')
       .primaryPalette('indigo', {

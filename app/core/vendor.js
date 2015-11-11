@@ -6,6 +6,7 @@ module.exports = ()=>{
 	require('underscore');
 	require('angular-material');
 	require('angular-animate');
+	require('angular-ui-router');
 
 	//sassy
 	require('../styles/index.scss');

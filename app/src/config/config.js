@@ -1,28 +1,26 @@
 export default ngModule => {
-  ngModule.config(function($routeProvider, $locationProvider){
+  ngModule.config(($stateProvider, $urlRouterProvider, uiStates) => {
+    //define the default
+    $urlRouterProvider.otherwise("");
     //sets the views
-    $routeProvider
+    $stateProvider
     //welcome page
-    .when('/welcome', {
+    .state(uiStates.welcome, {
+      url: "",
       template: require('../../views/welcome.html'),
       controller: 'welcomeController'
     })
 
     //gameplay page
-    .when('/gameplay',{
+    .state(uiStates.gameplay,{
       template: require('../../views/gameplay.html'),
       controller: 'gameController'
     })
 
     //gameend page
-    .when('/gameEnd',{
+    .state(uiStates.gameend,{
       template: require('../../views/gameEnd.html'),
       controller: 'gameEndController'
-    })
-
-    //default to welcome
-    .otherwise({
-      redirectTo: '/welcome'
     });
   });
 }

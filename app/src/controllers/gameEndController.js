@@ -1,5 +1,5 @@
 export default ngModule => {
-		ngModule.controller('gameEndController', ['$scope', '$log', '$location', 'stateManager', 'gameStates', 'playerStates', 'eventService', 'gameEvents', 'messageProvider', 'messageNames', 'playerHandler', 'gameDriver', ($scope, $log, $location, stateManager, gameStates, playerStates, eventService, gameEvents, messageProvider, messageNames, playerHandler, gameDriver) => {
+		ngModule.controller('gameEndController', ['$scope', '$log', '$state', 'uiStates', 'stateManager', 'gameStates', 'playerStates', 'eventService', 'gameEvents', 'messageProvider', 'messageNames', 'playerHandler', 'gameDriver', ($scope, $log, $state, uiStates, stateManager, gameStates, playerStates, eventService, gameEvents, messageProvider, messageNames, playerHandler, gameDriver) => {
 		$scope.readyPlayers = [];
 		$scope.joinedPlayers = [];
 	  $scope.winners = stateManager.winners;
@@ -27,7 +27,7 @@ export default ngModule => {
 
 		//swap to gamePlay view when all players are quit or ready
 		$scope.changeView = ()=>{
-			$location.path('/gameplay');
+			$state.go(uiStates.gameplay);
 		}
 		eventService.subscribe(gameStates.ReadyToStart, $scope.changeView);
 		eventService.publish(gameEvents.welcomeLoaded, "");
