@@ -170,10 +170,12 @@
 .guessRight{
   @extend .guessPulses;
   background-color: $rightGuess;
+  color: #FFFFFF;
 }
 .guessWrong{
   @extend .guessPulses;
   background-color: $wrongGuess;
+  color: #FFFFFF;
 }
 .unguessed{
   @extend .guessPulses;

@@ -2,7 +2,7 @@
 @import "angular-material";
 
 .gameplayContainer{
-  flex: 0 0 70%;
+  flex: 0 0 65%;
   display: flex;
   flex-flow: column;
   align-items: flex-start;
@@ -34,7 +34,7 @@ $subbannerBorderRadius: 2em;
 }
 
 .playerContainer{
-  flex: 0 0 30%;
+  flex: 0 0 35%;
   display: flex;
   flex-flow: column;
   align-items: flex-start;
