@@ -126,6 +126,10 @@ angular.callbacks._0 (
 			"I agree, not worth guessing.",
 			"Did you forget to guess something?"
 			]},
+		{"messageName" : "noUnguessedResponseToast", "message" : [
+			"No stone unturned!",
+			"You tried 'em all."
+			]},
 		{"messageName" : "unguessedPlayersToast", "message" : [
 			"{POINTS} free points is nice.",
 			"Stay unguessed for {POINTS} points!",

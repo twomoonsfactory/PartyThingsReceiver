@@ -10,12 +10,24 @@
   overflow: hidden;
 }
 
+.gameTitleBar{
+  @extend .md-display-3;
+}
+
+.gameSubitle{
+  @extend .subtitle;
+  font-weight: normal;
+}
+
 .gameplaySubtitle{
-  @extend .md-headline;
   @extend .md-whiteframe-2dp;
+  font-size: $headline-font-size-base;
+  font-weight: bold;
   padding-top: .25em;
   z-index: 9;
-  text-indent: 2em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 //subbanners on gameplay screen
@@ -29,8 +41,9 @@ $subbannerBorderRadius: 2em;
 
 .gameMessageContainer{
   @extend .layout-fill;
-  padding-left: 2em;
-  padding-bottom: 2em;
+  padding-top: 1em;
+  padding-left: 1em;
+  padding-bottom: 1em;
 }
 
 .playerContainer{

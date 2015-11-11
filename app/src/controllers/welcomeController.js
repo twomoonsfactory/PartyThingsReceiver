@@ -63,7 +63,7 @@ export default ngModule => {
 			$scope.readyPlayer();
 		}
   	$scope.nameIt = ()=>{
-  		eventService.publish(gameEvents.gamenameReceived, {senderId:13049823,message:{gamename:"Chuck's Palace",playerName: "Chuck"}});
+  		eventService.publish(gameEvents.gamenameReceived, {senderId:13049823,message:{gamename:"Red Vs Blue",playerName: "Chuck"}});
   	}
   	$scope.count = 0;
   	$scope.list = [{senderId:52,message:{playerName:"Harry Dresden"}},

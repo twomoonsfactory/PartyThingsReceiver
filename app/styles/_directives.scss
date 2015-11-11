@@ -16,6 +16,7 @@
 
 .scoreboardTitle{
   @extend .md-headline;
+  font-weight: bolder;
   flex: auto;
   display: flex;
   flex-flow: row;

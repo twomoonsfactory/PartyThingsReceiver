@@ -89,16 +89,19 @@
     @extend .md-whiteframe-2dp;
     background-color: $messageColor;
     position: absolute;
-    height: 6em;
+    // height: 6em;
     width: 80%;
-    top: 25%;
+    // top: 25%;
     left: 0;
     -webkit-backface-visibility: hidden;
     -webkit-transition: -webkit-transform 0.5s;
-    text-align: center;
     display: flex;
+    font-size: $headline-font-size-base;
+    text-align: center;
     align-items: center;
     justify-content: center;
+    padding-left: 1em;
+    padding-right: 1em;
   }
 }
 .messageFront{
