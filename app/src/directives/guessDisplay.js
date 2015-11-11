@@ -160,6 +160,7 @@ export default ngModule => {
 						else{
 							//generates toast for having no unguessed responses
 							responseToast.message = messageProvider.getToastMessage({messageType: messageNames.noUnguessedResponseToast});
+							responseToast.type = $scope.rightToast;
 						}
 					})
 					.then(()=>{
