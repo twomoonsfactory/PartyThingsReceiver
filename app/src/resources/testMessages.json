@@ -1,0 +1,112 @@
+angular.callbacks._0 (
+{
+	"messages": [
+		{"messageName" : "nameGame", "message" : "Welcome to the party!  Please enter your name, and name your game!"},
+		{"messageName" : "namePlayer", "message" : "Welcome to {GNAME}! Please enter your name!"},
+		{"messageName" : "waitingToStart", "message" : "Hi {PNAME}, thanks for joining {GNAME}, we're waiting for more players to join."},
+		{"messageName" : "standby", "message" : "Hi {PNAME}, thanks for joinging {GNAME}, please wait for the next round."},
+		{"messageName" : "standingByReadyRequest", "message" : "{PNAME}, thanks for waiting, here we go!"},
+		{"messageName" : "readyRequest", "message" : "{PNAME}, are you ready to play?"},
+		{"messageName" : "promptRequest", "message" : "OK {PNAME}, what do you want to write about?"},
+		{"messageName" : "responseRequest", "message" : "Your prompt is {PROMPT} -- now write about it!"},
+		{"messageName" : "guessRequest", "message" : "It's time to guess!"},
+		{"messageName" : "guessRemain", "message" : "Here is what's left..."},
+		{"messageName" : "winner", "message" : "Way to go {PNAME}, you won with {POINTS} points!"},
+		{"messageName" : "endGame", "message" : "I like this game, another!"},
+		{"messageName" : "quit", "message" : "OK {PNAME}, we're sorry to see you to."},
+		{"messageName" : "screenInitialize", "message" : "Welcome to the test version of the game!"},
+		{"messageName" : "screenWelcome", "message" : "Pend then add players until you have a least 5!"},
+		{"messageName" : "screenReady", "message" : "We've got enough, we'll start when every named player is ready!"},
+		{"messageName" : "screenRequestPrompt", "message" : "Vote, it's random in this demo, not in reality!"},
+		{"messageName" : "screenRequestResponse", "message" : "Now the players give their responses..."},
+		{"messageName" : "screenRequestGuess", "message" : "The selected prompt was \"{PROMPT}\" Now guess, right or randomly."},
+		{"messageName" : "screenRoundResults", "message" : "\"{PROMPT}\" was the prompt. Here are the results..."},
+		{"messageName" : "screenGameResultsOneWinner", "message" : "Bow before {PNAME}, who won a demo game!"},
+		{"messageName" : "bannerGameResultsOneWinner", "message" : "{POINTS} points is easy in a demo."},
+		{"messageName" : "screenGameResultsMultipleWinners", "message" : "A tie between {PNAME}!"},
+		{"messageName" : "bannerGameResultsMultipleWinners", "message" : "{POINTS} apiece. Hard to pull off randomly."},
+		{"messageName" : "bannerRequestPrompt", "message" : [
+			"It's time to choose a prompt!",
+			"Vote, vote vote!"
+			]},
+		{"messageName" : "bannerRequestResponse", "message" : [
+			"You've chosen your prompt...",
+			"Time to write."
+			]},
+		{"messageName" : "bannerRequestGuess", "message" : [
+			"The Players have spoken!",
+			"Pick your poison."
+			]},
+		{"messageName" : "bannerRoundResults", "message" : [
+			"Guess Results",
+			"Time for points - if you earned any."
+			]},
+		{"messageName" : "moreGuessing", "message" : [
+			"It's time for another round of guessing!",
+			"We still have players to eliminate..."
+			]},
+		{"messageName" : "allGuessed", "message" : [
+			"That's it for this round!  Onward and upward...",
+			"That's it, time to move on."
+			]},
+		{"messageName" : "gameOver", "message" : [
+			"What? To the end of the game?!?",
+			"Someone had to go and get the winning score.",
+			"There's a winner?  The suspense is killing me!"
+			]},
+		{"messageName" : "anotherRound", "message" : [
+			"...to a new round!",
+			"Nobody's won yet?  You guys are slow.",
+			"Ready for another go-around?"
+			]},
+		{"messageName" : "newRound", "message" : "We're starting a fresh round, get ready to go!"},
+		{"messageName" : "multipleRightToast", "message" : [
+			"{PNAME} were all right! {POINTS} points each!",
+			"{PNAME} split the points!",
+			"{POINTS} points apiece for {PNAME}!",
+			"{PNAME} all guessed correctly!"
+			]},
+		{"messageName" : "oneRightToast", "message" : [
+			"{PNAME} has chosen wisely. {POINTS} points!",
+			"Nice {PNAME}, you get {POINTS} points.",
+			"You're brighter than you look {PNAME}. {POINTS} points.",
+			"{PNAME} is raising the room's IQ. {POINTS} points.",
+			"{POINTS} points to Gryffindor!"
+			]},
+		{"messageName" : "unguessedResponseToast", "message" : [
+			"I agree, not worth guessing.",
+			"Did you forget to guess something?"
+			]},
+		{"messageName" : "noUnguessedResponseToast", "message" : [
+			"No stone unturned!",
+			"You tried 'em all."
+			]},
+		{"messageName" : "unguessedPlayersToast", "message" : [
+			"{POINTS} free points is nice.",
+			"Stay unguessed for {POINTS} points!",
+			"Free points are almost as good as free money."
+			]},
+		{"messageName" : "noUnguessedPlayersToast", "message" : [
+			"Gotta stay unguessed to get points!",
+			"Y'all guessed everyone?"
+			]},
+		{"messageName" : "writerToast", "message" : [
+			"Own up {PNAME}, you said it.",
+			"{PNAME} speaks true.",
+			"{PNAME} wrote it!"
+			]},
+		{"messageName" : "wrongToast", "message" : [
+			"You should be ashamed of yourselves.",
+			"Nothing right here...",
+			"Maybe next time?",
+			"Somebody dropped the ball."
+			]},
+		{"messageName" : "wrongPlayerToast", "message" : [
+			"I expected a better showing.",
+			"I feel my IQ dropping.",
+			"No points for a bad guess."
+			]},
+		{"messageName" : "rules", "message" : "This is a game of \"Who said it?\" where players pick a prompt, respond to it and try and guess who said what! Earn points by guessing correctly, and more by being the only one to guess right.  Get even more points for every round you stump the competition and remain unguessed.  IN THIS DEMO VERSION, FOLLOW THE INSTRUCTIONS TO SEE THE FLOW OF THE GAME.  IN THIS PHASE THE FIRST PLAYER PENDS THEN NAMES THE GAME.  SUBSEQUENT PLAYERS PEND AND ARE ADDED.  YOU CAN 'SKIP' TO THE NEXT PHASE SO LONG AS YOU HAVEN'T DONE ANYTHING ELSE YET."}
+	]
+}
+)

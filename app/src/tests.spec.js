@@ -1,8 +1,4 @@
-require('jQuery');
-require('angular-builds/angular.js');
-require('angular-route');
-require('underscore');
-require('angular-mocks');
+require('../core/vendor.js');
 let appModule = require('../index.js');
 let context;
 context = require.context('../src', true, /promptProvider\.spec\.js$/);

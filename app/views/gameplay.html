@@ -26,16 +26,22 @@
     <md-toolbar class="md-accent playerHeader">
       <div>Scoreboard</div>
     </md-toolbar>
-    <div>
-      <md-button class="md-raised md-primary" ng-click="sendVotes()">Vote</md-button>
-      <md-button class="md-raised md-primary" ng-click="sendResponses()">Respond</md-button>
-      <md-button class="md-raised md-primary" ng-click="sendGuesses()">Random Guess</md-button>
-    </div>
-    <div>
-      <md-button class="md-raised md-primary" ng-click="guessRight()">Guess Right</md-button>
-      <md-button class="md-raised md-primary" ng-click="morePoints()">+5 points</md-button>
-      <md-button class="md-raised md-primary" ng-click="kingMaker()">+100 points</md-button>
-    </div>
-    <div class="flexItem" player-display players="players" guessing="currentlyGuessing"></div>
+    <div ng-switch on="currentState">
+			<div ng-switch-when="ReadyToStart">
+      	<md-button class="md-raised md-primary" ng-click="sendVotes()">Vote</md-button>
+			</div>
+			<div ng-switch-when="PromptChosen">
+      	<md-button class="md-raised md-primary" ng-click="sendResponses()">Respond</md-button>
+			</div>
+			<div ng-switch-when="ResponsesReceived">
+	      <md-button class="md-raised md-primary" ng-click="sendGuesses()">Random Guess</md-button>
+	      <md-button class="md-raised md-primary" ng-click="guessRight()">Guess Right</md-button>
+      	<md-button class="md-raised md-primary" ng-click="kingMaker()">King Maker</md-button>
+			</div>
+			<div ng-switch-default>
+				<md-button class="md-raised md-primary" ng-click="sendVotes()">Vote</md-button>
+			</div>
+		</div>
+		<div class="flexItem" player-display players="players" guessing="currentlyGuessing"></div>
   </div>
 </div>

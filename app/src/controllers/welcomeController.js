@@ -3,7 +3,7 @@ export default ngModule => {
 																							($scope, $log, $state, uiStates, gameStates, playerStates, eventService, gameEvents, messageProvider, messageNames, playerHandler, gameDriver, stateManager) => {
 		$scope.readyPlayers = [];
 		$scope.joinedPlayers = [];
-		$scope.gameName = "Party Things";
+		$scope.gameName = "Party Things Demo";
 		$scope.message = "";
 		$scope.rules = "";
 

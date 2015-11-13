@@ -56,7 +56,8 @@ module.exports = function(config) {
             }),
         new webpack.ProvidePlugin({
             "_": "underscore"
-          })
+          }),
+        require("karma-webpack")
       ],
       watch: true,
       devtool: 'inline-source-map'

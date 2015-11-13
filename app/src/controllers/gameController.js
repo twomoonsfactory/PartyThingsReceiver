@@ -101,9 +101,6 @@ export default ngModule => {
     $scope.incomingPlayer = ()=>{
     	eventService.publish(gameEvents.playerJoined, {});
     }
-    $scope.morePoints = ()=>{
-        playerHandler.assignPoints({playerId:_.sample(playerHandler.players).playerId,points: 5});
-    }
     $scope.removePlayer = ()=>{
     	eventService.publish(gameEvents.quitReceived, {senderId:_.sample(_.filter(playerHandler.players, function(player){return player.state!=="quit"})).senderId});
     }

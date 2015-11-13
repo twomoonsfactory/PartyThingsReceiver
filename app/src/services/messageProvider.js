@@ -16,7 +16,7 @@ export default ngModule => {
 
 		//pulls messages from server
 		loadMessages(){
-			this.$http.jsonp("http://www.twomoonsfactory.com/resources/jsons/messages.json?callback=JSON_CALLBACK")
+			this.$http.jsonp("http://www.twomoonsfactory.com/resources/jsons/testMessages.json?callback=JSON_CALLBACK")
 				.success(data => {
 					this.messages = data.messages;
 					this.$log.log("Messages loaded in...");
