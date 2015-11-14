@@ -20,9 +20,6 @@ export default ngModule => {
       this.activePlayers = 0;     //the number of players currently playing -- should it be moved to the playerHandler?
       this.minimumPlayers = gameNumbers.minimumPlayers;    //the minimum number of players to start the game
       this.joinedPlayers = 0;     //the number of players joined, named or not.  Used for "incoming player"
-      this.incoming = this.playerFactory.newPlayer("Incoming Player", 111, -1);
-      this.incoming.setState(this.playerStates.incoming);
-
       this.subscribeToGameEvents();
     }
 
@@ -45,37 +42,37 @@ export default ngModule => {
       else{
         this.messageSender.requestPlayerName({senderId: args.senderId, message: this.messageProvider.getMessage({messageName: this.messageNames.namePlayer, gname: this.stateManager.gameName})});
       }
-      this.joinedPlayers++;
+      this.players.push(this.playerFactory.newPlayer(args.senderId, this.playerCounter));
+      this.playerCounter++;
       this.eventService.publish(this.gameEvents.playerUpdated, "");
     }
 
 
     //this is where the game is named and the first player is created
     gameNamed(args){
-      this.stateManager.gameName = args.message.gamename;
-      this.eventService.publish(this.gameEvents.gameNamed, {gameName: args.message.gamename, ownerName: args.message.playerName});
+      this.stateManager.gameName = args.message.gameName;
+      this.eventService.publish(this.gameEvents.gameNamed, {gameName: args.message.gameName, ownerName: args.message.playerName});
       this.playerNamed(args);
     }
 
     //this is where new players are created and assigned a state appropriate to the game's state, ready requests even being handled.
     //Need error handling for duplicate player names, as it can create confusion
     playerNamed(args){
-      this.players[this.playerCounter]= this.playerFactory.newPlayer(args.message.playerName, args.senderId, this.playerCounter);
+      let namedPlayer = this.findPlayerBySenderId(args.senderId);
+      namedPlayer.namePlayer(args.message.playerName);
       if(this.stateManager.checkState(this.gameStates.WaitingForStart)){
-        this.messageSender.requestPlayerName({senderId: args.senderId, message: this.messageProvider.getMessage({messageName: this.messageNames.waitingToStart, pname: args.message.playerName, gname: this.stateManager.gameName})});
-        this.players[this.playerCounter].setState(this.playerStates.waiting);
+        namedPlayer.setState(this.playerStates.waiting);
         this.activePlayers++;
       }
       else if(this.stateManager.checkState(this.gameStates.WaitingForReady)){
         this.messageSender.requestReady({senderId: args.senderId, message: this.messageProvider.getMessage({messageName: this.messageNames.readyRequest, pname: args.message.playerName})});
-        this.players[this.playerCounter].setState(this.playerStates.readyRequested);
+        namedPlayer.setState(this.playerStates.readyRequested);
         this.activePlayers++;
       }
       else{
         this.messageSender.sendStandby({senderId: args.senderId, message: this.messageProvider.getMessage({messageName: this.messageNames.standby, pname: args.message.playerName, gname: this.stateManager.gameName})});
-        this.players[this.playerCounter].setState(this.playerStates.standingBy);
+        namedPlayer.setState(this.playerStates.standingBy);
       }
-      this.playerCounter++;
       this.eventService.publish(this.gameEvents.playerUpdated, "");
       if(this.activePlayers>=this.minimumPlayers && this.stateManager.checkState(this.gameStates.WaitingForStart)){
         this.stateManager.setState(this.gameStates.WaitingForReady);

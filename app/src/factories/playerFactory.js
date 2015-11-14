@@ -4,18 +4,22 @@ export default ngModule => {
 				this.playerStates = playerStates;
 				this.$log = $log;
 		}
-		newPlayer(playerName, senderId, playerId){
+		newPlayer(senderId, playerId){
 			let player = {};
-			player.playerName = playerName;
+			player.playerName = "Incoming...";
 			player.senderId = senderId;
 			player.score = 0;
 			player.scoreToAdd = 0;
-			player.state = ""; //playerStates.js
+			player.state = this.playerStates.incoming; //playerStates.js
 			player.playerId = playerId;
 			player.guessed = false;
 			player.written = false;
-			player.waitingForAction = 0; //for ease of ngswitch -- positive means needs action. Zero does not. Negative is quit/incoming
+			player.waitingForAction = -1; //for ease of ngswitch -- positive means needs action. Zero does not. Negative is quit/incoming
 
+			player.namePlayer = (name) => {
+				player.playerName = name;
+				player.waitingForAction = 0;
+			}
 			player.addPoints = (points) => player.score = player.score + points;
 			player.addScore = (score) => player.scoreToAdd = score;
 			player.wasGuessed = () => player.guessed = true;

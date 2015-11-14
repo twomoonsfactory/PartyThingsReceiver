@@ -1,6 +1,6 @@
 export default ngModule => {
-	ngModule.controller('welcomeController', ['$scope', '$log', '$state', 'uiStates', 'gameStates', 'playerStates', 'eventService', 'gameEvents', 'messageProvider', 'messageNames', 'playerHandler', 'gameDriver', 'stateManager',
-																							($scope, $log, $state, uiStates, gameStates, playerStates, eventService, gameEvents, messageProvider, messageNames, playerHandler, gameDriver, stateManager) => {
+	ngModule.controller('welcomeController', ['$scope', '$log', '$state', 'uiStates', 'gameStates', 'playerStates', 'eventService', 'gameEvents', 'messageProvider', 'messageNames', 'playerHandler', 'gameDriver', 'stateManager', 'fakePlayerProvider',
+																							($scope, $log, $state, uiStates, gameStates, playerStates, eventService, gameEvents, messageProvider, messageNames, playerHandler, gameDriver, stateManager, fakePlayerProvider) => {
 		$scope.readyPlayers = [];
 		$scope.joinedPlayers = [];
 		$scope.gameName = "Party Things Demo";
@@ -62,34 +62,21 @@ export default ngModule => {
 			$scope.readyPlayer();
 			$scope.readyPlayer();
 		}
+		$scope.incomingPlayerCount = 0;
+    $scope.incomingPlayer = ()=>{
+	  	eventService.publish(gameEvents.playerJoined, fakePlayerProvider.getJoiningPlayerInitial());
+			$scope.incomingPlayerCount++;
+    }
   	$scope.nameIt = ()=>{
-  		eventService.publish(gameEvents.gamenameReceived, {senderId:13049823,message:{gamename:"Red Vs Blue",playerName: "Chuck"}});
+  		eventService.publish(gameEvents.gamenameReceived, fakePlayerProvider.getJoiningPlayerDetail());
+			$scope.incomingPlayerCount--;
   	}
-  	$scope.count = 0;
-  	$scope.list = [{senderId:52,message:{playerName:"Harry Dresden"}},
-			{senderId:15,message:{playerName:"Rose"}},
-			{senderId:25234,message:{playerName:"Mikey"}},
-			{senderId:157,message:{playerName:"Billy"}},
-			{senderId:972343,message:{playerName:"Geraldine"}},
-			{senderId:5122,message:{playerName:"Milly"}},
-			{senderId:125,message:{playerName:"Joe"}},
-			{senderId:255234,message:{playerName:"Alan Parsons"}},
-			{senderId:1547,message:{playerName:"Mary Jane"}},
-			{senderId:9872343,message:{playerName:"Peter Parker"}},
-			{senderId:572,message:{playerName:"Steve Rodgers"}},
-			{senderId:998,message:{playerName:"Nick Fury"}},
-			{senderId:997,message:{playerName:"Professor Xavier"}},
-			{senderId:996,message:{playerName:"Derpina"}},
-			{senderId:995,message:{playerName:"Derp"}}];
 		$scope.plusPlayer = ()=>{
-			eventService.publish(gameEvents.playernameReceived, $scope.list[$scope.count]);
-			$scope.count++;
+			eventService.publish(gameEvents.playernameReceived, fakePlayerProvider.getJoiningPlayerDetail());
+			$scope.incomingPlayerCount--;
     }
     $scope.readyPlayer = ()=>{
     	eventService.publish(gameEvents.readyReceived, $scope.joinedPlayers[0]);
-    }
-    $scope.incomingPlayer = ()=>{
-	  	eventService.publish(gameEvents.playerJoined, {});
     }
     $scope.removePlayer = ()=>{
     	eventService.publish(gameEvents.quitReceived, {senderId:_.sample(playerHandler.players).senderId});

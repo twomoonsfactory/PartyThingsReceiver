@@ -11,7 +11,7 @@
 		<div class="welcomeText">
 			<div>
 				<md-button class="md-raised md-accent" ng-click="incomingPlayer()">PendPlayer</md-button>
-			  <md-button ng-if="joinedPlayers.length>=1" class="md-raised md-accent" ng-click="plusPlayer()">AddPlayer</md-button>
+			  <md-button ng-if="incomingPlayerCount>0" class="md-raised md-accent" ng-click="plusPlayer()">AddPlayer</md-button>
 			  <md-button ng-if="readyPlayers.length+joinedPlayers.length>=5" class="md-raised md-accent" ng-click="readyPlayer()">Ready</md-button><br />
 			</div>
 			<p class="winners">{{message}}</p>

@@ -33,21 +33,17 @@ export default ngModule => {
 		eventService.publish(gameEvents.welcomeLoaded, "");
 
 	  	      	//TEST VIA BUTTON
-		$scope.count = 0;
-		$scope.list = [{senderId:522,message:{playerName:"Fran"}},
-					{senderId:152,message:{playerName:"Rosalina"}},
-					{senderId:2215234,message:{playerName:"Sir Alec Guiness"}},
-					{senderId:15147,message:{playerName:"Billybob Thornton"}},
-					{senderId:9721343,message:{playerName:"Geriatric"}}];
+		$scope.incomingPlayerCount = 0;
 		$scope.plusPlayer = ()=>{
-			eventService.publish(gameEvents.playernameReceived, $scope.list[$scope.count]);
-			$scope.count++;
+			eventService.publish(gameEvents.playernameReceived, fakePlayerProvider.getJoiningPlayerDetail());
+			$scope.incomingPlayerCount--;
 	  }
 	  $scope.readyPlayer = ()=>{
 	  	eventService.publish(gameEvents.readyReceived, $scope.joinedPlayers[0]);
 	  }
 	  $scope.incomingPlayer = ()=>{
-	  	eventService.publish(gameEvents.playerJoined, {});
+	  	eventService.publish(gameEvents.playerJoined, fakePlayerProvider.getJoiningPlayerInitial());
+			$scope.incomingPlayerCount++;
 	  }
 	  $scope.removePlayer = ()=>{
 	  	eventService.publish(gameEvents.quitReceived, {senderId:_.sample(_.filter(playerHandler.players, function(player){

@@ -12,9 +12,9 @@
 			<!-- buttons only appear in the demo version, not the final -->
 			<div>
 				<md-button class="md-raised md-accent" ng-click="incomingPlayer()">PendPlayer</md-button>
-				<md-button ng-if="gameName==='Party Things Demo'&&joinedPlayers.length>=1" class="md-raised md-accent" ng-click="nameIt()">NameIt</md-button>
-			  <md-button ng-if="joinedPlayers.length>=1" class="md-raised md-accent" ng-click="plusPlayer()">AddPlayer</md-button>
-			  <md-button ng-if="readyPlayers.length+joinedPlayers.length>=5" class="md-raised md-accent" ng-click="readyPlayer()">Ready</md-button><br />
+				<md-button ng-if="gameName==='Party Things Demo'&&incomingPlayerCount>0" class="md-raised md-accent" ng-click="nameIt()">NameIt</md-button>
+			  <md-button ng-if="incomingPlayerCount>0&&gameName!=='Party Things Demo'" class="md-raised md-accent" ng-click="plusPlayer()">AddPlayer</md-button>
+			  <md-button ng-if="readyPlayers.length+joinedPlayers.length>=5&&joinedPlayers[0].checkState('readyRequested')" class="md-raised md-accent" ng-click="readyPlayer()">Ready</md-button><br />
 				<md-button ng-if="gameName==='Party Things Demo'&&readyPlayers.length+joinedPlayers.length===0" class="md-raised md-accent" ng-click="primeIt()">Click FIRST to skip to Gameplay</md-button>
 			</div>
 	  	{{message}}
