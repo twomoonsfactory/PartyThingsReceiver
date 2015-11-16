@@ -77,12 +77,39 @@
   }
 }
 
-//gameMessage flip card
-.messageContainer{
+.playerFlipper{
   position: relative;
-  // perspective: 1000;
-  height: 6em;
-  width: 100%;
+  & .playerSide{
+    @extend .layout-fill;
+    position: absolute;
+    top: 0;
+    left: 0;
+    -webkit-backface-visibility: hidden;
+    -webkit-transition: -webkit-transform 0.5s;
+  }
+}
+.playerCardFront{
+  @extend .playerSide;
+  .playerFlipper.flipped &{
+    -webkit-transform: rotateX(-180deg);
+  }
+}
+.playerCardBack{
+  @extend .playerSide;
+  -webkit-transform: rotateX(-180deg);
+  .playerFlipper.flipped &{
+    -webkit-transform: rotateX(0);
+  }
+}
+
+//gameMessage flip card
+.gameMessageContainer{
+  @extend .layout-fill;
+  flex: 1 1 auto;
+  position: relative;
+  padding-top: 1em;
+  padding-left: 1em;
+  padding-bottom: 1em;
   z-index: 3;
   & .messageSide{
     @extend .slightlyRounded;
@@ -107,14 +134,14 @@
 .messageFront{
   @extend .messageSide;
   z-index: 2;
-  .messageContainer.flipped &{
+  .gameMessageContainer.flipped &{
     -webkit-transform: rotateX(-180deg);
   }
 }
 .messageBack{
   @extend .messageSide;
   -webkit-transform: rotateX(-180deg);
-  .messageContainer.flipped &{
+  .gameMessageContainer.flipped &{
     -webkit-transform: rotateX(0);
   }
 }

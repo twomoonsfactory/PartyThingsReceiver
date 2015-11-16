@@ -28,16 +28,12 @@
 	<div class="joinedList">
 		<md-list class="sublist">
 			<md-list-item class="md-1-line joined" ng-repeat="player in joinedPlayers|limitTo:10:10">
-				<div class="newPlayer">
-					{{player.playerName}}
-				</div>
+				<div player-card="player" class="newPlayer"></div>
 			</md-list-item>
 		</md-list>
 		<md-list flex="sublist">
 			<md-list-item class="md-1-line joined" ng-repeat="player in joinedPlayers|limitTo:10">
-				<div class="newPlayer">
-					{{player.playerName}}
-				</div>
+				<div player-card="player" class="newPlayer"></div>
 			</md-list-item>
 		</md-list>
 	</div>

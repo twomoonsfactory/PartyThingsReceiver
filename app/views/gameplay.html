@@ -10,9 +10,7 @@
     <md-toolbar class="md-accent gameplayHeader">
       <div>{{gameHeader}}</div>
     </md-toolbar>
-    <div class="gameMessageContainer">
-      <div game-message-slip="gameMessage"></div>
-    </div>
+    <div game-message-slip="gameMessage"></div>
     <div ng-switch on="currentState" class="currentPhase">
       <div class="gameContent" ng-switch-when="ReadyToStart" prompt-request prompts="prompts"></div>
       <div class="gameContent" ng-switch-when="PromptChosen" response-request prompt="finalPrompt"></div>

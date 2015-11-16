@@ -10,7 +10,7 @@ export default ngModule =>{
         scope.message1 = scope.gameMessage;
         scope.message2 = "";
         scope.onMessage1 = true;
-        elem.addClass('messageContainer');
+        elem.addClass('gameMessageContainer');
 				scope.$watch('gameMessage', ()=>{
           if(scope.onMessage1){
             scope.message2 = scope.gameMessage;

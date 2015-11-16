@@ -42,13 +42,6 @@ $subbannerBorderRadius: 2em;
   border-bottom-right-radius: $subbannerBorderRadius;
 }
 
-.gameMessageContainer{
-  @extend .layout-fill;
-  padding-top: 1em;
-  padding-left: 1em;
-  padding-bottom: 1em;
-}
-
 .playerContainer{
   flex: 0 0 35%;
   display: flex;
@@ -66,7 +59,7 @@ $subbannerBorderRadius: 2em;
 
 .currentPhase{
   position: relative;
-  flex: 8 0 auto;
+  flex: 5 0 auto;
   padding-right: 3em;
   padding-left: 1em;
   overflow: visible;

@@ -51,6 +51,11 @@ export default ngModule => {
 
   	      	//TEST VIA BUTTON
 		$scope.primeIt = ()=>{
+			$scope.incomingPlayer();
+			$scope.incomingPlayer();
+			$scope.incomingPlayer();
+			$scope.incomingPlayer();
+			$scope.incomingPlayer();
 			$scope.nameIt();
 			$scope.plusPlayer();
 			$scope.plusPlayer();

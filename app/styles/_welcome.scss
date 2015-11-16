@@ -93,10 +93,6 @@
  width: 0;
 }
 
-.newPlayer{
-  @extend .layout-fill;
-}
-
 .offsetRoundedEdges{
   border-bottom-right-radius: .5em;
   border-top-left-radius: .5em;
@@ -114,6 +110,7 @@
 }
 
 .newPlayer{
+  @extend .layout-fill;
   @extend .cardHue;
   @extend .playerSlip;
   @extend .md-whiteframe-2dp;
