@@ -23,3 +23,17 @@ $messageColor: darken($displayBackground, 10%);
   @extend .fastReturn;
   background-color: $cardBackground;
 }
+.offsetRoundedEdges{
+  border-bottom-right-radius: .5em;
+  border-top-left-radius: .5em;
+  border-bottom-left-radius: .25em;
+  border-top-right-radius: .25em;
+  text-indent: .5em;
+}
+.offsetOppositeEdges{
+  border-bottom-right-radius: .25em;
+  border-top-left-radius: .25em;
+  border-bottom-left-radius: .5em;
+  border-top-right-radius: .5em;
+  text-indent: .5em;
+}

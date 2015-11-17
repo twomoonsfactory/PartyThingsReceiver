@@ -35,12 +35,52 @@
   flex-flow: column;
 }
 
-.playerSlip{
+//for the playerCard on the welcome screen
+.playingPlayer{
   @extend .layout-fill;
-  display: flex;
-  flex-flow: row;
-  align-items: center;
-  justify-content: space-between;
+  flex: 1 1 auto;
+  position: relative;
+  & .playingPlayerCardSide{
+    @extend .cardFlip;
+    position: absolute;
+    left: 0;
+    width: 100%;
+    display: flex;
+    flex-flow: row;
+    align-items: center;
+    justify-content: space-between;
+    font-weight: bold;
+    font-size: 1.5em;
+    z-index: 5;
+    padding: .25em;
+    }
+}
+
+.playingPlayerCardFront{
+  @extend .md-whiteframe-2dp;
+  @extend .playingPlayerCardSide;
+  @extend .offsetOppositeEdges;
+  background-color: darken($cardBackground, 5%);
+  .playingPlayer.flipped &{
+    -webkit-transform: rotateX(-180deg);
+  }
+}
+
+.playingPlayerCardBack{
+  @extend .playingPlayerCardSide;
+  @extend .offsetRoundedEdges;
+  -webkit-transform: rotateX(-180deg);
+  .playingPlayer.flipped &{
+    -webkit-transform: rotateX(0);
+  }
+}
+
+.playerNameCell{
+  flex: 7 0 70%;
+}
+
+.playerScoreCell{
+  flex: 3 0 30%;
 }
 
 .playerScore{
@@ -112,7 +152,6 @@
 }
 
 //for the playerCard on the welcome screen
-
 .newPlayer{
   @extend .layout-fill;
   flex: 1 1 auto;

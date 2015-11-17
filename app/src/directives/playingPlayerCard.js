@@ -1,12 +1,13 @@
 export default ngModule =>{
-	ngModule.directive('playerCard', ['$q', '$timeout', ($q, $timeout)=>{
+	ngModule.directive('playingPlayerCard', ['$q', '$timeout', ($q, $timeout)=>{
 		return {
 			restrict: 'A',
       scope: {
-        player: "=playerCard"
+        player: "=playingPlayerCard"
       },
-			template: '<div class="playerCardFront">Incoming...</div><div class="playerCardBack">{{name}}</div>',
+			template: require('./playingPlayerCard.html'),
       link: (scope, elem, attrs) =>{
+				elem.addClass('playingPlayer');
         scope.name = scope.player.playerName;
         scope.waitingForName = true;
 				scope.$watch('player.playerName', ()=>{

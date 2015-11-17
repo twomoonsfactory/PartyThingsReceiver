@@ -107,7 +107,18 @@ export default ngModule => {
           scope.wasGuessed = false;
         }
 
-          $rootScope.$emit(gameEvents.playerRegistered, scope);
+        scope.setCardState = ()=>{
+          if(scope.player.waitingForAction>0) elem.removeClass('supressed ready').addClass('readyToAct');
+          else if(scope.player.waitingForAction<0) elem.removeClass('readyToAct ready').addClass('supressed');
+          else elem.removeClass('readyToAct supressed').addClass('ready');
+          if(scope.player.guessed||scope.player.standingBy) elem.addClass('inactive');
+          else elem.removeClass('inactive');
+        }
+
+        scope.$watch('player.waitingForAction', scope.setCardState);
+        scope.$watch('player.guessed', scope.setCardState);
+
+        $rootScope.$emit(gameEvents.playerRegistered, scope);
       }
     };
   }])

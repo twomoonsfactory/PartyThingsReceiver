@@ -1,0 +1,13 @@
+<div class="playingPlayerCardFront inactive">Incoming...</div>
+<div class="playingPlayerCardBack cardHue" player-guess-display="player">
+  <div class="playerNameCell">
+    {{player.playerName}}
+  </div>
+  <div class="playerScoreCell flexRow">
+    <span class="playerScore">
+      {{player.score}}
+    </span>
+    <span class="flexItem" number-iterator="player.scoreToAdd" base-number="player.score">
+    </span>
+  </div>
+</div>

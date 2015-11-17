@@ -13,6 +13,7 @@ export default ngModule => {
 			player.state = this.playerStates.incoming; //playerStates.js
 			player.playerId = playerId;
 			player.guessed = false;
+			player.standingBy = false;
 			player.written = false;
 			player.waitingForAction = -1; //for ease of ngswitch -- positive means needs action. Zero does not. Negative is quit/incoming
 
@@ -40,6 +41,10 @@ export default ngModule => {
 						player.waitingForAction = -1;
 					else
 						player.waitingForAction = 1;
+					if(newState===this.playerStates.standingBy)player.standingBy = true;
+					else {
+						player.standingBy = false;
+					}
 				}
 				else
 					this.$log.log("Player state" + newState + " is not valid.");

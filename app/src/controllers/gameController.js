@@ -1,6 +1,6 @@
 export default ngModule => {
-  ngModule.controller('gameController', ['$scope', '$log', '$state', 'uiStates', 'gameStates', 'eventService', 'gameEvents', 'playerHandler', 'stateManager', 'promptProvider', 'responseHandler', 'responseProvider',
-                                          ($scope, $log, $state, uiStates, gameStates, eventService, gameEvents, playerHandler, stateManager, promptProvider, responseHandler, responseProvider) => {
+  ngModule.controller('gameController', ['$scope', '$log', '$state', 'uiStates', 'gameStates', 'eventService', 'gameEvents', 'playerHandler', 'stateManager', 'promptProvider', 'responseHandler', 'responseProvider', 'fakePlayerProvider',
+                                          ($scope, $log, $state, uiStates, gameStates, eventService, gameEvents, playerHandler, stateManager, promptProvider, responseHandler, responseProvider, fakePlayerProvider) => {
     //many of these dependencies can be chunked once button testing is no loner in use
    	$scope.gameMessage = stateManager.message;
    	$scope.gameHeader = stateManager.banner;
@@ -90,16 +90,10 @@ export default ngModule => {
   	//TEST VIA BUTTON
   	$scope.count = 0;
   	$scope.plusPlayer = ()=>{
-    	let list = [{senderId:522,message:{playerName:"Fran"}},
-    				{senderId:152,message:{playerName:"Rosalina"}},
-    				{senderId:2215234,message:{playerName:"Sir Alec Guiness"}},
-    				{senderId:15147,message:{playerName:"Billybob Thornton"}},
-    				{senderId:9721343,message:{playerName:"Geriatric"}}];
-    	eventService.publish(gameEvents.playernameReceived, list[$scope.count]);
-    	$scope.count++;
+    	eventService.publish(gameEvents.playernameReceived, fakePlayerProvider.getJoiningPlayerDetail());
     }
     $scope.incomingPlayer = ()=>{
-    	eventService.publish(gameEvents.playerJoined, {});
+    		eventService.publish(gameEvents.playerJoined, fakePlayerProvider.getJoiningPlayerInitial());
     }
     $scope.removePlayer = ()=>{
     	eventService.publish(gameEvents.quitReceived, {senderId:_.sample(_.filter(playerHandler.players, function(player){return player.state!=="quit"})).senderId});

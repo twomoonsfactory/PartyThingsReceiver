@@ -7,6 +7,7 @@ export default ngModule => {
   require('./playerCard.js')(ngModule);
   require('./playerDisplay.js')(ngModule);
   require('./playerGuessDisplay.js')(ngModule);
+  require('./playingPlayerCard.js')(ngModule);
   require('./promptRequest.js')(ngModule);
   require('./responseGuessDisplay.js')(ngModule);
   require('./responseRequest.js')(ngModule);
