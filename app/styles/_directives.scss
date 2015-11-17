@@ -108,3 +108,38 @@
   width: 75%;
   font-weight: bolder;
 }
+
+.newPlayer{
+  @extend .layout-fill;
+  flex: 1 1 auto;
+  position: relative;
+  & .playerCardSide{
+    @extend .cardFlip;
+    @extend .md-whiteframe-2dp;
+    position: absolute;
+    left: 0;
+    width: 100%;
+    font-weight: bold;
+    font-size: 1.5em;
+    z-index: 5;
+    padding: .25em;
+  }
+}
+
+.playerCardFront{
+  @extend .playerCardSide;
+  @extend .offsetOppositeEdges;
+  background-color: darken($cardBackground, 5%);
+  .newPlayer.flipped &{
+    -webkit-transform: rotateX(-180deg);
+  }
+}
+.playerCardBack{
+  @extend .playerCardSide;
+  @extend .offsetRoundedEdges;
+  background-color: $cardBackground;
+  -webkit-transform: rotateX(-180deg);
+  .newPlayer.flipped &{
+    -webkit-transform: rotateX(0);
+  }
+}

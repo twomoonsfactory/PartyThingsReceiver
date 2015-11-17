@@ -5,17 +5,17 @@ export default ngModule =>{
       scope: {
         player: "=playerCard"
       },
-			template: '<div class="gameMessageContainer"><div class="messageFront">Incoming...</div><div class="messageBack">{{message2}}</div><div>',
+			template: '<div class="playerCardFront">{{name}}</div><div class="playerCardBack">{{name}}</div>',
       link: (scope, elem, attrs) =>{
-        scope.name = "";
+        scope.name = scope.player.playerName;
         scope.waitingForName = true;
-				scope.$watch('player', ()=>{
-          if(scope.waitingForName){
-            scope.name = scope.player.playerName;
+				scope.$watch('player.playerName', ()=>{
+          if(scope.waitingForName && scope.player.state!=="incoming"){
+						scope.name = scope.player.playerName;
             scope.waitingForName = false;
             elem.addClass('flipped');
           }
-        });
+        }, true);
       }
 		}
 	}])
