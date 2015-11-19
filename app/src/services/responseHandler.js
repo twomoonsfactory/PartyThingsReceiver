@@ -11,6 +11,7 @@ export default ngModule => {
 
       this.responses = [];
       this.responseList = []; //list sent to users
+      this.elegibleAuthors = [];
       this.responseCounter = 1;
       this.shuffled = false;
 
@@ -44,12 +45,25 @@ export default ngModule => {
       if(!this.shuffled){
         this.responseList = [];
         _.each(this.responses, currentresponse => {
-          if(!currentresponse.guessed) this.responseList.push({response: currentresponse.response, responseId: currentresponse.responseId});
+          if(!currentresponse.guessed){
+            this.responseList.push({response: currentresponse.response, responseId: currentresponse.responseId});
+            if(currentresponse.playerId!==-1){
+              let author = this.playerHandler.findPlayerByPlayerId(currentresponse.playerId);
+              this.elegibleAuthors.push({playerName: author.playerName, playerId: author.playerId});
+            }
+          }
         });
         this.responseList = _.shuffle(this.responseList);
+        this.elegibleAuthors = _.shuffle(this.elegibleAuthors);
         this.shuffled = true;
       }
       return this.responseList;
+    }
+
+    getAuthors(){
+      if(!this.shuffled)
+        this.getResponses();
+      return this.elegibleAuthors;
     }
 
     //getter for playerId of the writer of a particular response

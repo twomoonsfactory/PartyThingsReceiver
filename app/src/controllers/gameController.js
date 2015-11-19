@@ -108,10 +108,10 @@ export default ngModule => {
       eventService.publish(gameEvents.responseReceived, {senderId: _.sample(_.filter(playerHandler.players, function(player){return player.state==='writing'})).senderId, message: {response: responseProvider.getRandomResponse()}});
     }
     $scope.sendGuesses = ()=>{
-      eventService.publish(gameEvents.guessReceived, {senderId: _.sample(_.filter(playerHandler.players, function(player){return player.state==='guessing'})).senderId, message: {playerId: _.sample(_.filter(playerHandler.players, function(player){return player.guessed===false})).playerId, responseId:_.sample(responseHandler.getResponses()).responseId}})
+      eventService.publish(gameEvents.guessReceived, {senderId: _.sample(_.filter(playerHandler.players, function(player){return player.state==='guessing'})).senderId, message: {playerId: _.sample(responseHandler.getAuthors()).playerId, responseId:_.sample(responseHandler.getResponses()).responseId}})
     }
     $scope.kingMaker = ()=>{
-      playerHandler.assignPoints({playerId:   _.sample(playerHandler.players).playerId, points: 100});
+      playerHandler.assignPoints({playerId:   _.sample(_.filter(playerHandler.players, (player)=>{return (player.state!=='quit'&&player.state!=='incoming'&&player.state!=='standingBy')?true:false})).playerId, points: 100});
     }
     $scope.guessRight = ()=>{
       let responses = [];

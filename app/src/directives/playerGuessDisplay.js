@@ -7,6 +7,7 @@ export default ngModule => {
       },
       link: (scope, elem, attrs)=>{
         scope.wasGuessed = false;
+        scope.thisPlayerQuit = false;
         scope.checkIfGuessed = (prompt)=>{
           //checks if this player was guessed correctly for the current prompt, returns true if so, otherwise false
           if(prompt.playerId===scope.player.playerId && prompt.correct.length > 0){
@@ -42,6 +43,10 @@ export default ngModule => {
           $q.when()
           .then(()=>{
             let defer = $q.defer();
+            if(elem.hasClass('supressed')){
+              scope.thisPlayerQuit = true;
+              elem.removeClass('supressed').addClass('inactive');
+            }
             elem.removeClass('cardHue').addClass('beingGuessed guessMid');
             $timeout(()=>{defer.resolve()}, timeUntilFinal/9);
             return defer.promise;
@@ -104,7 +109,9 @@ export default ngModule => {
           elem.removeClass('beingGuessed guessRight guessWrong');
           elem.addClass('cardHue');
           if(scope.wasGuessed)scope.player.wasGuessed();
+          if(scope.thisPlayerQuit)elem.addClass('supressed');
           scope.wasGuessed = false;
+          scope.thisPlayerQuit = false;
         }
 
         scope.setCardState = ()=>{
