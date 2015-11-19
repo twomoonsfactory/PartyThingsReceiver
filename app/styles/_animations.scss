@@ -92,7 +92,7 @@
 .cardFlip{
   left: 0;
   -webkit-backface-visibility: hidden;
-  -webkit-transition: -webkit-transform 0.5s;
+  -webkit-transition: all 0.5s;
 }
 
 //gameMessage flip card
@@ -164,14 +164,14 @@
 
 //used for returning cards to the standard hue
 .fastReturn{
-  -webkit-transition: background-color cubic-bezier(0.17, 0.67, 0.83, 0.67) 0.2s;
-  -moz-transition: background-color cubic-bezier(0.17, 0.67, 0.83, 0.67) 0.2s;
-  -o-transition: background-color cubic-bezier(0.17, 0.67, 0.83, 0.67) 0.2s;
-  transition: background-color cubic-bezier(0.17, 0.67, 0.83, 0.67) 0.2s;
-  -webkit-transition: box-shadow cubic-bezier(0.17, 0.67, 0.83, 0.67) 0.2s;
-  -moz-transition: box-shadow cubic-bezier(0.17, 0.67, 0.83, 0.67) 0.2s;
-  -o-transition: box-shadow cubic-bezier(0.17, 0.67, 0.83, 0.67) 0.2s;
-  transition: box-shadow cubic-bezier(0.17, 0.67, 0.83, 0.67) 0.2s;
+  -webkit-transition: all cubic-bezier(0.17, 0.67, 0.83, 0.67) 0.2s;
+  -moz-transition: all cubic-bezier(0.17, 0.67, 0.83, 0.67) 0.2s;
+  -o-transition: all cubic-bezier(0.17, 0.67, 0.83, 0.67) 0.2s;
+  transition: all cubic-bezier(0.17, 0.67, 0.83, 0.67) 0.2s;
+  -webkit-transition: all cubic-bezier(0.17, 0.67, 0.83, 0.67) 0.2s;
+  -moz-transition: all cubic-bezier(0.17, 0.67, 0.83, 0.67) 0.2s;
+  -o-transition: all cubic-bezier(0.17, 0.67, 0.83, 0.67) 0.2s;
+  transition: all cubic-bezier(0.17, 0.67, 0.83, 0.67) 0.2s;
 }
 
 //guessPulses during resolution

@@ -88,18 +88,21 @@ export default ngModule => {
 
     //keeps
   	//TEST VIA BUTTON
-  	$scope.count = 0;
+    $scope.incomingPlayersExist = _.findWhere($scope.joinedPlayers, {playerName: 'Incoming...'}) ? true : false;
   	$scope.plusPlayer = ()=>{
-    	eventService.publish(gameEvents.playernameReceived, fakePlayerProvider.getJoiningPlayerDetail());
+    	eventService.publish(gameEvents.playernameReceived, fakePlayerProvider.getJoiningPlayerDetail(_.sample(_.filter(playerHandler.players, (player)=>{return player.playerName==="Incoming..."})).senderId));
+      $scope.incomingPlayersExist = _.filter(playerHandler.players, (player)=>{return player.playerName==='Incoming...'}).length>0?true:false;
     }
     $scope.incomingPlayer = ()=>{
-    		eventService.publish(gameEvents.playerJoined, fakePlayerProvider.getJoiningPlayerInitial());
+  		eventService.publish(gameEvents.playerJoined, fakePlayerProvider.getJoiningPlayerInitial());
+      $scope.incomingPlayersExist = true;
     }
     $scope.removePlayer = ()=>{
       let playerQuitting = _.sample(_.filter(playerHandler.players, function(player){if(player.state!=='quit')return player;}));
 			if(playerQuitting.playerName==="Incoming...")
 				fakePlayerProvider.senderIdIndex--;
 			eventService.publish(gameEvents.quitReceived, {senderId:playerQuitting.senderId});
+      $scope.incomingPlayersExist = _.filter(playerHandler.players, (player)=>{return player.playerName==='Incoming...'}).length>0?true:false;
     }
     $scope.sendVotes = ()=>{
       eventService.publish(gameEvents.voteReceived, {senderId:_.sample(_.filter(playerHandler.players, function(player){return player.state==="voting"})).senderId, message:{promptIndex:_.sample([1,2,3])}});

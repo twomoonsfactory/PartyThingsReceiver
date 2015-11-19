@@ -25,7 +25,7 @@ export default ngModule => {
       ];
       this.gameName = "\"Red Vs Blue\"";
       this.senderIdIndex = 0;
-      this.playerNameIndex = 0;
+      this.named = false;
     }
 
     getJoiningPlayerInitial(){
@@ -34,11 +34,10 @@ export default ngModule => {
       return {senderId: currentSenderId};
     }
 
-    getJoiningPlayerDetail(){
-      let currentPlayer = this.playerList[this.playerNameIndex];
+    getJoiningPlayerDetail(args){
+      let currentPlayer = _.findWhere(this.playerList, {senderId: args});
       let currentMessage = {senderId: currentPlayer.senderId, message: {playerName: currentPlayer.playerName}};
-      if(this.playerNameIndex===0) currentMessage.message.gameName = this.gameName;
-      this.playerNameIndex++;
+      if(!this.named) currentMessage.message.gameName = this.gameName;
       return currentMessage;
     }
   }

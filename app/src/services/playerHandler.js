@@ -66,7 +66,7 @@ export default ngModule => {
         namedPlayer.setState(this.playerStates.waiting);
         this.activePlayers++;
       }
-      else if(this.stateManager.checkState(this.gameStates.WaitingForReady)){
+      else if(this.stateManager.checkState(this.gameStates.WaitingForReady)||this.stateManager.checkState(this.gameStates.GameEnd)){
         this.messageSender.requestReady({senderId: args.senderId, message: this.messageProvider.getMessage({messageName: this.messageNames.readyRequest, pname: args.message.playerName})});
         namedPlayer.setState(this.playerStates.readyRequested);
         this.activePlayers++;

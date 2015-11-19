@@ -42,7 +42,7 @@
 		</div>
 		<div>
 			<md-button ng-if="players.length<20" class="md-raised md-primary" ng-click="incomingPlayer()">PendPlayer</md-button>
-			<md-button ng-if="players[players.length-1].playerName==='Incoming...'" class="md-raised md-primary" ng-click="plusPlayer()">NamePlayer</md-button>
+			<md-button ng-if="incomingPlayersExist" class="md-raised md-primary" ng-click="plusPlayer()">NamePlayer</md-button>
 			<md-button class="md-raised md-primary" ng-click="removePlayer()">DropPlayer</md-button>
 		</div>
 		<div class="flexItem" player-display players="players" guessing="currentlyGuessing"></div>

@@ -12,9 +12,9 @@
 			<!-- buttons only appear in the demo version, not the final -->
 			<div>
 				<md-button ng-if="readyPlayers.length+joinedPlayers.length<20" class="md-raised md-accent" ng-click="incomingPlayer()">PendPlayer</md-button>
-				<md-button ng-if="gameName==='Party Things Demo'&&joinedPlayers[joinedPlayers.length-1].playerName==='Incoming...'" class="md-raised md-accent" ng-click="nameIt()">NameIt</md-button>
-			  <md-button ng-if="joinedPlayers[joinedPlayers.length-1].playerName==='Incoming...'&&gameName!=='Party Things Demo'" class="md-raised md-accent" ng-click="plusPlayer()">NamePlayer</md-button>
-			  <md-button ng-if="readyPlayers.length+joinedPlayers.length>=5&&joinedPlayers[0].checkState('readyRequested')" class="md-raised md-accent" ng-click="readyPlayer()">Ready</md-button>
+				<md-button ng-if="gameName==='Party Things Demo'&&incomingPlayersExist" class="md-raised md-accent" ng-click="nameIt()">NameIt</md-button>
+			  <md-button ng-if="incomingPlayersExist&&gameName!=='Party Things Demo'" class="md-raised md-accent" ng-click="plusPlayer()">NamePlayer</md-button>
+			  <md-button ng-if="playersWaitingForReadyCount+readyPlayers.length>=5" class="md-raised md-accent" ng-click="readyPlayer()">Ready</md-button>
 				<md-button ng-if="readyPlayers.length+joinedPlayers.length>0" class="md-raised md-accent" ng-click="removePlayer()">DropPlayer</md-button><br />
 				<md-button ng-if="gameName==='Party Things Demo'&&readyPlayers.length+joinedPlayers.length===0" class="md-raised md-accent" ng-click="primeIt()">Click FIRST to skip to Gameplay</md-button>
 			</div>
