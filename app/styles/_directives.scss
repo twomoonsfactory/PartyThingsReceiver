@@ -116,6 +116,10 @@
   @extend .md-whiteframe-1dp;
   background-color: #CCCCCC;
 }
+.standby{
+  @extend .supressed;
+  color: #000000;
+}
 
 .slightlyRounded{
   border-radius: .5em;

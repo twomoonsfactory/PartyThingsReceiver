@@ -1,5 +1,5 @@
 export default ngModule => {
-  ngModule.directive('playerGuessDisplay', ['$rootScope', '$q', '$timeout', 'gameEvents', 'gameNumbers', ($rootScope, $q, $timeout, gameEvents, gameNumbers)=>{
+  ngModule.directive('playerGuessDisplay', ['$rootScope', '$q', '$timeout', 'gameEvents', 'playerStates', 'gameNumbers', ($rootScope, $q, $timeout, gameEvents, playerStates, gameNumbers)=>{
     return{
       restrict: 'A',
       scope:{
@@ -118,9 +118,12 @@ export default ngModule => {
           if(scope.player.waitingForAction>0) elem.removeClass('supressed ready').addClass('readyToAct');
           else if(scope.player.waitingForAction<0) elem.removeClass('readyToAct ready').addClass('supressed');
           else elem.removeClass('readyToAct supressed').addClass('ready');
-          if(scope.player.guessed||scope.player.standingBy) elem.addClass('inactive');
-          else elem.removeClass('inactive');
+          if(scope.player.guessed) elem.addClass('inactive');
+          else if(scope.player.checkState(playerStates.standingBy)) elem.addClass('standby');
+          else elem.removeClass('inactive standby');
         }
+
+        scope.setCardState();
 
         scope.$watch('player.waitingForAction', scope.setCardState);
         scope.$watch('player.guessed', scope.setCardState);
