@@ -70,21 +70,21 @@ export default ngModule => {
 		$scope.incomingPlayerCount = 0;
     $scope.incomingPlayer = ()=>{
 	  	eventService.publish(gameEvents.playerJoined, fakePlayerProvider.getJoiningPlayerInitial());
-			$scope.incomingPlayerCount++;
     }
   	$scope.nameIt = ()=>{
   		eventService.publish(gameEvents.gamenameReceived, fakePlayerProvider.getJoiningPlayerDetail());
-			$scope.incomingPlayerCount--;
   	}
 		$scope.plusPlayer = ()=>{
 			eventService.publish(gameEvents.playernameReceived, fakePlayerProvider.getJoiningPlayerDetail());
-			$scope.incomingPlayerCount--;
     }
     $scope.readyPlayer = ()=>{
     	eventService.publish(gameEvents.readyReceived, $scope.joinedPlayers[0]);
     }
     $scope.removePlayer = ()=>{
-    	eventService.publish(gameEvents.quitReceived, {senderId:_.sample(playerHandler.players).senderId});
+			let playerQuitting = _.sample(_.filter(playerHandler.players, function(player){if(player.state!==playerStates.quit)return player;}));
+			if(playerQuitting.playerName==="Incoming...")
+				fakePlayerProvider.senderIdIndex--;
+			eventService.publish(gameEvents.quitReceived, {senderId:playerQuitting.senderId});
     }
 	}]);
 }

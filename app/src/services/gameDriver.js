@@ -108,7 +108,7 @@ export default ngModule =>{
     startGuessing(){
       _.each(this.playerHandler.players, player => {
         if(player.checkState(this.playerStates.ready)){
-          this.messageSender.requestGuess({senderId: player.senderId,message:{message: this.messageProvider.getMessage({messageName:this.messageNames.guessRequest}), things: this.responseHandler.getResponses(), elegiblePlayers: this.playerHandler.getElegiblePlayers()}});
+          this.messageSender.requestGuess({senderId: player.senderId,message:{message: this.messageProvider.getMessage({messageName:this.messageNames.guessRequest}), things: this.responseHandler.getResponses(), elegiblePlayers: this.playerHandler.getGuessablePlayers()}});
           player.setState(this.playerStates.guessing);
         }
       });

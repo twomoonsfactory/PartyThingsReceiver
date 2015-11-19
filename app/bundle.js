@@ -74806,7 +74806,7 @@
 
 	        _.each(this.playerHandler.players, function (player) {
 	          if (player.checkState(_this4.playerStates.ready)) {
-	            _this4.messageSender.requestGuess({ senderId: player.senderId, message: { message: _this4.messageProvider.getMessage({ messageName: _this4.messageNames.guessRequest }), things: _this4.responseHandler.getResponses(), elegiblePlayers: _this4.playerHandler.getElegiblePlayers() } });
+	            _this4.messageSender.requestGuess({ senderId: player.senderId, message: { message: _this4.messageProvider.getMessage({ messageName: _this4.messageNames.guessRequest }), things: _this4.responseHandler.getResponses(), elegiblePlayers: _this4.playerHandler.getGuessablePlayers() } });
 	            player.setState(_this4.playerStates.guessing);
 	          }
 	        });
@@ -75182,8 +75182,8 @@
 
 	      //returns unguessed, still playing players
 	    }, {
-	      key: "getElegiblePlayers",
-	      value: function getElegiblePlayers() {
+	      key: "getGuessablePlayers",
+	      value: function getGuessablePlayers() {
 	        var _this = this;
 
 	        var elegiblePlayers = [];

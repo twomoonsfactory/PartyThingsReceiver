@@ -113,6 +113,7 @@
 }
 .supressed{
   @extend .inactive;
+  @extend .md-whiteframe-1dp;
   background-color: #CCCCCC;
 }
 

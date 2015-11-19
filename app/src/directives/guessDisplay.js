@@ -1,7 +1,7 @@
 export default ngModule => {
 	ngModule.directive('guessDisplay', ()=>{
-		var controller = ['$scope', '$rootScope', '$q', '$timeout', 'eventService', 'gameEvents', '$mdToast', '$animate', 'gameNumbers', 'playerHandler', 'messageProvider', 'messageNames',
-											($scope, $rootScope, $q, $timeout, eventService, gameEvents, $mdToast, $animate, gameNumbers, playerHandler, messageProvider, messageNames)=>{
+		var controller = ['$scope', '$rootScope', '$q', '$timeout', 'eventService', 'gameEvents', '$mdToast', '$animate', 'gameNumbers', 'playerHandler', 'messageProvider', 'messageNames', 'playerStates',
+											($scope, $rootScope, $q, $timeout, eventService, gameEvents, $mdToast, $animate, gameNumbers, playerHandler, messageProvider, messageNames, playerStates)=>{
 			$scope.registeredResponses = [];
 			$scope.registeredResponseSlips = [];
 			$scope.registeredPlayers = [];
@@ -165,10 +165,12 @@ export default ngModule => {
 					})
 					.then(()=>{
 						_.each($scope.registeredPlayers, player=>{
-							//checks each player to see if unguessed
-							let playerUnguessed =	player.checkIfUnguessed();
-							if(playerUnguessed) //true returned if player was unguessed
-								unguessedPlayers.push(player);
+							//checks each player to see if unguessed, but only if they are participating
+							if(!player.player.checkState(playerStates.incoming)&&!player.player.checkState(playerStates.quit)&&!player.player.checkState(playerStates.standingBy)){
+								let playerUnguessed =	player.checkIfUnguessed();
+								if(playerUnguessed) //true returned if player was unguessed
+									unguessedPlayers.push(player);
+							}
 						});
 						//toast and score update accordingly
 						let deferred = $q.defer();

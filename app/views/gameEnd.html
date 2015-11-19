@@ -11,8 +11,9 @@
 		<div class="welcomeText">
 			<div>
 				<md-button ng-if="readyPlayers.length+joinedPlayers.length<20" class="md-raised md-accent" ng-click="incomingPlayer()">PendPlayer</md-button>
-			  <md-button ng-if="incomingPlayerCount>0" class="md-raised md-accent" ng-click="plusPlayer()">NamePlayer</md-button>
-			  <md-button ng-if="readyPlayers.length+joinedPlayers.length>=5" class="md-raised md-accent" ng-click="readyPlayer()">Ready</md-button><br />
+			  <md-button ng-if="joinedPlayers[joinedPlayers.length - 1].playername==='Incoming...'" class="md-raised md-accent" ng-click="plusPlayer()">NamePlayer</md-button>
+			  <md-button ng-if="readyPlayers.length+joinedPlayers.length>=5" class="md-raised md-accent" ng-click="readyPlayer()">Ready</md-button>
+				<md-button ng-if="readyPlayers.length+joinedPlayers.length>0" class="md-raised md-accent" ng-click="removePlayer()">DropPlayer</md-button>
 			</div>
 			<p class="winners">{{message}}</p>
 			<p class="endGameMessage">{{banner}}</p>

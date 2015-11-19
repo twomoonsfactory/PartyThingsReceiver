@@ -20,6 +20,8 @@ export default ngModule => {
       this.activePlayers = 0;     //the number of players currently playing -- should it be moved to the playerHandler?
       this.minimumPlayers = gameNumbers.minimumPlayers;    //the minimum number of players to start the game
       this.joinedPlayers = 0;     //the number of players joined, named or not.  Used for "incoming player"
+      this.numberOfActedPlayersQuitting = 0;    //counts the players who have quit during a given phase after acting
+
       this.subscribeToGameEvents();
     }
 
@@ -80,12 +82,11 @@ export default ngModule => {
     }
 
     //returns unguessed, still playing players
-    getElegiblePlayers(){
+    getGuessablePlayers(){
       let elegiblePlayers = [];
       _.each(this.players, player => {
         if(player.checkState(this.playerStates.ready) && !player.guessed)
           elegiblePlayers.push({playerName: player.playerName, playerId: player.playerId});
-
       });
       return elegiblePlayers;
     }
@@ -163,13 +164,21 @@ export default ngModule => {
     playerQuit(args){
       let quitter = this.findPlayerBySenderId(args.senderId);
       if(quitter.checkState(this.playerStates.ready))
-        this.actedPlayersCount--;
-      if(!quitter.checkState(this.playerStates.standingBy))
-        this.activePlayers--;
+        this.numberOfActedPlayersQuitting++;  //removes players from count of players who have participated in a step
+      else if(!quitter.checkState(this.playerStates.standingBy)&&!quitter.checkState(this.playerStates.incoming))
+        this.activePlayers--;  //removes players from count of players currently playing
       //logic to remove quit player from on screen display here
       quitter.setState(this.playerStates.quit);
       this.messageSender.sendQuit({senderId: quitter.senderId, message: this.messageProvider.getMessage({messageName: this.messageNames.quit, pname: quitter.playerName})});
       this.eventService.publish(this.gameEvents.playerUpdated, "");
+      if(this.stateManager.checkState(this.gameStates.WaitingForStart)||this.stateManager.checkState(this.gameStates.GameEnd))
+        this.dropQuitPlayers();
+    }
+
+    //removes players who had quit after acting from the count of
+    removeActedPlayers(){
+      this.activePlayers = this.activePlayers - this.numberOfActedPlayersQuitting;
+      this.numberOfActedPlayersQuitting = 0;
     }
 
     //actually drops the quit players altogether
@@ -190,6 +199,7 @@ export default ngModule => {
 
     resetPlayerActedCount(){
       this.actedPlayersCount = 0;
+      this.removeActedPlayers();
     }
 
     findPlayerByPlayerId(args){

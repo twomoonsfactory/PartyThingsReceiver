@@ -96,7 +96,10 @@ export default ngModule => {
     		eventService.publish(gameEvents.playerJoined, fakePlayerProvider.getJoiningPlayerInitial());
     }
     $scope.removePlayer = ()=>{
-    	eventService.publish(gameEvents.quitReceived, {senderId:_.sample(_.filter(playerHandler.players, function(player){return player.state!=="quit"})).senderId});
+      let playerQuitting = _.sample(_.filter(playerHandler.players, function(player){if(player.state!=='quit')return player;}));
+			if(playerQuitting.playerName==="Incoming...")
+				fakePlayerProvider.senderIdIndex--;
+			eventService.publish(gameEvents.quitReceived, {senderId:playerQuitting.senderId});
     }
     $scope.sendVotes = ()=>{
       eventService.publish(gameEvents.voteReceived, {senderId:_.sample(_.filter(playerHandler.players, function(player){return player.state==="voting"})).senderId, message:{promptIndex:_.sample([1,2,3])}});

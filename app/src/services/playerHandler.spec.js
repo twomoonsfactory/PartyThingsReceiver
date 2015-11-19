@@ -120,7 +120,7 @@ describe('playerHandler', ()=>{
 		playerHandler.players[1].state = playerStates.ready;
 		playerHandler.players[1].guessed = true;
 
-		let results = playerHandler.getElegiblePlayers();
+		let results = playerHandler.getGuessablePlayers();
 
 		expect(results.length).toBe(1);
 		expect(results[0].playerName).toBe(args.message.playerName);

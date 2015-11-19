@@ -1,5 +1,6 @@
 export default ngModule => {
-		ngModule.controller('gameEndController', ['$scope', '$log', '$state', 'uiStates', 'stateManager', 'gameStates', 'playerStates', 'eventService', 'gameEvents', 'messageProvider', 'messageNames', 'playerHandler', 'gameDriver', ($scope, $log, $state, uiStates, stateManager, gameStates, playerStates, eventService, gameEvents, messageProvider, messageNames, playerHandler, gameDriver) => {
+		ngModule.controller('gameEndController', ['$scope', '$log', '$state', 'uiStates', 'stateManager', 'gameStates', 'playerStates', 'eventService', 'gameEvents', 'messageProvider', 'messageNames', 'playerHandler', 'gameDriver', 'fakePlayerProvider',
+		 																					($scope, $log, $state, uiStates, stateManager, gameStates, playerStates, eventService, gameEvents, messageProvider, messageNames, playerHandler, gameDriver, fakePlayerProvider) => {
 		$scope.readyPlayers = [];
 		$scope.joinedPlayers = [];
 	  $scope.winners = stateManager.winners;
@@ -46,10 +47,10 @@ export default ngModule => {
 			$scope.incomingPlayerCount++;
 	  }
 	  $scope.removePlayer = ()=>{
-	  	eventService.publish(gameEvents.quitReceived, {senderId:_.sample(_.filter(playerHandler.players, function(player){
-	      if(player.state!==playerStates.quit)
-	        return player;
-	    }))});
+			let playerQuitting = _.sample(_.filter(playerHandler.players, function(player){if(player.state!==playerStates.quit)return player;}));
+			if(playerQuitting.playerName==="Incoming...")
+				fakePlayerProvider.senderIdIndex--;
+			eventService.publish(gameEvents.quitReceived, {senderId:playerQuitting.senderId});
 	  }
 	}]);
 }
