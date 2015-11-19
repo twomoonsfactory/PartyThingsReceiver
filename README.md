@@ -10,11 +10,11 @@ The Sender applications for this Chromecast party game are in progress for both 
 -----|------------------
 Webpack| 
 angular-animate| 
-babel|  <i>converts JS ES6 into current browser supported syntax</i>
-jquery| 
-sass-loader| 
+Babel|  <i>converts JS ES6 into current browser supported syntax</i>
+jQuery| 
+Sass| 
 
 |<b>Tested With:</b>| |
 ------|-------
-karma| 
-jasmine| <i>tests were broken post ES6 refactor, and will be addressed as time allows</i>
+Karma| 
+Jasmine| <i>tests were broken post ES6 refactor, and will be addressed as time allows</i>
