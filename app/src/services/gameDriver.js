@@ -1,6 +1,6 @@
 export default ngModule =>{
   class gameDriver{
-    constructor(eventService, gameEvents, stateManager, gameStates, messageSender, messageProvider, messageNames, playerHandler, playerStates, responseHandler, promptProvider, guessHandler){
+    constructor(eventService, gameEvents, stateManager, gameStates, messageSender, messageProvider, messageNames, playerHandler, playerStates, responseHandler, promptProvider, guessHandler, gameNumbers){
       this.eventService = eventService;
       this.gameEvents = gameEvents;
       this.stateManager = stateManager;
@@ -13,6 +13,7 @@ export default ngModule =>{
       this.responseHandler = responseHandler;
       this.promptProvider = promptProvider;
       this.guessHandler = guessHandler;
+      this.gameNumbers = gameNumbers;
 
       this.subscribeToGameEvents();
     }
@@ -48,7 +49,7 @@ export default ngModule =>{
       readyPlayer.setState(this.playerStates.ready);
       this.playerHandler.playerActed();
       this.eventService.publish(this.gameEvents.playerUpdated, "");
-      if(this.playerHandler.actedPlayersCount >= this.playerHandler.activePlayers){
+      if(this.playerHandler.actedPlayersCount >= this.playerHandler.activePlayers && this.playerHandler.actedPlayersCount >= this.gameNumbers.minimumPlayers){
          //sets statecount back to 0
         this.playerHandler.resetPlayerActedCount();
         this.stateManager.setState(this.gameStates.ReadyToStart);
@@ -163,18 +164,19 @@ export default ngModule =>{
       //Logic to display winners.
       _.each(this.playerHandler.players, player => {
         let endMessage = "";
-        if(player.checkState(this.playerStates.ready)){
+        if(player.checkState(this.playerStates.ready)||player.checkState(this.playerStates.standingBy)){
           if(_.contains(this.stateManager.winners, player)){
             endMessage += this.messageProvider.getMessage({messageName: this.messageNames.winner, pname: player.playerName, points: this.playerHandler.highScore()});
           }
           endMessage+= this.messageProvider.getMessage({messageName: this.messageNames.endGame});
           this.messageSender.sendEnd({senderId: player.senderId, message: endMessage});
+          if(player.checkState(this.playerStates.standingBy))this.playerHandler.activePlayers++;
           player.setState(this.playerStates.readyRequested);
         }
       });
       this.eventService.publish(this.gameEvents.endView, "");
     }
   }
-  gameDriver.$inject = ['eventService', 'gameEvents', 'stateManager', 'gameStates', 'messageSender', 'messageProvider', 'messageNames', 'playerHandler', 'playerStates', 'responseHandler', 'promptProvider', 'guessHandler'];
+  gameDriver.$inject = ['eventService', 'gameEvents', 'stateManager', 'gameStates', 'messageSender', 'messageProvider', 'messageNames', 'playerHandler', 'playerStates', 'responseHandler', 'promptProvider', 'guessHandler', 'gameNumbers'];
   ngModule.service('gameDriver', gameDriver);
 }

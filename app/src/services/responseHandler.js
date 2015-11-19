@@ -44,6 +44,7 @@ export default ngModule => {
     getResponses(){
       if(!this.shuffled){
         this.responseList = [];
+        this.elegibleAuthors = [];
         _.each(this.responses, currentresponse => {
           if(!currentresponse.guessed){
             this.responseList.push({response: currentresponse.response, responseId: currentresponse.responseId});
