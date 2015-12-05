@@ -45,7 +45,8 @@ module.exports = angular.module('castServices', [])
 
     // Here we ge real again
     .factory('castMessageBus', function(cast, messagetypes, eventService, gameEvents, $log) {
-
+      $log.log(cast);
+      $log.log(cast.receiver);
       // start up chromecast uncomment next line for production
       cast.receiver.logger.setLevelValue(0);
       let castReceiverManager = cast.receiver.CastReceiverManager.getInstance();
@@ -178,6 +179,6 @@ module.exports = angular.module('castServices', [])
   })
   // .service('messageReceiver', function(castMessageBus, eventService, gameEvents, $log){
 
-    
+
   // })
   .constant('messagetypes', ['gamename','playername','ready','prompt','standby','thing','guess','result','quit', 'end']);

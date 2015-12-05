@@ -27,7 +27,7 @@ export default ngModule => {
     }
 
     initialize(){
-      this.setState(this.gameStates.WaitingForStart);
+      this.setState(this.gameStates.WaitingForFirstPlayer);
     }
 
     //sets the state and publishes the change.
@@ -69,7 +69,7 @@ export default ngModule => {
 
     updateMessages(){
       switch(this.state){
-        case this.gameStates.WaitingForStart :
+        case this.gameStates.WaitingForFirstPlayer :
           this.message = !this.ownerName ? this.messageProvider.getMessage({messageName: this.messageNames.screenInitialize}) : this.messageProvider.getMessage({messageName: this.messageNames.screenWelcome, pname: this.ownerName});
           break;
         case this.gameStates.WaitingForReady :

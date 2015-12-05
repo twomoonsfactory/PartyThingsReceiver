@@ -1,6 +1,6 @@
 export default ngModule => {
-	ngModule.controller('welcomeController', ['$scope', '$log', '$state', 'uiStates', 'gameStates', 'playerStates', 'eventService', 'gameEvents', 'messageProvider', 'messageNames', 'playerHandler', 'gameDriver', 'stateManager', 'fakePlayerProvider',
-																							($scope, $log, $state, uiStates, gameStates, playerStates, eventService, gameEvents, messageProvider, messageNames, playerHandler, gameDriver, stateManager, fakePlayerProvider) => {
+	ngModule.controller('welcomeController', ['$scope', '$log', '$state', '$timeout', 'uiStates', 'gameStates', 'playerStates', 'eventService', 'gameEvents', 'messageProvider', 'messageNames', 'playerHandler', 'gameDriver', 'stateManager', 'fakePlayerProvider',
+																							($scope, $log, $state, $timeout, uiStates, gameStates, playerStates, eventService, gameEvents, messageProvider, messageNames, playerHandler, gameDriver, stateManager, fakePlayerProvider) => {
 		$scope.readyPlayers = [];
 		$scope.joinedPlayers = [];
 		$scope.gameName = "Party Things Demo";
@@ -33,6 +33,9 @@ export default ngModule => {
 			});
 			$scope.readyPlayers = ready;
 			$scope.joinedPlayers = joined;
+			$timeout(()=>{
+        $scope.$apply();
+      });
 		}
 		eventService.subscribe(gameEvents.playersUpdated, $scope.updatePlayers);
 
@@ -50,50 +53,50 @@ export default ngModule => {
   	eventService.publish(gameEvents.welcomeLoaded, "");
 
   	      	//TEST VIA BUTTON
-		$scope.primeIt = ()=>{
-			$scope.incomingPlayer();
-			$scope.incomingPlayer();
-			$scope.incomingPlayer();
-			$scope.incomingPlayer();
-			$scope.incomingPlayer();
-			$scope.nameIt();
-			$scope.plusPlayer();
-			$scope.plusPlayer();
-			$scope.plusPlayer();
-			$scope.plusPlayer();
-			$scope.readyPlayer();
-			$scope.readyPlayer();
-			$scope.readyPlayer();
-			$scope.readyPlayer();
-			$scope.readyPlayer();
-		}
-		$scope.incomingPlayersExist = _.findWhere($scope.joinedPlayers, {playerName: 'Incoming...'}) ? true : false;
-		$scope.playersWaitingForReadyCount = 0;
-    $scope.incomingPlayer = ()=>{
-	  	eventService.publish(gameEvents.playerJoined, fakePlayerProvider.getJoiningPlayerInitial());
-			$scope.incomingPlayersExist = true;
-    }
-  	$scope.nameIt = ()=>{
-  		eventService.publish(gameEvents.gamenameReceived, fakePlayerProvider.getJoiningPlayerDetail(_.sample(_.filter($scope.joinedPlayers, (player)=>{return player.playerName==="Incoming..."})).senderId));
-			$scope.incomingPlayersExist = _.findWhere($scope.joinedPlayers, {playerName: 'Incoming...'}) ? true : false;
-			$scope.playersWaitingForReadyCount = _.filter($scope.joinedPlayers, (player)=>{return(player.state==='ready'||player.state==='readyRequested')?true:false}).length;
-  	}
-		$scope.plusPlayer = ()=>{
-			eventService.publish(gameEvents.playernameReceived, fakePlayerProvider.getJoiningPlayerDetail(_.sample(_.filter($scope.joinedPlayers, (player)=>{return player.playerName==="Incoming..."})).senderId));
-			$scope.incomingPlayersExist = _.findWhere($scope.joinedPlayers, {playerName: 'Incoming...'}) ? true : false;
-			$scope.playersWaitingForReadyCount = _.filter($scope.joinedPlayers, (player)=>{return(player.state==='ready'||player.state==='readyRequested')?true:false}).length;
-    }
-    $scope.readyPlayer = ()=>{
-    	eventService.publish(gameEvents.readyReceived, _.sample(_.filter($scope.joinedPlayers, (player)=>{return (player.state!==playerStates.quit && player.state!==playerStates.incoming)?true:false})));
-			$scope.playersWaitingForReadyCount = _.filter($scope.joinedPlayers, (player)=>{return(player.state==='ready'||player.state==='readyRequested')?true:false}).length;
-    }
-    $scope.removePlayer = ()=>{
-			let playerQuitting = _.sample(_.filter(playerHandler.players, function(player){if(player.state!==playerStates.quit)return player;}));
-			if(playerQuitting.playerName==="Incoming...")
-				fakePlayerProvider.senderIdIndex--;
-			eventService.publish(gameEvents.quitReceived, {senderId:playerQuitting.senderId});
-			$scope.incomingPlayersExist = _.findWhere($scope.joinedPlayers, {playerName: 'Incoming...'}) ? true : false;
-			$scope.playersWaitingForReadyCount = _.filter($scope.joinedPlayers, (player)=>{return(player.state==='ready'||player.state==='readyRequested')?true:false}).length;
-    }
+		// $scope.primeIt = ()=>{
+		// 	$scope.incomingPlayer();
+		// 	$scope.incomingPlayer();
+		// 	$scope.incomingPlayer();
+		// 	$scope.incomingPlayer();
+		// 	$scope.incomingPlayer();
+		// 	$scope.nameIt();
+		// 	$scope.plusPlayer();
+		// 	$scope.plusPlayer();
+		// 	$scope.plusPlayer();
+		// 	$scope.plusPlayer();
+		// 	$scope.readyPlayer();
+		// 	$scope.readyPlayer();
+		// 	$scope.readyPlayer();
+		// 	$scope.readyPlayer();
+		// 	$scope.readyPlayer();
+		// }
+		// $scope.incomingPlayersExist = _.findWhere($scope.joinedPlayers, {playerName: 'Incoming...'}) ? true : false;
+		// $scope.playersWaitingForReadyCount = 0;
+    // $scope.incomingPlayer = ()=>{
+	  // 	eventService.publish(gameEvents.playerJoined, fakePlayerProvider.getJoiningPlayerInitial());
+		// 	$scope.incomingPlayersExist = true;
+    // }
+  	// $scope.nameIt = ()=>{
+  	// 	eventService.publish(gameEvents.gamenameReceived, fakePlayerProvider.getJoiningPlayerDetail(_.sample(_.filter($scope.joinedPlayers, (player)=>{return player.playerName==="Incoming..."})).senderId));
+		// 	$scope.incomingPlayersExist = _.findWhere($scope.joinedPlayers, {playerName: 'Incoming...'}) ? true : false;
+		// 	$scope.playersWaitingForReadyCount = _.filter($scope.joinedPlayers, (player)=>{return(player.state==='ready'||player.state==='readyRequested')?true:false}).length;
+  	// }
+		// $scope.plusPlayer = ()=>{
+		// 	eventService.publish(gameEvents.playernameReceived, fakePlayerProvider.getJoiningPlayerDetail(_.sample(_.filter($scope.joinedPlayers, (player)=>{return player.playerName==="Incoming..."})).senderId));
+		// 	$scope.incomingPlayersExist = _.findWhere($scope.joinedPlayers, {playerName: 'Incoming...'}) ? true : false;
+		// 	$scope.playersWaitingForReadyCount = _.filter($scope.joinedPlayers, (player)=>{return(player.state==='ready'||player.state==='readyRequested')?true:false}).length;
+    // }
+    // $scope.readyPlayer = ()=>{
+    // 	eventService.publish(gameEvents.readyReceived, _.sample(_.filter($scope.joinedPlayers, (player)=>{return (player.state!==playerStates.quit && player.state!==playerStates.incoming)?true:false})));
+		// 	$scope.playersWaitingForReadyCount = _.filter($scope.joinedPlayers, (player)=>{return(player.state==='ready'||player.state==='readyRequested')?true:false}).length;
+    // }
+    // $scope.removePlayer = ()=>{
+		// 	let playerQuitting = _.sample(_.filter(playerHandler.players, function(player){if(player.state!==playerStates.quit)return player;}));
+		// 	if(playerQuitting.playerName==="Incoming...")
+		// 		fakePlayerProvider.senderIdIndex--;
+		// 	eventService.publish(gameEvents.quitReceived, {senderId:playerQuitting.senderId});
+		// 	$scope.incomingPlayersExist = _.findWhere($scope.joinedPlayers, {playerName: 'Incoming...'}) ? true : false;
+		// 	$scope.playersWaitingForReadyCount = _.filter($scope.joinedPlayers, (player)=>{return(player.state==='ready'||player.state==='readyRequested')?true:false}).length;
+    // }
 	}]);
 }

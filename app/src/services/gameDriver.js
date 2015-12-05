@@ -35,7 +35,7 @@ export default ngModule =>{
         //will skip players already sent this message as necessary (players carried over from previous games, etc)
     readyUp(){
       _.each(this.playerHandler.players, player => {
-        if(player.state!==this.playerStates.quit&&player.state!==this.playerStates.readyRequested){
+        if(player.state!==this.playerStates.quit&&player.state!==this.playerStates.readyRequested&&player.state!==this.playerStates.incoming){
           this.messageSender.requestReady({senderId: player.senderId, message: this.messageProvider.getMessage({messageName: this.messageNames.readyRequest, pname: player.playerName})});
           player.setState(this.playerStates.readyRequested);
         }
@@ -93,7 +93,7 @@ export default ngModule =>{
     //manages incoming things, sending the new thing to the this.responseHandler, until all players have submitted their "things"
     receivedResponse(args){
       let responseWriter = this.playerHandler.findPlayerBySenderId(args.senderId);
-      this.responseHandler.newResponse({response: args.message.response, playerId:responseWriter.playerId});
+      this.responseHandler.newResponse({response: args.message.thing, playerId:responseWriter.playerId});
       responseWriter.setState(this.playerStates.ready);
       responseWriter.written = true;
       this.playerHandler.playerActed();
@@ -107,7 +107,11 @@ export default ngModule =>{
     startGuessing(){
       _.each(this.playerHandler.players, player => {
         if(player.checkState(this.playerStates.ready)){
-          this.messageSender.requestGuess({senderId: player.senderId,message:{message: this.messageProvider.getMessage({messageName:this.messageNames.guessRequest}), things: this.responseHandler.getResponses(), elegiblePlayers: this.responseHandler.getAuthors()}});
+          this.messageSender.requestGuess({senderId: player.senderId,message:{
+            message: this.messageProvider.getMessage({messageName:this.messageNames.guessRequest}),
+            things: _.filter(this.responseHandler.getResponses(), response => {return this.responseHandler.getWriter(response.responseId)!==player.playerId}),
+            elegiblePlayers: _.filter(this.responseHandler.getAuthors(), author => {return author.playerId !== player.playerId})
+          }});
           player.setState(this.playerStates.guessing);
         }
       });

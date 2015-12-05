@@ -38,8 +38,9 @@ export default ngModule => {
     }
 
     addPlayer(args){
-      if(this.stateManager.checkState(null)){
+      if(this.stateManager.checkState(this.gameStates.WaitingForFirstPlayer)){
         this.messageSender.requestGameName({senderId: args.senderId, message: this.messageProvider.getMessage({messageName: this.messageNames.nameGame})});
+        this.stateManager.setState(this.gameStates.WaitingForStart);
       }
       else{
         this.messageSender.requestPlayerName({senderId: args.senderId, message: this.messageProvider.getMessage({messageName: this.messageNames.namePlayer, gname: this.stateManager.gameName})});
@@ -76,7 +77,7 @@ export default ngModule => {
         namedPlayer.setState(this.playerStates.standingBy);
       }
       this.eventService.publish(this.gameEvents.playerUpdated, "");
-      if(this.activePlayers>=this.minimumPlayers && this.stateManager.checkState(this.gameStates.WaitingForStart)){
+      if(this.activePlayers>=this.minimumPlayers && this.stateManager.checkState(this.gameStates.WaitingForStart) && !this.players[0].checkState(this.playerStates.incoming)){
         this.stateManager.setState(this.gameStates.WaitingForReady);
       }
     }
@@ -93,13 +94,13 @@ export default ngModule => {
 
     //gives players their points, determined in the response handler
     assignPoints(args){
-      _.findWhere(this.players, {playerId: args.playerId}).addScore(args.points);
+      _.findWhere(this.players, {playerId: args.playerId/1}).addScore(args.points);
       this.eventService.publish(this.gameEvents.playerUpdated, "");
     }
 
     //establishes that the given player has been guessed
     playerGuessed(args){
-      _.findWhere(this.players, {playerId: args.playerId}).wasGuessed();
+      _.findWhere(this.players, {playerId: args.playerId/1}).wasGuessed();
       this.eventService.publish(this.gameEvents.playerUpdated, "");
     }
 

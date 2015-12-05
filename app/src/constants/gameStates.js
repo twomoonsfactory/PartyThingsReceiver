@@ -1,5 +1,6 @@
 export default ngModule => {
 	ngModule.constant('gameStates', {
+		WaitingForFirstPlayer: "WaitingForFirstPlayer",
 		WaitingForStart: "WaitingForStart",
 		WaitingForReady: "WaitingForReady",
 		ReadyToStart: "ReadyToStart",
