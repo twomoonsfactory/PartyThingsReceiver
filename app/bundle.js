@@ -72451,46 +72451,48 @@
 
 	module.exports = angular.module('castServices', [])
 	// THIS IS REAL
-	// .constant('cast', window.cast)
+	.constant('cast', window.cast)
 	//THIS IS NOT
-	.constant('cast', (function () {
-
-	  var castmock = {};
-
-	  castmock.testCore = {
-	    receivedStrings: []
-	  };
-
-	  castmock.receiverManager = {
-	    getCastMessageBus: function getCastMessageBus(string) {
-	      castmock.testCore.receivedStrings.push(string);
-	      return {
-	        getNamespace: function getNamespace() {
-	          return 'aNamespace';
-	        },
-	        send: function send() {}
-	      };
-	    },
-	    start: function start(status) {
-	      castmock.testCore.startStatus = status;
-	    }
-	  };
-
-	  castmock.receiver = {
-	    logger: {
-	      setLevelValue: function setLevelValue(levelValue) {
-	        castmock.testCore.levelValue = levelValue;
-	      }
-	    },
-	    CastReceiverManager: {
-	      getInstance: function getInstance() {
-	        return castmock.receiverManager;
-	      }
-
-	    }
-	  };
-	  return castmock;
-	})())
+	// .constant('cast', (()=>{
+	//
+	//         let castmock = {};
+	//
+	//         castmock.testCore = {
+	//             receivedStrings: []
+	//         };
+	//
+	//         castmock.receiverManager = {
+	//             getCastMessageBus: function(string){
+	//                 castmock.testCore.receivedStrings.push(string);
+	//                 return {
+	//                     getNamespace: ()=>{
+	//                         return 'aNamespace';
+	//                     },
+	//                     send: ()=>{
+	//
+	//                     }
+	//                 }
+	//             },
+	//             start: function(status){
+	//                         castmock.testCore.startStatus = status;
+	//             }
+	//         };
+	//
+	//         castmock.receiver = {
+	//             logger: {
+	//                 setLevelValue: function(levelValue){
+	//                     castmock.testCore.levelValue = levelValue;
+	//                 }
+	//             },
+	//             CastReceiverManager: {
+	//                 getInstance: ()=>{
+	//                     return castmock.receiverManager;
+	//                 },
+	//
+	//             }
+	//         };
+	//         return castmock;
+	//     }()))
 
 	// Here we ge real again
 	.factory('castMessageBus', function (cast, messagetypes, eventService, gameEvents, $log) {
@@ -72685,19 +72687,19 @@
 /* 23 */
 /***/ function(module, exports) {
 
-	module.exports = "<md-toolbar class=\"header\">\r\n\t<div class=\"toolbar\">\r\n\t\t<div class=\"subtitle\">Players Joined</div>\r\n\t\t<div class=\"titleBar\">Welcome to {{gameName}}!</div>\r\n\t\t<div class=\"subtitle\">Players Ready</div>\r\n\t</div>\r\n</md-toolbar>\r\n<div class=\"gameContainer\">\r\n\t<!-- main content -->\r\n\t<div class=\"welcomeBox\">\r\n\t\t<div class=\"welcomeText\">\r\n\t\t\t<!-- buttons only appear in the demo version, not the final -->\r\n\t\t\t<div>\r\n\t\t\t\t<md-button ng-if=\"readyPlayers.length+joinedPlayers.length<20\" class=\"md-raised md-accent\" ng-click=\"incomingPlayer()\">PendPlayer</md-button>\r\n\t\t\t\t<md-button ng-if=\"gameName==='Party Things Demo'&&incomingPlayersExist\" class=\"md-raised md-accent\" ng-click=\"nameIt()\">NameIt</md-button>\r\n\t\t\t  <md-button ng-if=\"incomingPlayersExist&&gameName!=='Party Things Demo'\" class=\"md-raised md-accent\" ng-click=\"plusPlayer()\">NamePlayer</md-button>\r\n\t\t\t  <md-button ng-if=\"playersWaitingForReadyCount+readyPlayers.length>=5\" class=\"md-raised md-accent\" ng-click=\"readyPlayer()\">Ready</md-button>\r\n\t\t\t\t<md-button ng-if=\"readyPlayers.length+joinedPlayers.length>0\" class=\"md-raised md-accent\" ng-click=\"removePlayer()\">DropPlayer</md-button><br />\r\n\t\t\t\t<md-button ng-if=\"gameName==='Party Things Demo'&&readyPlayers.length+joinedPlayers.length===0\" class=\"md-raised md-accent\" ng-click=\"primeIt()\">Click FIRST to skip to Gameplay</md-button>\r\n\t\t\t</div>\r\n\t  \t{{message}}\r\n\t\t</div>\r\n\t\t<div class=\"rulesBox\">\r\n\t\t\t{{rules}}\r\n\t\t</div>\r\n\t\t<div class=\"spacer\"></div>\r\n\t</div>\r\n\t<!-- left panel -->\r\n\t<div class=\"joinedList\">\r\n\t\t<md-list flex=\"sublist\">\r\n\t\t\t<md-list-item class=\"md-1-line joined\" ng-repeat=\"player in joinedPlayers|limitTo:10:10\">\r\n\t\t\t\t<div player-card=\"player\" class=\"newPlayer\"></div>\r\n\t\t\t</md-list-item>\r\n\t\t</md-list>\r\n\t\t<md-list flex=\"sublist\">\r\n\t\t\t<md-list-item class=\"md-1-line joined\" ng-repeat=\"player in joinedPlayers|limitTo:10\">\r\n\t\t\t\t<div player-card=\"player\" class=\"newPlayer\"></div>\r\n\t\t\t</md-list-item>\r\n\t\t</md-list>\r\n\t</div>\r\n\t<!-- right panel -->\r\n\t<div class=\"readyList\">\r\n\t\t<md-list flex=\"sublist\">\r\n\t\t\t<md-list-item class=\"md-1-line readied\" ng-repeat=\"player in readyPlayers|limitTo:10\">\r\n\t\t\t\t<div player-card=\"player\" class=\"newPlayer\"></div>\r\n\t\t\t</md-list-item>\r\n\t\t</md-list>\r\n\t\t<md-list flex=\"sublist\">\r\n\t\t\t<md-list-item class=\"md-1-line readied\" ng-repeat=\"player in readyPlayers|limitTo:10:10\">\r\n\t\t\t\t<div player-card=\"player\" class=\"newPlayer\"></div>\r\n\t\t\t</md-list-item>\r\n\t\t</md-list>\r\n\t</div>\r\n</div>\r\n"
+	module.exports = "<md-toolbar class=\"header\">\r\n\t<div class=\"toolbar\">\r\n\t\t<div class=\"subtitle\">Players Joined</div>\r\n\t\t<div class=\"titleBar\">Welcome to {{gameName}}!</div>\r\n\t\t<div class=\"subtitle\">Players Ready</div>\r\n\t</div>\r\n</md-toolbar>\r\n<div class=\"gameContainer\">\r\n\t<!-- main content -->\r\n\t<div class=\"welcomeBox\">\r\n\t\t<div class=\"welcomeText\">\r\n\t\t\t<!-- buttons only appear in the demo version, not the final -->\r\n\t\t\t<!-- <div>\r\n\t\t\t\t<md-button ng-if=\"readyPlayers.length+joinedPlayers.length<20\" class=\"md-raised md-accent\" ng-click=\"incomingPlayer()\">PendPlayer</md-button>\r\n\t\t\t\t<md-button ng-if=\"gameName==='Party Things Demo'&&incomingPlayersExist\" class=\"md-raised md-accent\" ng-click=\"nameIt()\">NameIt</md-button>\r\n\t\t\t  <md-button ng-if=\"incomingPlayersExist&&gameName!=='Party Things Demo'\" class=\"md-raised md-accent\" ng-click=\"plusPlayer()\">NamePlayer</md-button>\r\n\t\t\t  <md-button ng-if=\"playersWaitingForReadyCount+readyPlayers.length>=5\" class=\"md-raised md-accent\" ng-click=\"readyPlayer()\">Ready</md-button>\r\n\t\t\t\t<md-button ng-if=\"readyPlayers.length+joinedPlayers.length>0\" class=\"md-raised md-accent\" ng-click=\"removePlayer()\">DropPlayer</md-button><br />\r\n\t\t\t\t<md-button ng-if=\"gameName==='Party Things Demo'&&readyPlayers.length+joinedPlayers.length===0\" class=\"md-raised md-accent\" ng-click=\"primeIt()\">Click FIRST to skip to Gameplay</md-button>\r\n\t\t\t</div> -->\r\n\t  \t{{message}}\r\n\t\t</div>\r\n\t\t<div class=\"rulesBox\">\r\n\t\t\t{{rules}}\r\n\t\t</div>\r\n\t\t<div class=\"spacer\"></div>\r\n\t</div>\r\n\t<!-- left panel -->\r\n\t<div class=\"joinedList\">\r\n\t\t<md-list flex=\"sublist\">\r\n\t\t\t<md-list-item class=\"md-1-line joined\" ng-repeat=\"player in joinedPlayers|limitTo:10:10\">\r\n\t\t\t\t<div player-card=\"player\" class=\"newPlayer\"></div>\r\n\t\t\t</md-list-item>\r\n\t\t</md-list>\r\n\t\t<md-list flex=\"sublist\">\r\n\t\t\t<md-list-item class=\"md-1-line joined\" ng-repeat=\"player in joinedPlayers|limitTo:10\">\r\n\t\t\t\t<div player-card=\"player\" class=\"newPlayer\"></div>\r\n\t\t\t</md-list-item>\r\n\t\t</md-list>\r\n\t</div>\r\n\t<!-- right panel -->\r\n\t<div class=\"readyList\">\r\n\t\t<md-list flex=\"sublist\">\r\n\t\t\t<md-list-item class=\"md-1-line readied\" ng-repeat=\"player in readyPlayers|limitTo:10\">\r\n\t\t\t\t<div player-card=\"player\" class=\"newPlayer\"></div>\r\n\t\t\t</md-list-item>\r\n\t\t</md-list>\r\n\t\t<md-list flex=\"sublist\">\r\n\t\t\t<md-list-item class=\"md-1-line readied\" ng-repeat=\"player in readyPlayers|limitTo:10:10\">\r\n\t\t\t\t<div player-card=\"player\" class=\"newPlayer\"></div>\r\n\t\t\t</md-list-item>\r\n\t\t</md-list>\r\n\t</div>\r\n</div>\r\n"
 
 /***/ },
 /* 24 */
 /***/ function(module, exports) {
 
-	module.exports = "<md-toolbar class=\"header\">\r\n\t<div class=\"toolbar\">\r\n\t\t<div class=\"subtitle\"></div>\r\n\t\t<div class=\"gameTitleBar\">{{gameName}}!</div>\r\n\t\t<div class=\"gameSubtitle\">{{ownerName}} Game</div>\r\n\t</div>\r\n</md-toolbar>\r\n<div class=\"gameContainer\" guess-display=\"guesses\">\r\n  <div class=\"gameplayContainer\">\r\n    <md-toolbar class=\"md-accent gameplayHeader\">\r\n      <div>{{gameHeader}}</div>\r\n    </md-toolbar>\r\n    <div game-message-slip=\"gameMessage\"></div>\r\n    <div ng-switch on=\"currentState\" class=\"currentPhase\">\r\n      <div class=\"gameContent\" ng-switch-when=\"ReadyToStart\" prompt-request prompts=\"prompts\"></div>\r\n      <div class=\"gameContent\" ng-switch-when=\"PromptChosen\" response-request prompt=\"finalPrompt\"></div>\r\n      <div class=\"gameContent\" ng-switch-when=\"ResponsesReceived\" guess-request responses=\"responses\"></div>\r\n      <div class=\"gameContent\" ng-switch-when=\"GuessesDisplayed\" guesses-displayed></div>\r\n      <div class=\"gameContent\" ng-switch-when=\"RoundEnd\" round-results></div>\r\n      <div class=\"gameContent\" ng-switch-default prompt-request prompts=\"prompts\"></div>\r\n    </div>\r\n  </div>\r\n  <div class=\"playerContainer\">\r\n    <md-toolbar class=\"md-accent playerHeader\">\r\n      <div>Scoreboard</div>\r\n    </md-toolbar>\r\n    <div ng-switch on=\"currentState\">\r\n\t\t\t<div ng-switch-when=\"ReadyToStart\">\r\n      \t<md-button class=\"md-raised md-primary\" ng-click=\"sendVotes()\">Vote</md-button>\r\n\t\t\t</div>\r\n\t\t\t<div ng-switch-when=\"PromptChosen\">\r\n      \t<md-button class=\"md-raised md-primary\" ng-click=\"sendResponses()\">Respond</md-button>\r\n\t\t\t</div>\r\n\t\t\t<div ng-switch-when=\"ResponsesReceived\">\r\n\t      <md-button class=\"md-raised md-primary\" ng-click=\"sendGuesses()\">Random Guess</md-button>\r\n\t      <md-button class=\"md-raised md-primary\" ng-click=\"guessRight()\">Guess Right</md-button>\r\n      \t<md-button class=\"md-raised md-primary\" ng-click=\"kingMaker()\">King Maker</md-button>\r\n\t\t\t</div>\r\n\t\t\t<div ng-switch-default>\r\n\t\t\t\t<md-button class=\"md-raised md-primary\" ng-click=\"sendVotes()\">Vote</md-button>\r\n\t\t\t</div>\r\n\t\t</div>\r\n\t\t<div>\r\n\t\t\t<md-button ng-if=\"players.length<20\" class=\"md-raised md-primary\" ng-click=\"incomingPlayer()\">PendPlayer</md-button>\r\n\t\t\t<md-button ng-if=\"incomingPlayersExist\" class=\"md-raised md-primary\" ng-click=\"plusPlayer()\">NamePlayer</md-button>\r\n\t\t\t<md-button class=\"md-raised md-primary\" ng-click=\"removePlayer()\">DropPlayer</md-button>\r\n\t\t</div>\r\n\t\t<div class=\"flexItem\" player-display players=\"players\" guessing=\"currentlyGuessing\"></div>\r\n  </div>\r\n</div>\r\n"
+	module.exports = "<md-toolbar class=\"header\">\r\n\t<div class=\"toolbar\">\r\n\t\t<div class=\"subtitle\"></div>\r\n\t\t<div class=\"gameTitleBar\">{{gameName}}!</div>\r\n\t\t<div class=\"gameSubtitle\">{{ownerName}} Game</div>\r\n\t</div>\r\n</md-toolbar>\r\n<div class=\"gameContainer\" guess-display=\"guesses\">\r\n  <div class=\"gameplayContainer\">\r\n    <md-toolbar class=\"md-accent gameplayHeader\">\r\n      <div>{{gameHeader}}</div>\r\n    </md-toolbar>\r\n    <div game-message-slip=\"gameMessage\"></div>\r\n    <div ng-switch on=\"currentState\" class=\"currentPhase\">\r\n      <div class=\"gameContent\" ng-switch-when=\"ReadyToStart\" prompt-request prompts=\"prompts\"></div>\r\n      <div class=\"gameContent\" ng-switch-when=\"PromptChosen\" response-request prompt=\"finalPrompt\"></div>\r\n      <div class=\"gameContent\" ng-switch-when=\"ResponsesReceived\" guess-request responses=\"responses\"></div>\r\n      <div class=\"gameContent\" ng-switch-when=\"GuessesDisplayed\" guesses-displayed></div>\r\n      <div class=\"gameContent\" ng-switch-when=\"RoundEnd\" round-results></div>\r\n      <div class=\"gameContent\" ng-switch-default prompt-request prompts=\"prompts\"></div>\r\n    </div>\r\n  </div>\r\n  <div class=\"playerContainer\">\r\n    <md-toolbar class=\"md-accent playerHeader\">\r\n      <div>Scoreboard</div>\r\n    </md-toolbar>\r\n    <!-- <div ng-switch on=\"currentState\">\r\n\t\t\t<div ng-switch-when=\"ReadyToStart\">\r\n      \t<md-button class=\"md-raised md-primary\" ng-click=\"sendVotes()\">Vote</md-button>\r\n\t\t\t</div>\r\n\t\t\t<div ng-switch-when=\"PromptChosen\">\r\n      \t<md-button class=\"md-raised md-primary\" ng-click=\"sendResponses()\">Respond</md-button>\r\n\t\t\t</div>\r\n\t\t\t<div ng-switch-when=\"ResponsesReceived\">\r\n\t      <md-button class=\"md-raised md-primary\" ng-click=\"sendGuesses()\">Random Guess</md-button>\r\n\t      <md-button class=\"md-raised md-primary\" ng-click=\"guessRight()\">Guess Right</md-button>\r\n      \t<md-button class=\"md-raised md-primary\" ng-click=\"kingMaker()\">King Maker</md-button>\r\n\t\t\t</div>\r\n\t\t\t<div ng-switch-default>\r\n\t\t\t\t<md-button class=\"md-raised md-primary\" ng-click=\"sendVotes()\">Vote</md-button>\r\n\t\t\t</div>\r\n\t\t</div> -->\r\n\t\t<div>\r\n\t\t\t<md-button ng-if=\"players.length<20\" class=\"md-raised md-primary\" ng-click=\"incomingPlayer()\">PendPlayer</md-button>\r\n\t\t\t<md-button ng-if=\"incomingPlayersExist\" class=\"md-raised md-primary\" ng-click=\"plusPlayer()\">NamePlayer</md-button>\r\n\t\t\t<md-button class=\"md-raised md-primary\" ng-click=\"removePlayer()\">DropPlayer</md-button>\r\n\t\t</div>\r\n\t\t<div class=\"flexItem\" player-display players=\"players\" guessing=\"currentlyGuessing\"></div>\r\n  </div>\r\n</div>\r\n"
 
 /***/ },
 /* 25 */
 /***/ function(module, exports) {
 
-	module.exports = "<md-toolbar class=\"header\">\r\n\t<div class=\"toolbar\">\r\n\t\t<div class=\"subtitle\">Players Joined</div>\r\n\t\t<div class=\"titleBar\">Welcome to {{gameName}}!</div>\r\n\t\t<div class=\"subtitle\">Players Ready</div>\r\n\t</div>\r\n</md-toolbar>\r\n<div class=\"gameContainer\">\r\n\t<!-- main content -->\r\n\t<div class=\"welcomeBox\">\r\n\t\t<div class=\"welcomeText\">\r\n\t\t\t<div>\r\n\t\t\t\t<md-button ng-if=\"readyPlayers.length+joinedPlayers.length<20\" class=\"md-raised md-accent\" ng-click=\"incomingPlayer()\">PendPlayer</md-button>\r\n\t\t\t  <md-button ng-if=\"incomingPlayersExist\" class=\"md-raised md-accent\" ng-click=\"plusPlayer()\">NamePlayer</md-button>\r\n\t\t\t\t<md-button ng-if=\"playersWaitingForReadyCount+readyPlayers.length>=5\" class=\"md-raised md-accent\" ng-click=\"readyPlayer()\">Ready</md-button>\r\n\t\t\t\t<md-button ng-if=\"readyPlayers.length+joinedPlayers.length>0\" class=\"md-raised md-accent\" ng-click=\"removePlayer()\">DropPlayer</md-button>\r\n\t\t\t</div>\r\n\t\t\t<p class=\"winners\">{{message}}</p>\r\n\t\t\t<p class=\"endGameMessage\">{{banner}}</p>\r\n\t\t</div>\r\n\t\t<div class=\"spacer\">\r\n\t\t</div>\r\n\t\t<div class=\"spacer\"></div>\r\n\t</div>\r\n\t<!-- left panel -->\r\n\t<div class=\"joinedList\">\r\n\t\t<md-list flex=\"sublist\">\r\n\t\t\t<md-list-item class=\"md-1-line joined\" ng-repeat=\"player in joinedPlayers|limitTo:10:10\">\r\n\t\t\t\t<div player-card=\"player\" class=\"newPlayer\"></div>\r\n\t\t\t</md-list-item>\r\n\t\t</md-list>\r\n\t\t<md-list flex=\"sublist\">\r\n\t\t\t<md-list-item class=\"md-1-line joined\" ng-repeat=\"player in joinedPlayers|limitTo:10\">\r\n\t\t\t\t<div player-card=\"player\" class=\"newPlayer\"></div>\r\n\t\t\t</md-list-item>\r\n\t\t</md-list>\r\n\t</div>\r\n\t<!-- right panel -->\r\n\t<div class=\"readyList\">\r\n\t\t<md-list flex=\"sublist\">\r\n\t\t\t<md-list-item class=\"md-1-line readied\" ng-repeat=\"player in readyPlayers|limitTo:10\">\r\n\t\t\t\t<div player-card=\"player\" class=\"newPlayer\"></div>\r\n\t\t\t</md-list-item>\r\n\t\t</md-list>\r\n\t\t<md-list flex=\"sublist\">\r\n\t\t\t<md-list-item class=\"md-1-line readied\" ng-repeat=\"player in readyPlayers|limitTo:10:10\">\r\n\t\t\t\t<div player-card=\"player\" class=\"newPlayer\"></div>\r\n\t\t\t</md-list-item>\r\n\t\t</md-list>\r\n\t</div>\r\n</div>\r\n"
+	module.exports = "<md-toolbar class=\"header\">\r\n\t<div class=\"toolbar\">\r\n\t\t<div class=\"subtitle\">Players Joined</div>\r\n\t\t<div class=\"titleBar\">Welcome to {{gameName}}!</div>\r\n\t\t<div class=\"subtitle\">Players Ready</div>\r\n\t</div>\r\n</md-toolbar>\r\n<div class=\"gameContainer\">\r\n\t<!-- main content -->\r\n\t<div class=\"welcomeBox\">\r\n\t\t<div class=\"welcomeText\">\r\n\t\t\t<!-- <div>\r\n\t\t\t\t<md-button ng-if=\"readyPlayers.length+joinedPlayers.length<20\" class=\"md-raised md-accent\" ng-click=\"incomingPlayer()\">PendPlayer</md-button>\r\n\t\t\t  <md-button ng-if=\"incomingPlayersExist\" class=\"md-raised md-accent\" ng-click=\"plusPlayer()\">NamePlayer</md-button>\r\n\t\t\t\t<md-button ng-if=\"playersWaitingForReadyCount+readyPlayers.length>=5\" class=\"md-raised md-accent\" ng-click=\"readyPlayer()\">Ready</md-button>\r\n\t\t\t\t<md-button ng-if=\"readyPlayers.length+joinedPlayers.length>0\" class=\"md-raised md-accent\" ng-click=\"removePlayer()\">DropPlayer</md-button>\r\n\t\t\t</div> -->\r\n\t\t\t<p class=\"winners\">{{message}}</p>\r\n\t\t\t<p class=\"endGameMessage\">{{banner}}</p>\r\n\t\t</div>\r\n\t\t<div class=\"spacer\">\r\n\t\t</div>\r\n\t\t<div class=\"spacer\"></div>\r\n\t</div>\r\n\t<!-- left panel -->\r\n\t<div class=\"joinedList\">\r\n\t\t<md-list flex=\"sublist\">\r\n\t\t\t<md-list-item class=\"md-1-line joined\" ng-repeat=\"player in joinedPlayers|limitTo:10:10\">\r\n\t\t\t\t<div player-card=\"player\" class=\"newPlayer\"></div>\r\n\t\t\t</md-list-item>\r\n\t\t</md-list>\r\n\t\t<md-list flex=\"sublist\">\r\n\t\t\t<md-list-item class=\"md-1-line joined\" ng-repeat=\"player in joinedPlayers|limitTo:10\">\r\n\t\t\t\t<div player-card=\"player\" class=\"newPlayer\"></div>\r\n\t\t\t</md-list-item>\r\n\t\t</md-list>\r\n\t</div>\r\n\t<!-- right panel -->\r\n\t<div class=\"readyList\">\r\n\t\t<md-list flex=\"sublist\">\r\n\t\t\t<md-list-item class=\"md-1-line readied\" ng-repeat=\"player in readyPlayers|limitTo:10\">\r\n\t\t\t\t<div player-card=\"player\" class=\"newPlayer\"></div>\r\n\t\t\t</md-list-item>\r\n\t\t</md-list>\r\n\t\t<md-list flex=\"sublist\">\r\n\t\t\t<md-list-item class=\"md-1-line readied\" ng-repeat=\"player in readyPlayers|limitTo:10:10\">\r\n\t\t\t\t<div player-card=\"player\" class=\"newPlayer\"></div>\r\n\t\t\t</md-list-item>\r\n\t\t</md-list>\r\n\t</div>\r\n</div>\r\n"
 
 /***/ },
 /* 26 */

@@ -24,7 +24,7 @@
     <md-toolbar class="md-accent playerHeader">
       <div>Scoreboard</div>
     </md-toolbar>
-    <div ng-switch on="currentState">
+    <!-- <div ng-switch on="currentState">
 			<div ng-switch-when="ReadyToStart">
       	<md-button class="md-raised md-primary" ng-click="sendVotes()">Vote</md-button>
 			</div>
@@ -39,7 +39,7 @@
 			<div ng-switch-default>
 				<md-button class="md-raised md-primary" ng-click="sendVotes()">Vote</md-button>
 			</div>
-		</div>
+		</div> -->
 		<div>
 			<md-button ng-if="players.length<20" class="md-raised md-primary" ng-click="incomingPlayer()">PendPlayer</md-button>
 			<md-button ng-if="incomingPlayersExist" class="md-raised md-primary" ng-click="plusPlayer()">NamePlayer</md-button>

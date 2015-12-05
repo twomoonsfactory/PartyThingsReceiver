@@ -1,47 +1,47 @@
 module.exports = angular.module('castServices', [])
   // THIS IS REAL
-  // .constant('cast', window.cast)
+  .constant('cast', window.cast)
   //THIS IS NOT
-    .constant('cast', (()=>{
-
-            let castmock = {};
-
-            castmock.testCore = {
-                receivedStrings: []
-            };
-
-            castmock.receiverManager = {
-                getCastMessageBus: function(string){
-                    castmock.testCore.receivedStrings.push(string);
-                    return {
-                        getNamespace: ()=>{
-                            return 'aNamespace';
-                        },
-                        send: ()=>{
-
-                        }
-                    }
-                },
-                start: function(status){
-                            castmock.testCore.startStatus = status;
-                }
-            };
-
-            castmock.receiver = {
-                logger: {
-                    setLevelValue: function(levelValue){
-                        castmock.testCore.levelValue = levelValue;
-                    }
-                },
-                CastReceiverManager: {
-                    getInstance: ()=>{
-                        return castmock.receiverManager;
-                    },
-
-                }
-            };
-            return castmock;
-        }()))
+    // .constant('cast', (()=>{
+    //
+    //         let castmock = {};
+    //
+    //         castmock.testCore = {
+    //             receivedStrings: []
+    //         };
+    //
+    //         castmock.receiverManager = {
+    //             getCastMessageBus: function(string){
+    //                 castmock.testCore.receivedStrings.push(string);
+    //                 return {
+    //                     getNamespace: ()=>{
+    //                         return 'aNamespace';
+    //                     },
+    //                     send: ()=>{
+    //
+    //                     }
+    //                 }
+    //             },
+    //             start: function(status){
+    //                         castmock.testCore.startStatus = status;
+    //             }
+    //         };
+    //
+    //         castmock.receiver = {
+    //             logger: {
+    //                 setLevelValue: function(levelValue){
+    //                     castmock.testCore.levelValue = levelValue;
+    //                 }
+    //             },
+    //             CastReceiverManager: {
+    //                 getInstance: ()=>{
+    //                     return castmock.receiverManager;
+    //                 },
+    //
+    //             }
+    //         };
+    //         return castmock;
+    //     }()))
 
     // Here we ge real again
     .factory('castMessageBus', function(cast, messagetypes, eventService, gameEvents, $log) {
