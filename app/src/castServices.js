@@ -1,47 +1,47 @@
 module.exports = angular.module('castServices', [])
   // THIS IS REAL
-  // .constant('cast', window.cast)
+  .constant('cast', window.cast)
   //THIS IS NOT
-    .constant('cast', (()=>{
+    // .constant('cast', (()=>{
 
-            let castmock = {};
+    //         let castmock = {};
 
-            castmock.testCore = {
-                receivedStrings: []
-            };
+    //         castmock.testCore = {
+    //             receivedStrings: []
+    //         };
 
-            castmock.receiverManager = {
-                getCastMessageBus: function(string){
-                    castmock.testCore.receivedStrings.push(string);
-                    return {
-                        getNamespace: ()=>{
-                            return 'aNamespace';
-                        },
-                        send: ()=>{
+    //         castmock.receiverManager = {
+    //             getCastMessageBus: function(string){
+    //                 castmock.testCore.receivedStrings.push(string);
+    //                 return {
+    //                     getNamespace: ()=>{
+    //                         return 'aNamespace';
+    //                     },
+    //                     send: ()=>{
 
-                        }
-                    }
-                },
-                start: function(status){
-                            castmock.testCore.startStatus = status;
-                }
-            };
+    //                     }
+    //                 }
+    //             },
+    //             start: function(status){
+    //                         castmock.testCore.startStatus = status;
+    //             }
+    //         };
 
-            castmock.receiver = {
-                logger: {
-                    setLevelValue: function(levelValue){
-                        castmock.testCore.levelValue = levelValue;
-                    }
-                },
-                CastReceiverManager: {
-                    getInstance: ()=>{
-                        return castmock.receiverManager;
-                    },
+    //         castmock.receiver = {
+    //             logger: {
+    //                 setLevelValue: function(levelValue){
+    //                     castmock.testCore.levelValue = levelValue;
+    //                 }
+    //             },
+    //             CastReceiverManager: {
+    //                 getInstance: ()=>{
+    //                     return castmock.receiverManager;
+    //                 },
 
-                }
-            };
-            return castmock;
-        }()))
+    //             }
+    //         };
+    //         return castmock;
+    //     }()))
 
     // Here we ge real again
     .factory('castMessageBus', function(cast, messagetypes, eventService, gameEvents, $log) {
@@ -95,7 +95,7 @@ module.exports = angular.module('castServices', [])
 
       return messageBuses;
   })
-  .service('messageSender', function(castMessageBus, $log){
+  .service('messageSender', function(castMessageBus, eventService, gameEvents, $log){
 
     //request gamename from player
     this.requestGameName = function(event) {
@@ -146,8 +146,6 @@ module.exports = angular.module('castServices', [])
     this.sendQuit = function(event) {
       castMessageBus.quit.send(event.senderId, JSON.stringify({message: event.message}));
     };
-  })
-  .service('messageReceiver', function(castMessageBus, eventService, gameEvents, $log){
 
     //gamename received
     castMessageBus.gamename.onMessage = function(event){
@@ -178,4 +176,8 @@ module.exports = angular.module('castServices', [])
       eventService.publish(gameEvents.quitReceived, {senderId: event.senderId, message: angular.fromJson(event.data)});
     };
   })
+  // .service('messageReceiver', function(castMessageBus, eventService, gameEvents, $log){
+
+    
+  // })
   .constant('messagetypes', ['gamename','playername','ready','prompt','standby','thing','guess','result','quit', 'end']);

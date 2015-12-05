@@ -72,7 +72,6 @@ export default ngModule =>{
       let votingPlayer = this.playerHandler.findPlayerBySenderId(args.senderId);
       votingPlayer.setState(this.playerStates.ready);
       this.promptProvider.promptVote(args.message.promptIndex);
-      this.messageSender.requestPrompt({senderId:votingPlayer.senderId, message: this.messageProvider.getMessage({messageName: this.messageNames.promptConfirm, pname: votingPlayer.playerName, prompt: this.promptProvider.prompt})});
       this.playerHandler.playerActed();
       if(this.playerHandler.actedPlayersCount===this.playerHandler.activePlayers){
         this.promptProvider.tallyVotes();
@@ -97,7 +96,6 @@ export default ngModule =>{
       this.responseHandler.newResponse({response: args.message.response, playerId:responseWriter.playerId});
       responseWriter.setState(this.playerStates.ready);
       responseWriter.written = true;
-      this.messageSender.requestResponse({senderId:responseWriter.senderId, message: this.messageProvider.getMessage({messageName: this.messageNames.responseConfirm, pname: responseWriter.playerName, resp: args.message.thing})});
       this.playerHandler.playerActed();
       if(this.playerHandler.actedPlayersCount===this.playerHandler.activePlayers){
         this.playerHandler.resetPlayerActedCount();
