@@ -24,7 +24,6 @@
   font-size: $headline-font-size-base;
   font-weight: bolder;
   padding-top: .25em;
-  z-index: 9;
   display: flex;
   align-items: flex-start;
   justify-content: center;
@@ -38,8 +37,8 @@ $subbannerBorderRadius: 2em;
 //subbanner above gameplay area
 .gameplayHeader{
   @extend .gameplaySubtitle;
-  width: 80%;
-  border-bottom-right-radius: $subbannerBorderRadius;
+  background-color: #FF9800;
+  z-index: 9;
 }
 
 .playerContainer{
@@ -49,12 +48,14 @@ $subbannerBorderRadius: 2em;
   align-items: flex-start;
   justify-content: flex-start;
   overflow: hidden;
+  background-color: $scoreboardBackground;
 }
 
 //subbanner above scoreboard/playerlist
 .playerHeader{
   @extend .gameplaySubtitle;
-  border-bottom-left-radius: $subbannerBorderRadius;
+  background-color: #01579B;
+  z-index: 10;
 }
 
 .currentPhase{
