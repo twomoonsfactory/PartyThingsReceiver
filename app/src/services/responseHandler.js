@@ -69,7 +69,7 @@ export default ngModule => {
 
     //getter for playerId of the writer of a particular response
     getWriter(args){
-      return _.findWhere(this.responses, {responseId: args}).playerId;
+      return _.findWhere(this.responses, {responseId: args/1}).playerId;
     }
 
     //adds correct guess

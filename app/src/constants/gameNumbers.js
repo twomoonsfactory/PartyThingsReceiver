@@ -3,6 +3,6 @@ export default ngModule => {
 		guessScore:10,
     unguessedScore:5,
     winningScore:100,
-    minimumPlayers:5
+    minimumPlayers:1
 	});
 }

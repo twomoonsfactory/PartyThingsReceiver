@@ -95,7 +95,7 @@ module.exports = angular.module('castServices', [])
 
       return messageBuses;
   })
-  .service('messageSender', function(castMessageBus, $log){
+  .service('messageSender', function(castMessageBus, eventService, gameEvents, $log){
 
     //request gamename from player
     this.requestGameName = function(event) {
@@ -146,8 +146,6 @@ module.exports = angular.module('castServices', [])
     this.sendQuit = function(event) {
       castMessageBus.quit.send(event.senderId, JSON.stringify({message: event.message}));
     };
-  })
-  .service('messageReceiver', function(castMessageBus, eventService, gameEvents, $log){
 
     //gamename received
     castMessageBus.gamename.onMessage = function(event){
@@ -178,4 +176,8 @@ module.exports = angular.module('castServices', [])
       eventService.publish(gameEvents.quitReceived, {senderId: event.senderId, message: angular.fromJson(event.data)});
     };
   })
+  // .service('messageReceiver', function(castMessageBus, eventService, gameEvents, $log){
+
+    
+  // })
   .constant('messagetypes', ['gamename','playername','ready','prompt','standby','thing','guess','result','quit', 'end']);
