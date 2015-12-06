@@ -46,13 +46,15 @@ export default ngModule =>{
     //confirms player ready when received, continues on with the game when all active players have "readied"
     playerReady(args){
       let readyPlayer = this.playerHandler.findPlayerBySenderId(args.senderId);
-      readyPlayer.setState(this.playerStates.ready);
-      this.playerHandler.playerActed();
-      this.eventService.publish(this.gameEvents.playerUpdated, "");
-      if(this.playerHandler.actedPlayersCount >= this.playerHandler.activePlayers && this.playerHandler.actedPlayersCount >= this.gameNumbers.minimumPlayers){
-         //sets statecount back to 0
-        this.playerHandler.resetPlayerActedCount();
-        this.stateManager.setState(this.gameStates.ReadyToStart);
+      if(!readyPlayer.checkState(this.playerStates.ready)){
+        readyPlayer.setState(this.playerStates.ready);
+        this.playerHandler.playerActed();
+        this.eventService.publish(this.gameEvents.playerUpdated, "");
+        if(this.playerHandler.actedPlayersCount >= this.playerHandler.activePlayers && this.playerHandler.actedPlayersCount >= this.gameNumbers.minimumPlayers){
+           //sets statecount back to 0
+          this.playerHandler.resetPlayerActedCount();
+          this.stateManager.setState(this.gameStates.ReadyToStart);
+        }
       }
     }
 
@@ -70,13 +72,15 @@ export default ngModule =>{
     //all votes are received.
     voteReceived(args){
       let votingPlayer = this.playerHandler.findPlayerBySenderId(args.senderId);
-      votingPlayer.setState(this.playerStates.ready);
-      this.promptProvider.promptVote(args.message.promptIndex);
-      this.playerHandler.playerActed();
-      if(this.playerHandler.actedPlayersCount===this.playerHandler.activePlayers){
-        this.promptProvider.tallyVotes();
-        this.playerHandler.resetPlayerActedCount();
-        this.stateManager.setState(this.gameStates.PromptChosen);
+      if(votingPlayer.checkState(this.playerStates.voting)){
+        votingPlayer.setState(this.playerStates.ready);
+        this.promptProvider.promptVote(args.message.promptIndex);
+        this.playerHandler.playerActed();
+        if(this.playerHandler.actedPlayersCount===this.playerHandler.activePlayers){
+          this.promptProvider.tallyVotes();
+          this.playerHandler.resetPlayerActedCount();
+          this.stateManager.setState(this.gameStates.PromptChosen);
+        }
       }
     }
 
@@ -93,13 +97,15 @@ export default ngModule =>{
     //manages incoming things, sending the new thing to the this.responseHandler, until all players have submitted their "things"
     receivedResponse(args){
       let responseWriter = this.playerHandler.findPlayerBySenderId(args.senderId);
-      this.responseHandler.newResponse({response: args.message.thing, playerId:responseWriter.playerId});
-      responseWriter.setState(this.playerStates.ready);
-      responseWriter.written = true;
-      this.playerHandler.playerActed();
-      if(this.playerHandler.actedPlayersCount===this.playerHandler.activePlayers){
-        this.playerHandler.resetPlayerActedCount();
-        this.stateManager.setState(this.gameStates.ResponsesReceived);
+      if(responseWriter.checkState(this.playerStates.writing)){
+        this.responseHandler.newResponse({response: args.message.thing, playerId:responseWriter.playerId});
+        responseWriter.setState(this.playerStates.ready);
+        responseWriter.written = true;
+        this.playerHandler.playerActed();
+        if(this.playerHandler.actedPlayersCount===this.playerHandler.activePlayers){
+          this.playerHandler.resetPlayerActedCount();
+          this.stateManager.setState(this.gameStates.ResponsesReceived);
+        }
       }
     }
 
@@ -120,13 +126,15 @@ export default ngModule =>{
     //handles guesses -- iterates through rounds of guessing until there are no unguessed players or only one unguessed player.
     guessReceiver(args){
       let guesser = this.playerHandler.findPlayerBySenderId(args.senderId)
-      this.guessHandler.newGuess({guesser: guesser.playerId, playerId: args.message.playerId, responseId: args.message.responseId});
-      guesser.setState(this.playerStates.ready);
-      // this.messageSender.requestGuess({senderId: guesser.senderId, message: this.messageProvider.getMessage({messageName: this.messageNames.guessConfirm, pname: this.playerHandler.players[args.message.playerId].playerName, resp: this.responseHandler.responses[args.message.responseId].response})});
-      this.playerHandler.actedPlayersCount++;
-      if(this.playerHandler.actedPlayersCount===this.playerHandler.activePlayers){
-        this.playerHandler.actedPlayersCount = 0;
-        this.guessHandler.tallyGuesses();
+      if(guesser.checkState(this.playerStates.guessing)){
+        this.guessHandler.newGuess({guesser: guesser.playerId, playerId: args.message.playerId, responseId: args.message.responseId});
+        guesser.setState(this.playerStates.ready);
+        // this.messageSender.requestGuess({senderId: guesser.senderId, message: this.messageProvider.getMessage({messageName: this.messageNames.guessConfirm, pname: this.playerHandler.players[args.message.playerId].playerName, resp: this.responseHandler.responses[args.message.responseId].response})});
+        this.playerHandler.actedPlayersCount++;
+        if(this.playerHandler.actedPlayersCount===this.playerHandler.activePlayers){
+          this.playerHandler.actedPlayersCount = 0;
+          this.guessHandler.tallyGuesses();
+        }
       }
     }
 

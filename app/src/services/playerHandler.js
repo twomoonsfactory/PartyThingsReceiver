@@ -37,6 +37,11 @@ export default ngModule => {
       this.eventService.subscribe(this.gameStates.RoundEnd, this.freshRound.bind(this));
     }
 
+    playerJoined(args){
+      //will filter by a unique id passed in by the device, so that players who
+      //fall off will be able to rejoin with the same userinfo
+    }
+
     addPlayer(args){
       if(this.stateManager.checkState(this.gameStates.WaitingForFirstPlayer)){
         this.messageSender.requestGameName({senderId: args.senderId, message: this.messageProvider.getMessage({messageName: this.messageNames.nameGame})});
@@ -53,8 +58,10 @@ export default ngModule => {
 
     //this is where the game is named and the first player is created
     gameNamed(args){
-      this.stateManager.gameName = args.message.gameName;
-      this.eventService.publish(this.gameEvents.gameNamed, {gameName: args.message.gameName, ownerName: args.message.playerName});
+      if(this.stateManager.gameName!==args.message.gameName){
+        this.stateManager.gameName = args.message.gameName;
+        this.eventService.publish(this.gameEvents.gameNamed, {gameName: args.message.gameName, ownerName: args.message.playerName});
+      }
       this.playerNamed(args);
     }
 
@@ -62,23 +69,25 @@ export default ngModule => {
     //Need error handling for duplicate player names, as it can create confusion
     playerNamed(args){
       let namedPlayer = this.findPlayerBySenderId(args.senderId);
-      namedPlayer.namePlayer(args.message.playerName);
-      if(this.stateManager.checkState(this.gameStates.WaitingForStart)){
-        namedPlayer.setState(this.playerStates.waiting);
-        this.activePlayers++;
-      }
-      else if(this.stateManager.checkState(this.gameStates.WaitingForReady)||this.stateManager.checkState(this.gameStates.GameEnd)){
-        this.messageSender.requestReady({senderId: args.senderId, message: this.messageProvider.getMessage({messageName: this.messageNames.readyRequest, pname: args.message.playerName})});
-        namedPlayer.setState(this.playerStates.readyRequested);
-        this.activePlayers++;
-      }
-      else{
-        this.messageSender.sendStandby({senderId: args.senderId, message: this.messageProvider.getMessage({messageName: this.messageNames.standby, pname: args.message.playerName, gname: this.stateManager.gameName})});
-        namedPlayer.setState(this.playerStates.standingBy);
-      }
-      this.eventService.publish(this.gameEvents.playerUpdated, "");
-      if(this.activePlayers>=this.minimumPlayers && this.stateManager.checkState(this.gameStates.WaitingForStart) && !this.players[0].checkState(this.playerStates.incoming)){
-        this.stateManager.setState(this.gameStates.WaitingForReady);
+      if(namedPlayer.playerName!==args.message.playerName||args.message.playerName==="Incoming..."){
+        namedPlayer.namePlayer(args.message.playerName);
+        if(this.stateManager.checkState(this.gameStates.WaitingForStart)){
+          namedPlayer.setState(this.playerStates.waiting);
+          this.activePlayers++;
+        }
+        else if(this.stateManager.checkState(this.gameStates.WaitingForReady)||this.stateManager.checkState(this.gameStates.GameEnd)){
+          this.messageSender.requestReady({senderId: args.senderId, message: this.messageProvider.getMessage({messageName: this.messageNames.readyRequest, pname: args.message.playerName})});
+          namedPlayer.setState(this.playerStates.readyRequested);
+          this.activePlayers++;
+        }
+        else{
+          this.messageSender.sendStandby({senderId: args.senderId, message: this.messageProvider.getMessage({messageName: this.messageNames.standby, pname: args.message.playerName, gname: this.stateManager.gameName})});
+          namedPlayer.setState(this.playerStates.standingBy);
+        }
+        this.eventService.publish(this.gameEvents.playerUpdated, "");
+        if(this.activePlayers>=this.minimumPlayers && this.stateManager.checkState(this.gameStates.WaitingForStart) && !this.players[0].checkState(this.playerStates.incoming)){
+          this.stateManager.setState(this.gameStates.WaitingForReady);
+        }
       }
     }
 
