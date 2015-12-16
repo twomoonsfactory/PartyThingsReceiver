@@ -16,11 +16,17 @@ export default ngModule =>{
             scope.message2 = scope.gameMessage;
             scope.onMessage1 = false;
             elem.addClass('flipped md-accent');
+						$timeout(()=>{
+							scope.$apply();
+						});
           }
           else{
             scope.message1 = scope.gameMessage;
             scope.onMessage1 = true;
             elem.removeClass('flipped md-accent');
+						$timeout(()=>{
+							scope.$apply();
+						});
           }
         });
       }

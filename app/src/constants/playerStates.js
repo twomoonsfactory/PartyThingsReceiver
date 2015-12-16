@@ -4,7 +4,6 @@ export default ngModule => {
 		ready: "ready",
 		quit: "quit",
 		standingBy: "standingBy",
-		waiting: "waiting",
 		readyRequested: "readyRequested",
 		voting: "voting",
 		writing: "writing",

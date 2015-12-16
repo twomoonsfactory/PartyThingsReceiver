@@ -6,7 +6,7 @@ export default ngModule => {
    	$scope.gameHeader = stateManager.banner;
   	$scope.gameName = stateManager.gameName;
   	$scope.ownerName = stateManager.ownerName;
-  	$scope.players = playerHandler.players;
+  	$scope.players = [];
     $scope.currentState = null;
     $scope.currentlyGuessing = false;
   	$scope.prompts = promptProvider.currentprompts;
@@ -14,6 +14,10 @@ export default ngModule => {
     $scope.responses = [];
   	$scope.guesses = [];
     $scope.winners = [];
+
+    for(let player in playerHandler.players){
+      $scope.players.push(playerHandler.players[player]);
+    }
 
     $scope.updateScreen = () =>{
       $timeout(()=>{
@@ -96,50 +100,92 @@ export default ngModule => {
   		$state.go(uiStates.gameend);
   	}
   	eventService.subscribe(gameEvents.endView, $scope.changeView);
-
+    $scope.service = playerHandler;
+    $scope.$watch('service.players', (newVal, oldVal, scope)=>{
+      if(newVal)$log.log('true');
+    })
 
 
     //keeps
   	//TEST VIA BUTTON
-    // $scope.incomingPlayersExist = _.findWhere($scope.joinedPlayers, {playerName: 'Incoming...'}) ? true : false;
-  	// $scope.plusPlayer = ()=>{
-    // 	eventService.publish(gameEvents.playernameReceived, fakePlayerProvider.getJoiningPlayerDetail(_.sample(_.filter(playerHandler.players, (player)=>{return player.playerName==="Incoming..."})).senderId));
-    //   $scope.incomingPlayersExist = _.filter(playerHandler.players, (player)=>{return player.playerName==='Incoming...'}).length>0?true:false;
-    // }
-    // $scope.incomingPlayer = ()=>{
-  	// 	eventService.publish(gameEvents.playerJoined, fakePlayerProvider.getJoiningPlayerInitial());
-    //   $scope.incomingPlayersExist = true;
-    // }
-    // $scope.removePlayer = ()=>{
-    //   let playerQuitting = _.sample(_.filter(playerHandler.players, function(player){if(player.state!=='quit')return player;}));
-		// 	if(playerQuitting.playerName==="Incoming...")
-		// 		fakePlayerProvider.senderIdIndex--;
-		// 	eventService.publish(gameEvents.quitReceived, {senderId:playerQuitting.senderId});
-    //   $scope.incomingPlayersExist = _.filter(playerHandler.players, (player)=>{return player.playerName==='Incoming...'}).length>0?true:false;
-    // }
-    // $scope.sendVotes = ()=>{
-    //   eventService.publish(gameEvents.voteReceived, {senderId:_.sample(_.filter(playerHandler.players, function(player){return player.state==="voting"})).senderId, message:{promptIndex:_.sample([1,2,3])}});
-    // }
-    // $scope.sendResponses = ()=>{
-    //   eventService.publish(gameEvents.responseReceived, {senderId: _.sample(_.filter(playerHandler.players, function(player){return player.state==='writing'})).senderId, message: {response: responseProvider.getRandomResponse()}});
-    // }
-    // $scope.sendGuesses = ()=>{
-    //   eventService.publish(gameEvents.guessReceived, {senderId: _.sample(_.filter(playerHandler.players, function(player){return player.state==='guessing'})).senderId, message: {playerId: _.sample(responseHandler.getAuthors()).playerId, responseId:_.sample(responseHandler.getResponses()).responseId}})
-    // }
-    // $scope.kingMaker = ()=>{
-    //   playerHandler.assignPoints({playerId:   _.sample(_.filter(playerHandler.players, (player)=>{return (player.state!=='quit'&&player.state!=='incoming'&&player.state!=='standingBy')?true:false})).playerId, points: 100});
-    // }
-    // $scope.guessRight = ()=>{
-    //   let responses = [];
-    //   _.each(responseHandler.responses, response=>{
-    //     if(response.playerId!==-1&&!response.guessed)
-    //       responses.push(response);
-    //   });
-    //   let response = _.sample(responses);
-    //   eventService.publish(gameEvents.guessReceived, {senderId: _.sample(_.filter(playerHandler.players, function(player){return player.state==='guessing'})).senderId, message: {playerId:response.playerId, responseId:response.responseId}})
-    // }
-    // $scope.skipToEnd = ()=>{
-    //   eventService.publish(gameStates.RoundEnd, "");
-    // }
+    $scope.incomingPlayersExist = _.findWhere($scope.joinedPlayers, {playerName: 'Incoming...'}) ? true : false;
+  	$scope.plusPlayer = ()=>{
+      let incomingPlayers = [];
+      for(let player in playerHandler.players){
+        if(playerHandler.players[player].playerName==="Incoming...")
+          incomingPlayers.push(playerHandler.players[player]);
+      }
+    	eventService.publish(gameEvents.playernameReceived, fakePlayerProvider.getJoiningPlayerDetail(_.sample(incomingPlayers).senderId));
+      $scope.incomingPlayersExist = incomingPlayers.length>1?true:false;
+    }
+    $scope.incomingPlayer = ()=>{
+  		eventService.publish(gameEvents.playerIdReceived, fakePlayerProvider.getJoiningPlayerInitial());
+      $scope.incomingPlayersExist = true;
+    }
+    $scope.removePlayer = ()=>{
+      let quittablePlayers = [];
+      for(let player in playerHandler.players){
+        if(playerHandler.players[player].state!=='quit')
+          quittablePlayers.push(playerHandler.players[player]);
+      }
+      let playerQuitting = _.sample(quittablePlayers);
+			if(playerQuitting.playerName==="Incoming...")
+				fakePlayerProvider.senderIdIndex--;
+			eventService.publish(gameEvents.quitReceived, {senderId:playerQuitting.senderId});
+      $scope.incomingPlayersExist = false;
+      for(let player in playerHandler.players){
+        if(playerHandler.players[player].checkState('incoming'))incomingPlayersExist = true;
+      }
+    }
+    $scope.sendVotes = ()=>{
+      let votingPlayers = [];
+      for(let player in playerHandler.players){
+        if(playerHandler.players[player].checkState('voting'))
+          votingPlayers.push(playerHandler.players[player]);
+      }
+      eventService.publish(gameEvents.voteReceived, {senderId:_.sample(votingPlayers).senderId, message:{promptIndex:_.sample([1,2,3])}});
+    }
+    $scope.sendResponses = ()=>{
+      let writingPlayers = [];
+      for(let player in playerHandler.players){
+        if(playerHandler.players[player].checkState('writing'))
+          writingPlayers.push(playerHandler.players[player]);
+      }
+      eventService.publish(gameEvents.responseReceived, {senderId: _.sample(writingPlayers).senderId, message: {thing: responseProvider.getRandomResponse()}});
+    }
+    $scope.sendGuesses = ()=>{
+      let guessingPlayers = [];
+      for(let player in playerHandler.players){
+        if(playerHandler.players[player].checkState('guessing'))
+          guessingPlayers.push(playerHandler.players[player]);
+      }
+      eventService.publish(gameEvents.guessReceived, {senderId: _.sample(guessingPlayers).senderId, message: {playerId: _.sample(responseHandler.getAuthors()).playerId, responseId:_.sample(responseHandler.getResponses()).responseId}})
+    }
+    $scope.kingMaker = ()=>{
+      let players = [];
+      for(let player in playerHandler.players){
+        let tempPlayer = playerHandler.players[player]
+        if(tempPlayer.state!=='quit'&&tempPlayer.state!=='incoming'&&tempPlayer.state!=='standingBy')
+          players.push(tempPlayer);
+      }
+      playerHandler.assignPoints({playerId:   _.sample(players).playerId, points: 100});
+    }
+    $scope.guessRight = ()=>{
+      let responses = [];
+      _.each(responseHandler.responses, response=>{
+        if(response.playerId!==-1&&!response.guessed)
+          responses.push(response);
+      });
+      let response = _.sample(responses);
+      let guessingPlayers = [];
+      for(let player in playerHandler.players){
+        if(playerHandler.players[player].checkState('guessing'))
+          guessingPlayers.push(playerHandler.players[player]);
+      }
+      eventService.publish(gameEvents.guessReceived, {senderId: _.sample(guessingPlayers).senderId, message: {playerId:response.playerId, responseId:response.responseId}})
+    }
+    $scope.skipToEnd = ()=>{
+      eventService.publish(gameStates.RoundEnd, "");
+    }
   }]);
 }

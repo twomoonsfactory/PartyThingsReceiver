@@ -1,6 +1,9 @@
 export default ngModule => {
 	ngModule.constant('gameEvents', {
 		playerJoined: "playerJoined",
+		playerIdReceived: "playerIdReceived",
+		playerReconnected: "playerReconnected",
+		updatePlayers: "updatePlayers",
 		readyReceived: "readyReceived",
 		voteReceived: "voteReceived",
 		responseReceived: "responseReceived",
@@ -12,7 +15,6 @@ export default ngModule => {
 		messageLoaded: "messageLoaded",
 		messagesUpdated: "messagesUpdated",
 		playernameReceived: "playernameReceived",
-		playerUpdated: "playerUpdated",
 		playersUpdated: "playersUpdated",
 		promptsLoaded: "promptsLoaded",
 		quitReceived: "quitReceived",

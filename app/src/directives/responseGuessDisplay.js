@@ -114,6 +114,9 @@ export default ngModule => {
           elem.removeClass('beingGuessed guessRight guessWrong unguessed').addClass('unguessedResponse cardHue');
           if(scope.wasGuessed)scope.responseSlip.mark();
           scope.wasGuessed = false;
+          $timeout(()=>{
+            scope.$apply();
+          });
         }
 
         $rootScope.$emit(gameEvents.responseRegistered, scope);

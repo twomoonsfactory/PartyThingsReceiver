@@ -30,6 +30,7 @@ export default ngModule =>{
       this.eventService.subscribe(this.gameEvents.guessesResolved, this.guessesResolved.bind(this));
       this.eventService.subscribe(this.gameStates.RoundEnd, this.nextRound.bind(this));
       this.eventService.subscribe(this.gameStates.GameEnd, this.endGame.bind(this));
+      this.eventService.subscribe(this.gameEvents.playerReconnected, this.playerReconnected.bind(this));
     }
         //takes over after the minimum number of players have joined and named themselves, requests them to indicate readiness
         //will skip players already sent this message as necessary (players carried over from previous games, etc)
@@ -49,7 +50,7 @@ export default ngModule =>{
       if(!readyPlayer.checkState(this.playerStates.ready)){
         readyPlayer.setState(this.playerStates.ready);
         this.playerHandler.playerActed();
-        this.eventService.publish(this.gameEvents.playerUpdated, "");
+        this.eventService.publish(this.gameEvents.updatePlayers, "");
         if(this.playerHandler.actedPlayersCount >= this.playerHandler.activePlayers && this.playerHandler.actedPlayersCount >= this.gameNumbers.minimumPlayers){
            //sets statecount back to 0
           this.playerHandler.resetPlayerActedCount();
@@ -185,6 +186,34 @@ export default ngModule =>{
         }
       });
       this.eventService.publish(this.gameEvents.endView, "");
+    }
+
+    playerReconnected(player){
+      switch(player.state){
+        case this.playerStates.ready:
+        break;
+        case this.playerStates.quit:
+        break;
+        case this.playerStates.standingBy:
+          this.messageSender.sendStandby({senderId: player.senderId, message: this.messageProvider.getMessage({messageName: this.messageNames.standby, pname: player.playerName})});
+        break;
+        case this.playerStates.readyRequest:
+          this.messageSender.requestReady({senderId: player.senderId, message: this.messageProvider.getMessage({messageName: this.messageNames.readyRequest, pname: player.playerName})});
+        break;
+        case this.playerStates.voting:
+          this.messageSender.requestPrompt({senderId: player.senderId, message: {message: this.messageProvider.getMessage({messageName: this.messageNames.promptRequest, pname: player.playerName}), prompts: this.promptProvider.currentprompts}});
+        break;
+        case this.playerStates.writing:
+          this.messageSender.requestResponse({senderId:player.senderId, message: this.messageProvider.getMessage({messageName: this.messageNames.responseRequest, prompt: this.promptProvider.prompt})});
+        break;
+        case this.playerStates.guessing:
+          this.messageSender.requestGuess({senderId: player.senderId,message:{
+            message: this.messageProvider.getMessage({messageName:this.messageNames.guessRequest}),
+            things: _.filter(this.responseHandler.getResponses(), response => {return this.responseHandler.getWriter(response.responseId)!==player.playerId}),
+            elegiblePlayers: _.filter(this.responseHandler.getAuthors(), author => {return author.playerId !== player.playerId})
+          }});
+        break;
+      }
     }
   }
   gameDriver.$inject = ['eventService', 'gameEvents', 'stateManager', 'gameStates', 'messageSender', 'messageProvider', 'messageNames', 'playerHandler', 'playerStates', 'responseHandler', 'promptProvider', 'guessHandler', 'gameNumbers'];

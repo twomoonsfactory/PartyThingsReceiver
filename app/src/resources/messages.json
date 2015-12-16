@@ -155,7 +155,7 @@ angular.callbacks._0 (
 			"I feel my IQ dropping.",
 			"No points for a bad guess."
 			]},
-		{"messageName" : "rules", "message" : "This is a game of \"Who said it?\" where players pick a prompt, respond to it and try and guess who said what! Earn points by guessing correctly, and more by being the only one to guess right.  Get even more points for every round you stump the competition and remain unguessed.  Good luck!"}
+		{"messageName" : "rules", "message" : "This is a game of \"Who said it?\" where players pick a prompt, respond to it and try and guess who said what! Earn points by guessing correctly, and more by being the only one to guess right.  Get even more points for every round you stump the competition and remain unguessed.  One extra response will be added to each round, don't guess it!  Good luck!"}
 	]
 }
 )

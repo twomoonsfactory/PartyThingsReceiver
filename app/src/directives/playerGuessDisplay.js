@@ -104,6 +104,12 @@ export default ngModule => {
           });
         }
 
+        scope.updateScreen = ()=>{
+          $timeout(()=>{
+            scope.$apply();
+          });
+        }
+
         //returns the player slip to the proper state
         scope.resolveAnimation = ()=>{
           elem.removeClass('beingGuessed guessRight guessWrong');
@@ -112,6 +118,7 @@ export default ngModule => {
           if(scope.thisPlayerQuit)elem.addClass('supressed');
           scope.wasGuessed = false;
           scope.thisPlayerQuit = false;
+          scope.updateScreen();
         }
 
         scope.setCardState = ()=>{
@@ -121,6 +128,7 @@ export default ngModule => {
           if(scope.player.guessed) elem.addClass('inactive');
           else if(scope.player.checkState(playerStates.standingBy)) elem.addClass('standby');
           else elem.removeClass('inactive standby');
+          scope.updateScreen();
         }
 
         scope.setCardState();

@@ -31,7 +31,7 @@ export default ngModule => {
     getJoiningPlayerInitial(){
       let currentSenderId = this.playerList[this.senderIdIndex].senderId;
       this.senderIdIndex++;
-      return {senderId: currentSenderId};
+      return {senderId: currentSenderId, message: {playerId: currentSenderId+1}};
     }
 
     getJoiningPlayerDetail(args){

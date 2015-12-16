@@ -14,6 +14,9 @@ export default ngModule =>{
 						scope.name = scope.player.playerName;
             scope.waitingForName = false;
             elem.addClass('flipped');
+						$timeout(()=>{
+	            scope.$apply();
+	          });
           }
         }, true);
       }
