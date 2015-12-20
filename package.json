@@ -43,7 +43,7 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "webpack-dev-server --content-base app"
+    "start": "webpack-dev-server --hot --inline --content-base app"
   },
   "repository": {
     "type": "git",

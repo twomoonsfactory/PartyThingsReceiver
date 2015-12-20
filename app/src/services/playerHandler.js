@@ -26,7 +26,7 @@ export default ngModule => {
     }
 
     subscribeToGameEvents(){
-      this.eventService.subscribe(this.gameEvents.playerJoined, this.playerConnected.bind(this));
+      this.eventService.subscribe(this.gameEvents.connected, this.playerConnected.bind(this));
       this.eventService.subscribe(this.gameEvents.playerIdReceived, this.playerJoined.bind(this));
       this.eventService.subscribe(this.gameEvents.gamenameReceived, this.gameNamed.bind(this));
       this.eventService.subscribe(this.gameEvents.playernameReceived, this.playerNamed.bind(this));
@@ -41,14 +41,14 @@ export default ngModule => {
     playerConnected(args){
       //when a player joins, prompts the sender app to respond with their unique ID
       this.messageSender.requestPlayerId({senderId: args.senderId, message: ''});
-      this.$log.log('player connected');
-      this.playersUpdated();
+      this.updatePlayers();
     }
 
     playerJoined(args){
       //checks to see if the player already exists
       if(args.message.playerId in this.players){
-        let player = players[args.message.playerId];
+        this.$log.log('player re-connected');
+        let player = this.players[args.message.playerId];
         if(player.checkState(this.playerStates.incoming))
           this.addPlayer(player.senderId);
         else
@@ -56,7 +56,8 @@ export default ngModule => {
       }
       else {
         this.players[args.message.playerId] = this.playerFactory.newPlayer(args.senderId, args.message.playerId);
-        this.addPlayer(this.players[args.message.playerId].senderId);
+        this.$log.log('player initial connect');
+        this.addPlayer(this.players[args.message.playerId]);
       }
     }
 
