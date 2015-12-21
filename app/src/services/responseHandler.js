@@ -45,6 +45,7 @@ export default ngModule => {
       if(!this.shuffled){
         this.responseList = [];
         this.elegibleAuthors = [];
+        this.responses = _.shuffle(this.responses);
         _.each(this.responses, currentresponse => {
           if(!currentresponse.guessed){
             this.responseList.push({response: currentresponse.response, responseId: currentresponse.responseId});
@@ -56,7 +57,6 @@ export default ngModule => {
         });
         this.responseList = _.shuffle(this.responseList);
         this.elegibleAuthors = _.shuffle(this.elegibleAuthors);
-        this.responses = _.shuffle(this.responses);
         this.shuffled = true;
       }
       return this.responseList;
