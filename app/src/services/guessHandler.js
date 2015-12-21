@@ -1,10 +1,12 @@
 export default ngModule => {
   class guessHandler{
-    constructor(eventService, guessFactory, gameEvents, responseHandler){
+    constructor(eventService, guessFactory, gameEvents, responseHandler, $log, playerHandler){
       this.eventService = eventService;
       this.guessFactory = guessFactory;
       this.gameEvents = gameEvents;
       this.responseHandler = responseHandler;
+      this.playerHandler = playerHandler;
+      this.$log = $log;
 
       this.guesses = [];
 
@@ -17,6 +19,9 @@ export default ngModule => {
     //adds a new guess
     newGuess(args){
       this.guesses.push(this.guessFactory.newGuess(args.guesser,args.playerId,args.responseId/1));
+      this.$log.log(this.playerHandler.findPlayerByPlayerId(args.guesser).playerName + ' guessed that '
+                    + this.playerHandler.findPlayerByPlayerId(args.playerId).playerName + ' said "'
+                    + this.responseHandler.responses[args.responseId/1].response + '"');
     }
     //sorts existing guesses
     tallyGuesses(){
@@ -36,6 +41,6 @@ export default ngModule => {
       this.guesses = [];
     }
   }
-  guessHandler.$inject = ['eventService', 'guessFactory', 'gameEvents', 'responseHandler'];
+  guessHandler.$inject = ['eventService', 'guessFactory', 'gameEvents', 'responseHandler', '$log', 'playerHandler'];
   ngModule.service('guessHandler', guessHandler);
 }

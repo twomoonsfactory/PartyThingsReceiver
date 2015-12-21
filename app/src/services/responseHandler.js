@@ -1,12 +1,13 @@
 export default ngModule => {
   class responseHandler{
-    constructor(eventService, responseFactory, gameEvents, gameStates, playerHandler, responseProvider, $log){
+    constructor(eventService, responseFactory, gameEvents, gameStates, playerHandler, responseProvider, $log, settings){
       this.eventService = eventService;
       this.responseFactory = responseFactory;
       this.gameEvents = gameEvents;
       this.gameStates = gameStates;
       this.playerHandler = playerHandler;
       this.responseProvider = responseProvider;
+      this.settings = settings;
       this.$log = $log;
 
       this.responses = [];
@@ -24,7 +25,8 @@ export default ngModule => {
     }
 
     newResponse(args){
-      this.responses[this.responseCounter] = this.responseFactory.newResponse(args.response, this.responseCounter, args.playerId);
+      this.responses.push(this.responseFactory.newResponse(args.response, this.responseCounter, args.playerId));
+      this.$log.log('Response: "' + args.response + '" added');
       this.responseCounter++;
     }
 
@@ -32,7 +34,6 @@ export default ngModule => {
       _.each(this.responses, response => {
         response.wipeGuesses();
       });
-      this.shuffled = false;
     }
 
     //returns list of responses to displays
@@ -129,9 +130,7 @@ export default ngModule => {
           _.last(incorrect).guessers.push({guesser: this.playerHandler.players[wrongGuess.guesser].playerName, guesserId: wrongGuess.guesser, guessedWriter: this.playerHandler.players[wrongGuess.guessedWriter].playerName, guessedWriterId: wrongGuess.guessedWriter});
         });
       });
-      _.each(this.responses, response => {
-        response.wipeGuesses();
-      });
+      this.wipeGuesses();
       this.shuffled = false;
       this.eventService.publish(this.gameEvents.guessesSorted, {guessedRight: correct, guessedWrong: incorrect});
     }
@@ -140,10 +139,10 @@ export default ngModule => {
     freshResponses(){
       this.responses = [];
       this.responseCounter = 0;
-      this.newResponse({response: this.responseProvider.getRandomResponse(), playerId: -1});
+      if(this.settings.computerPlayerOn)this.newResponse({response: this.responseProvider.getRandomResponse(), playerId: -1});
       this.shuffled = false;
     }
   }
-  responseHandler.$inject = ['eventService', 'responseFactory', 'gameEvents', 'gameStates', 'playerHandler', 'responseProvider', '$log'];
+  responseHandler.$inject = ['eventService', 'responseFactory', 'gameEvents', 'gameStates', 'playerHandler', 'responseProvider', '$log', 'settings'];
   ngModule.service('responseHandler', responseHandler);
 }

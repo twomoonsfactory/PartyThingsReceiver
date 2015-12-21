@@ -43,6 +43,7 @@ export default ngModule => {
       //processes votes received
       promptVote(voteindex){
         this.votes[voteindex]++;
+        this.$log.log('Vote received for Option ' + voteindex);
       }
 
       //votes handled
