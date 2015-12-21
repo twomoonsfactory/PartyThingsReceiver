@@ -9,6 +9,7 @@ export default ngModule => {
 
         this.prompts = [];
         this.currentprompts = [];
+        this.selectedPrompts = [];
         this.prompt = "";
         this.votes = [0,0,0];
 
@@ -33,8 +34,10 @@ export default ngModule => {
       }
 
       getPrompts(){
-         this.currentprompts = _.sample(this.prompts, 3);
-         this.eventService.publish(this.gameEvents.promptsLoaded, this.currentprompts);
+        if(this.selectedPrompts.length>=this.prompts.length-2)
+          this.selectedPrompts = [];  //if we have gone through enough prompts that we don't have enough to fill out the vote, wipe selected prompts and start fresh
+        this.currentprompts = _.sample(_.difference(this.prompts, this.selectedPrompts), 3); //filters out all previously selected prompts
+        this.eventService.publish(this.gameEvents.promptsLoaded, this.currentprompts);
       }
 
       //processes votes received
@@ -55,6 +58,7 @@ export default ngModule => {
           this.prompt = this.currentprompts[promptIndex[_.random(1)]];
         else
           this.prompt = this.currentprompts[promptIndex[_.random(2)]];
+        this.selectedPrompts.push(this.prompt);
       }
     }
   promptProvider.$inject = ['$log', 'eventService', 'gameEvents', 'gameStates', '$http'];
