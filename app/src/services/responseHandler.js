@@ -56,6 +56,7 @@ export default ngModule => {
         });
         this.responseList = _.shuffle(this.responseList);
         this.elegibleAuthors = _.shuffle(this.elegibleAuthors);
+        this.responses = _.shuffle(this.responses);
         this.shuffled = true;
       }
       return this.responseList;
