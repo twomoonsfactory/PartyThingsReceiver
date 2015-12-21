@@ -41,7 +41,8 @@ export default ngModule => {
 
 		//updates the game name and owner name
 		$scope.gameNamed = function(args){
-			$scope.gameName = args.gameName;
+			if(args.gameName)
+				$scope.gameName = args.gameName;
 		}
 		eventService.subscribe(gameEvents.gameNamed, $scope.gameNamed);
 

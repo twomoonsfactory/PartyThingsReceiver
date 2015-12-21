@@ -183,7 +183,7 @@ module.exports = angular.module('castServices', [])
     };
     //quit received
     castMessageBus.quit.onMessage = function(event){
-      eventService.publish(gameEvents.quitReceived, {senderId: event.senderId, message: angular.fromJson(event.data)});
+      if(event.reason==='closed_by_peer')eventService.publish(gameEvents.quitReceived, {senderId: event.senderId, message: angular.fromJson(event.data)});
     };
   })
   // .service('messageReceiver', function(castMessageBus, eventService, gameEvents, $log){

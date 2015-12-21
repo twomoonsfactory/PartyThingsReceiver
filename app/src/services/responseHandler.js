@@ -24,7 +24,7 @@ export default ngModule => {
     }
 
     newResponse(args){
-      this.responses[this.responseCounter] = this.responseFactory.newResponse(args.response, this.responseCounter, args.playerId/1);
+      this.responses[this.responseCounter] = this.responseFactory.newResponse(args.response, this.responseCounter, args.playerId);
       this.responseCounter++;
     }
 
@@ -80,7 +80,7 @@ export default ngModule => {
 
     //adds incorrect guess
     badGuess(args){
-      _.findWhere(this.responses, {responseId: args.responseId/1}).addWrongGuess(args.guesser,args.guessedWriter/1);
+      _.findWhere(this.responses, {responseId: args.responseId/1}).addWrongGuess(args.guesser,args.guessedWriter);
     }
 
     //resolves correct and incorrect guessers, called by resolveGuesses

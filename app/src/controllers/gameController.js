@@ -25,6 +25,8 @@ export default ngModule => {
       });
     }
 
+    $scope.$watch('gameName', ()=>{$log.log($scope.gameName)});
+
     $scope.updateMessages = (args) => {
       if(!stateManager.checkState(gameStates.GameEnd)){
         $scope.gameMessage = args.message;

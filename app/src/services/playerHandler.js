@@ -20,7 +20,7 @@ export default ngModule => {
       this.minimumPlayers = gameNumbers.minimumPlayers;    //the minimum number of players to start the game
       this.joinedPlayers = 0;     //the number of players joined, named or not.  Used for "incoming player"
       this.numberOfActedPlayersQuitting = 0;    //counts the players who have quit during a given phase after acting
-      this.gameWasNamed = false;
+      this.nameRequested = false;
 
       this.subscribeToGameEvents();
     }
@@ -49,8 +49,9 @@ export default ngModule => {
       if(args.message.playerId in this.players){
         this.$log.log('player re-connected');
         let player = this.players[args.message.playerId];
+        player.senderId = args.senderId;
         if(player.checkState(this.playerStates.incoming))
-          this.addPlayer(player.senderId);
+          this.addPlayer(player);
         else
           this.eventService.publish(this.gameEvents.playerReconnected, player);
       }
@@ -62,7 +63,9 @@ export default ngModule => {
     }
 
     addPlayer(args){
-      if(this.stateManager.checkState(this.gameStates.WaitingForFirstPlayer)){
+      if(!this.nameRequested||args.creator){
+        this.nameRequested = true;
+        args.creator = true; //marks the creating player in case of disconnect/reconnect
         this.messageSender.requestGameName({senderId: args.senderId, message: this.messageProvider.getMessage({messageName: this.messageNames.nameGame})});
         this.stateManager.setState(this.gameStates.WaitingForStart);
       }
@@ -79,7 +82,6 @@ export default ngModule => {
         this.stateManager.gameName = args.message.gameName;
         this.eventService.publish(this.gameEvents.gameNamed, {gameName: args.message.gameName, ownerName: args.message.playerName});
       }
-      this.gameWasNamed = true;
       this.playerNamed(args);
     }
 
@@ -103,7 +105,7 @@ export default ngModule => {
           namedPlayer.setState(this.playerStates.standingBy);
         }
         this.eventService.publish(this.gameEvents.updatePlayers, this.players);
-        if(this.activePlayers>=this.minimumPlayers && this.stateManager.checkState(this.gameStates.WaitingForStart) && this.gameWasNamed){
+        if(this.activePlayers>=this.minimumPlayers && this.stateManager.checkState(this.gameStates.WaitingForStart)){
           this.stateManager.setState(this.gameStates.WaitingForReady);
         }
       }
@@ -121,13 +123,13 @@ export default ngModule => {
 
     //gives players their points, determined in the response handler
     assignPoints(args){
-      _.findWhere(this.players, {playerId: args.playerId/1}).addScore(args.points);
+      _.findWhere(this.players, {playerId: args.playerId}).addScore(args.points);
       this.eventService.publish(this.gameEvents.updatePlayers, this.players);
     }
 
     //establishes that the given player has been guessed
     playerGuessed(args){
-      _.findWhere(this.players, {playerId: args.playerId/1}).wasGuessed();
+      _.findWhere(this.players, {playerId: args.playerId}).wasGuessed();
       this.eventService.publish(this.gameEvents.updatePlayers, this.players);
     }
 

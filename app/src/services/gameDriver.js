@@ -197,7 +197,7 @@ export default ngModule =>{
         case this.playerStates.standingBy:
           this.messageSender.sendStandby({senderId: player.senderId, message: this.messageProvider.getMessage({messageName: this.messageNames.standby, pname: player.playerName})});
         break;
-        case this.playerStates.readyRequest:
+        case this.playerStates.readyRequested:
           this.messageSender.requestReady({senderId: player.senderId, message: this.messageProvider.getMessage({messageName: this.messageNames.readyRequest, pname: player.playerName})});
         break;
         case this.playerStates.voting:
