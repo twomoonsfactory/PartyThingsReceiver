@@ -39,7 +39,7 @@ export default ngModule => {
         }
 
         scope.animateGuess = (right)=>{
-          let timeUntilFinal = 3500;
+
           $q.when()
           .then(()=>{
             let defer = $q.defer();
@@ -48,59 +48,11 @@ export default ngModule => {
               elem.removeClass('supressed').addClass('inactive');
             }
             elem.removeClass('cardHue').addClass('beingGuessed guessMid');
-            $timeout(()=>{defer.resolve()}, timeUntilFinal/9);
+            $timeout(()=>{defer.resolve()}, gameNumbers.guessDisplayTime);
             return defer.promise;
           })
           .then(()=>{
-            let defer = $q.defer();
-            elem.removeClass('guessMid').addClass('guess1');
-            $timeout(()=>{defer.resolve()}, timeUntilFinal/9);
-            return defer.promise;
-          })
-          .then(()=>{
-            let defer = $q.defer();
-            elem.removeClass('guess1').addClass('guessMid');
-            $timeout(()=>{defer.resolve()}, timeUntilFinal/9);
-            return defer.promise;
-          })
-          .then(()=>{
-            let defer = $q.defer();
-            elem.removeClass('guessMid').addClass('guess2');
-            $timeout(()=>{defer.resolve()}, timeUntilFinal/9);
-            return defer.promise;
-          })
-          .then(()=>{
-            let defer = $q.defer();
-            elem.removeClass('guess2').addClass('guessMid');
-            $timeout(()=>{defer.resolve()}, timeUntilFinal/9);
-            return defer.promise;
-          })
-          .then(()=>{
-            let defer = $q.defer();
-            elem.removeClass('guessMid').addClass('guess1');
-            $timeout(()=>{defer.resolve()}, timeUntilFinal/9);
-            return defer.promise;
-          })
-          .then(()=>{
-            let defer = $q.defer();
-            elem.removeClass('guess1').addClass('guessMid');
-            $timeout(()=>{defer.resolve()}, timeUntilFinal/9);
-            return defer.promise;
-          })
-          .then(()=>{
-            let defer = $q.defer();
-            elem.removeClass('guessMid').addClass('guess2');
-            $timeout(()=>{defer.resolve()}, timeUntilFinal/9);
-            return defer.promise;
-          })
-          .then(()=>{
-            let defer = $q.defer();
-            elem.removeClass('guess2').addClass('guessMid');
-            $timeout(()=>{defer.resolve()}, timeUntilFinal/9);
-            return defer.promise;
-          })
-          .then(()=>{
-            elem.removeClass('guessMid guess2').addClass(right ? 'guessRight' : 'guessWrong');
+            elem.removeClass('guessMid').addClass(right ? 'guessRight' : 'guessWrong');
           });
         }
 

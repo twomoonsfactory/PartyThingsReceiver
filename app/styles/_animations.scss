@@ -181,17 +181,10 @@
   -o-transition: all cubic-bezier(0.17, 0.67, 0.83, 0.67) 0.5s;
   transition: all cubic-bezier(0.17, 0.67, 0.83, 0.67) 0.5s;
 }
-.guess1{
-  @extend .guessPulses;
-  background-color: $firstGuessPulse;
-}
 .guessMid{
   @extend .guessPulses;
   background-color: $midGuessPulse;
-}
-.guess2{
-  @extend .guessPulses;
-  background-color: $endGuessPulse;
+  color: #FFFFFF;
 }
 .guessRight{
   @extend .guessPulses;

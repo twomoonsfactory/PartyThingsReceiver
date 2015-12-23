@@ -48,7 +48,7 @@ export default ngModule => {
 							if(wasGuessed) //if the player was the writer of a correclty guessed prompt, true was returned
 								playerGuessed = player;
 						});
-						$timeout(()=>{deferred.resolve();}, 3500);
+						$timeout(()=>{deferred.resolve();}, gameNumbers.guessDisplayTime);
 						return deferred.promise;
 					})
 					.then(()=>{
@@ -98,8 +98,8 @@ export default ngModule => {
 							playerToast.message = messageProvider.getToastMessage({messageType: messageNames.wrongPlayerToast});
 							playerToast.type = $scope.falseToast;
 						}
-						$scope.showToast(responseToast, playerToast, 8000);
-						$timeout(()=>{deferred.resolve();}, 5000);
+						$scope.showToast(responseToast, playerToast, gameNumbers.guessDisplayTime*5/3);
+						$timeout(()=>{deferred.resolve();}, gameNumbers.guessDisplayTime);
 						return deferred.promise;
 					})
 					.then(()=>{
@@ -119,7 +119,7 @@ export default ngModule => {
 								guesser.addPoints($scope.calcGuessScore(correctGuessers.length));
 							});
 						}
-						$timeout(()=>{deferred.resolve();}, 3000);
+						$timeout(()=>{deferred.resolve();}, gameNumbers.guessDisplayTime*2/3);
 						return deferred.promise;
 					})
 					.then(()=>{
@@ -144,7 +144,7 @@ export default ngModule => {
 											unguessedResponses.push(response);
 									});
 								})
-							$timeout(()=>{deferred.resolve();}, 8000);
+							$timeout(()=>{deferred.resolve();}, gameNumbers.guessDisplayTime*5/3);
 							return deferred.promise;
 						}
 						deferred.resolve(false);
@@ -186,8 +186,8 @@ export default ngModule => {
 							playerToast.message = messageProvider.getToastMessage({messageType: messageNames.noUnguessedPlayersToast});
 							playerToast.type = $scope.falseToast;
 						}
-						$scope.showToast(responseToast, playerToast, 8000);
-						$timeout(()=>{deferred.resolve(unguessedPlayers);}, 4000);
+						$scope.showToast(responseToast, playerToast, gameNumbers.guessDisplayTime*5/3);
+						$timeout(()=>{deferred.resolve(unguessedPlayers);}, gameNumbers.guessDisplayTime);
 						return deferred.promise
 					})
 					.then(()=>{
@@ -202,15 +202,15 @@ export default ngModule => {
 						let deferred = $q.defer();
 						if(unguessedPlayers.length===1){
 							unguessedPlayers[0].addPoints(gameNumbers.unguessedScore * 2);
-							$timeout(()=>{deferred.resolve();}, 3500);
+							$timeout(()=>{deferred.resolve();}, gameNumbers.guessDisplayTime);
 						}
 						else if(unguessedPlayers.length>0){
 							_.each(unguessedPlayers, player=>{
 								player.addPoints(gameNumbers.unguessedScore);
 							});
-							$timeout(()=>{deferred.resolve();}, 3500);
+							$timeout(()=>{deferred.resolve();}, gameNumbers.guessDisplayTime);
 						}
-						else $timeout(()=>{deferred.resolve();},4500);
+						else $timeout(()=>{deferred.resolve();}, gameNumbers.guessDisplayTime/3);
 						return deferred.promise;
 					})
 					.then(()=>{
@@ -241,7 +241,7 @@ export default ngModule => {
 				$q.when()
 				.then(()=>{
 					let deferred = $q.defer();
-					$timeout(()=>{deferred.resolve();}, 3000);
+					$timeout(()=>{deferred.resolve();}, gameNumbers.guessDisplayTime/2);
 					return deferred.promise;
 				})
 				.then(()=>{
