@@ -39,6 +39,7 @@ export default ngModule =>{
         if(player.state!==this.playerStates.quit&&player.state!==this.playerStates.readyRequested&&player.state!==this.playerStates.incoming){
           this.messageSender.requestReady({senderId: player.senderId, message: this.messageProvider.getMessage({messageName: this.messageNames.readyRequest, pname: player.playerName})});
           player.setState(this.playerStates.readyRequested);
+          this.eventService.publish(playerActed+votingPlayer.playerId, "");
         }
       });
       this.playerHandler.resetPlayerActedCount();
@@ -49,6 +50,7 @@ export default ngModule =>{
       let readyPlayer = this.playerHandler.findPlayerBySenderId(args.senderId);
       if(!readyPlayer.checkState(this.playerStates.ready)){
         readyPlayer.setState(this.playerStates.ready);
+        this.eventService.publish(playerActed+votingPlayer.playerId, "");
         this.playerHandler.playerActed();
         this.eventService.publish(this.gameEvents.updatePlayers, "");
         if(this.playerHandler.actedPlayersCount >= this.playerHandler.activePlayers && this.playerHandler.actedPlayersCount >= this.gameNumbers.minimumPlayers){
@@ -65,6 +67,7 @@ export default ngModule =>{
         if(player.checkState(this.playerStates.ready)){
           this.messageSender.requestPrompt({senderId: player.senderId, message: {message: this.messageProvider.getMessage({messageName: this.messageNames.promptRequest, pname: player.playerName}), prompts: this.promptProvider.currentprompts}});
           player.setState(this.playerStates.voting);
+          this.eventService.publish(playerActed+votingPlayer.playerId, "");
         }
       });
     }
@@ -75,6 +78,7 @@ export default ngModule =>{
       let votingPlayer = this.playerHandler.findPlayerBySenderId(args.senderId);
       if(votingPlayer.checkState(this.playerStates.voting)){
         votingPlayer.setState(this.playerStates.ready);
+        this.eventService.publish(playerActed+votingPlayer.playerId, "");
         this.promptProvider.promptVote(args.message.promptIndex);
         this.playerHandler.playerActed();
         if(this.playerHandler.actedPlayersCount===this.playerHandler.activePlayers){
@@ -91,6 +95,7 @@ export default ngModule =>{
         if(player.checkState(this.playerStates.ready)){
           this.messageSender.requestResponse({senderId:player.senderId, message: this.messageProvider.getMessage({messageName: this.messageNames.responseRequest, prompt: this.promptProvider.prompt})});
           player.setState(this.playerStates.writing);
+          this.eventService.publish(playerActed+votingPlayer.playerId, "");
         }
       });
     }
@@ -102,6 +107,7 @@ export default ngModule =>{
         this.responseHandler.newResponse({response: args.message.thing, playerId:responseWriter.playerId});
         responseWriter.setState(this.playerStates.ready);
         responseWriter.written = true;
+        this.eventService.publish(playerActed+votingPlayer.playerId, "");
         this.playerHandler.playerActed();
         if(this.playerHandler.actedPlayersCount===this.playerHandler.activePlayers){
           this.playerHandler.resetPlayerActedCount();
@@ -120,6 +126,7 @@ export default ngModule =>{
             elegiblePlayers: _.filter(this.responseHandler.getAuthors(), author => {return author.playerId !== player.playerId})
           }});
           player.setState(this.playerStates.guessing);
+          this.eventService.publish(playerActed+votingPlayer.playerId, "");
         }
       });
     }
@@ -130,6 +137,7 @@ export default ngModule =>{
       if(guesser.checkState(this.playerStates.guessing)){
         this.guessHandler.newGuess({guesser: guesser.playerId, playerId: args.message.playerId, responseId: args.message.responseId});
         guesser.setState(this.playerStates.ready);
+        this.eventService.publish(playerActed+votingPlayer.playerId, "");
         // this.messageSender.requestGuess({senderId: guesser.senderId, message: this.messageProvider.getMessage({messageName: this.messageNames.guessConfirm, pname: this.playerHandler.players[args.message.playerId].playerName, resp: this.responseHandler.responses[args.message.responseId].response})});
         this.playerHandler.actedPlayersCount++;
         if(this.playerHandler.actedPlayersCount===this.playerHandler.activePlayers){
@@ -162,6 +170,7 @@ export default ngModule =>{
           if(player.checkState(this.playerStates.standingBy)){
             this.messageSender.requestReady({senderId: player.senderId, message: this.messageProvider.getMessage({messageName: this.messageNames.standingByReadyRequest, pname: player.playerName})});
             player.setState(this.playerStates.ready);
+            this.eventService.publish(playerActed+votingPlayer.playerId, "");
             this.playerHandler.activePlayers++;
           }
         });
@@ -183,6 +192,7 @@ export default ngModule =>{
           this.messageSender.sendEnd({senderId: player.senderId, message: endMessage});
           if(player.checkState(this.playerStates.standingBy))this.playerHandler.activePlayers++;
           player.setState(this.playerStates.readyRequested);
+          this.eventService.publish(playerActed+votingPlayer.playerId, "");
         }
       });
       this.eventService.publish(this.gameEvents.endView, "");

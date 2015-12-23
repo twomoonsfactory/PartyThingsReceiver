@@ -1,5 +1,5 @@
 export default ngModule => {
-  ngModule.directive('playerGuessDisplay', ['$rootScope', '$q', '$timeout', 'gameEvents', 'playerStates', 'gameNumbers', ($rootScope, $q, $timeout, gameEvents, playerStates, gameNumbers)=>{
+  ngModule.directive('playerGuessDisplay', ['$rootScope', '$q', '$timeout', 'gameEvents', 'playerStates', 'gameNumbers', 'eventService', ($rootScope, $q, $timeout, gameEvents, playerStates, gameNumbers, eventService)=>{
     return{
       restrict: 'A',
       scope:{
@@ -82,8 +82,10 @@ export default ngModule => {
           else elem.removeClass('inactive standby');
           scope.updateScreen();
         }
+        eventService.subscribe(gameEvents.playerActed+scope.player.playerId, scope.setCardState);
 
         scope.setCardState();
+
 
         scope.$watch('player.waitingForAction', scope.setCardState);
         scope.$watch('player.guessed', scope.setCardState);
