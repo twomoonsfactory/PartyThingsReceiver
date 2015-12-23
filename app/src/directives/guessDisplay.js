@@ -98,7 +98,7 @@ export default ngModule => {
 							playerToast.message = messageProvider.getToastMessage({messageType: messageNames.wrongPlayerToast});
 							playerToast.type = $scope.falseToast;
 						}
-						$scope.showToast(responseToast, playerToast, gameNumbers.guessDisplayTime*5/3);
+						$scope.showToast(responseToast, playerToast, gameNumbers.guessDisplayTime*3);
 						$timeout(()=>{deferred.resolve();}, gameNumbers.guessDisplayTime);
 						return deferred.promise;
 					})
@@ -119,7 +119,7 @@ export default ngModule => {
 								guesser.addPoints($scope.calcGuessScore(correctGuessers.length));
 							});
 						}
-						$timeout(()=>{deferred.resolve();}, gameNumbers.guessDisplayTime*2/3);
+						$timeout(()=>{deferred.resolve();}, gameNumbers.guessDisplayTime*2);
 						return deferred.promise;
 					})
 					.then(()=>{
@@ -144,7 +144,7 @@ export default ngModule => {
 											unguessedResponses.push(response);
 									});
 								})
-							$timeout(()=>{deferred.resolve();}, gameNumbers.guessDisplayTime*5/3);
+							$timeout(()=>{deferred.resolve();}, gameNumbers.guessDisplayTime*3);
 							return deferred.promise;
 						}
 						deferred.resolve(false);
@@ -186,8 +186,8 @@ export default ngModule => {
 							playerToast.message = messageProvider.getToastMessage({messageType: messageNames.noUnguessedPlayersToast});
 							playerToast.type = $scope.falseToast;
 						}
-						$scope.showToast(responseToast, playerToast, gameNumbers.guessDisplayTime*5/3);
-						$timeout(()=>{deferred.resolve(unguessedPlayers);}, gameNumbers.guessDisplayTime);
+						$scope.showToast(responseToast, playerToast, gameNumbers.guessDisplayTime*3);
+						$timeout(()=>{deferred.resolve(unguessedPlayers);}, gameNumbers.guessDisplayTime*2);
 						return deferred.promise
 					})
 					.then(()=>{

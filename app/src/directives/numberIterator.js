@@ -13,9 +13,11 @@ export default ngModule =>{
         let highNumber = 5;
         let midNumber = 3;
 
-        let highNumberColor = '#00CC00';
-        let midNumberColor = '#999900';
-        let lowNumberColor = '#FF0000';
+        let highNumberColor = '#8BC34A';
+        let midNumberColor = '#FFC400';
+        let lowNumberColor = '#D32F2F';
+
+				let stepAnimateOn = false;
 
         let firstTimeThrough = true;
         //kicked off by watch
@@ -47,8 +49,8 @@ export default ngModule =>{
             })
             .then(()=>{
               firstTimeThrough = false;
-              scope.baseNumber++;
-              scope.iterate(number-1);
+              scope.baseNumber += stepAnimateOn?1:number;
+              scope.iterate(stepAnimateOn?number-1:0);
             });
           }
           else{

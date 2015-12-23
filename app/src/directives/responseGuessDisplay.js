@@ -41,7 +41,7 @@ export default ngModule => {
           //classes are guess1 - first state of pulse
           //            guess2 - second state of pulse
           //            guessMid = midpoint of pulse
-          //    each has a .5s transition time
+          //    each has a .75s transition time
           //            guessRight - color for correctly guessed
           //            guessWrong - color for incorrectly guessed
           //            unguessed - color for unguessed
