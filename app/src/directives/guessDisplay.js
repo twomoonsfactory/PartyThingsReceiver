@@ -76,7 +76,7 @@ export default ngModule => {
 						//toasts generated for the correct guessers (if any)
 						if(correctGuessers.length>0){
 							playerToast.type = $scope.trueToast;
-							let points=Math.floor(gameNumbers.guessScore/correctGuessers.length);
+							let points=$scope.calcGuessScore(correctGuessers.length);
 							if(correctGuessers.length===1){
 								let player = playerHandler.findPlayerByPlayerId(correctGuessers[0].player.playerId).playerName;
 								playerToast.message = messageProvider.getToastMessage({messageType: messageNames.oneRightToast, pname: player, points: points});
@@ -116,7 +116,7 @@ export default ngModule => {
 						if(correctGuessers.length>0){
 							//points updated if there were
 							_.each(correctGuessers, guesser=>{
-								guesser.addPoints(Math.floor(gameNumbers.guessScore/correctGuessers.length));
+								guesser.addPoints($scope.calcGuessScore(correctGuessers.length));
 							});
 						}
 						$timeout(()=>{deferred.resolve();}, 3000);
@@ -174,7 +174,11 @@ export default ngModule => {
 						});
 						//toast and score update accordingly
 						let deferred = $q.defer();
-						if(unguessedPlayers.length>0){
+						if(unguessedPlayers.length===1){ //shows message for one unguessed player
+							playerToast.message = messageProvider.getToastMessage({messageType: messageNames.oneUnguessedPlayerToast, points: gameNumbers.unguessedScore * 2});
+							playerToast.type = $scope.trueToast;
+						}
+						else if(unguessedPlayers.length>1){
 							playerToast.message = messageProvider.getToastMessage({messageType: messageNames.unguessedPlayersToast, points: gameNumbers.unguessedScore});
 							playerToast.type = $scope.trueToast;
 						}
@@ -196,7 +200,11 @@ export default ngModule => {
 					})
 					.then(()=>{
 						let deferred = $q.defer();
-						if(unguessedPlayers.length>0){
+						if(unguessedPlayers.length===1){
+							unguessedPlayers[0].addPoints(gameNumbers.unguessedScore * 2);
+							$timeout(()=>{deferred.resolve();}, 3500);
+						}
+						else if(unguessedPlayers.length>0){
 							_.each(unguessedPlayers, player=>{
 								player.addPoints(gameNumbers.unguessedScore);
 							});
@@ -269,6 +277,14 @@ export default ngModule => {
 						}
 					});
 			};
+
+			$scope.calcGuessScore = (numOfGuessers) =>{
+				let score = gameNumbers.guessScore;
+				for(let i = 1; i<numOfGuessers; i++){
+					score = score - score/3;
+				}
+				return Math.floor(score);
+			}
 
 			//register emmitted reponse
 			$rootScope.$on(gameEvents.responseRegistered, $scope.registerResponse);

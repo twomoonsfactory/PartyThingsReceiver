@@ -55,6 +55,7 @@ export default ngModule => {
 		unguessedResponseToast: "unguessedResponseToast",
 		noUnguessedResponseToast: "noUnguessedResponseToast",
 		unguessedPlayersToast: "unguessedPlayersToast",
+		oneUnguessedPlayerToast: "oneUnguessedPlayerToast",
 		noUnguessedPlayersToast: "noUnguessedPlayersToast",
 		writerToast: "writerToast",
 		wrongToast: "wrongToast",

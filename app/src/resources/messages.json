@@ -130,6 +130,11 @@ angular.callbacks._0 (
 			"No stone unturned!",
 			"You tried 'em all."
 			]},
+		{"messageName" : "oneUnguessedPlayerToast", "message" : [
+			"Only one left? Double bonus!",
+			"{POINTS} points for being the last one standing!",
+			"Enjoy {POINTS} points all to yourself."
+			]},
 		{"messageName" : "unguessedPlayersToast", "message" : [
 			"{POINTS} free points is nice.",
 			"Stay unguessed for {POINTS} points!",

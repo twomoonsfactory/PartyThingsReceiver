@@ -87,6 +87,7 @@ export default ngModule => {
 
     //resolves correct and incorrect guessers, called by resolveGuesses
     resolveResponses(){
+      this.shuffled = false;
       this.eventService.publish(this.gameEvents.guessesSorted ,this.responses);
       // let correctlyGuessedResponses = [];
       // let incorrectlyGuessedResponses = [];

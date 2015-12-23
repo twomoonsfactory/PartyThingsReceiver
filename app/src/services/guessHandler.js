@@ -21,7 +21,7 @@ export default ngModule => {
       this.guesses.push(this.guessFactory.newGuess(args.guesser,args.playerId,args.responseId/1));
       this.$log.log(this.playerHandler.findPlayerByPlayerId(args.guesser).playerName + ' guessed that '
                     + this.playerHandler.findPlayerByPlayerId(args.playerId).playerName + ' said "'
-                    + this.responseHandler.responses[args.responseId/1].response + '"');
+                    + _.findWhere(this.responseHandler.responses, {responseId: args.responseId/1}).response + '"');
     }
     //sorts existing guesses
     tallyGuesses(){

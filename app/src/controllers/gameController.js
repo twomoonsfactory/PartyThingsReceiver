@@ -161,7 +161,8 @@ export default ngModule => {
         if(playerHandler.players[player].checkState('guessing'))
           guessingPlayers.push(playerHandler.players[player]);
       }
-      eventService.publish(gameEvents.guessReceived, {senderId: _.sample(guessingPlayers).senderId, message: {playerId: _.sample(responseHandler.getAuthors()).playerId, responseId:_.sample(responseHandler.getResponses()).responseId}})
+      let player = _.sample(guessingPlayers);
+      eventService.publish(gameEvents.guessReceived, {senderId: player.senderId, message: {playerId: _.sample(_.filter(responseHandler.getAuthors(), author => {return author.playerId !== player.playerId})).playerId, responseId: _.sample(_.filter(responseHandler.getResponses(), response => {return responseHandler.getWriter(response.responseId)!==player.playerId})).responseId}});
     }
     $scope.kingMaker = ()=>{
       let players = [];
