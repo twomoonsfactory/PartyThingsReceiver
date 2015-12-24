@@ -5,6 +5,7 @@ angular.callbacks._0 (
 		{"messageName" : "namePlayer", "message" : "Welcome to {GNAME}! Please enter your name!"},
 		{"messageName" : "waitingToStart", "message" : "Hi {PNAME}, thanks for joining {GNAME}, we're waiting for more players to join."},
 		{"messageName" : "standby", "message" : "Hi {PNAME}, thanks for joinging {GNAME}, please wait for the next round."},
+		{"messageName" : "wait", "message" : "You're all caught up, please wait for the next phase of the game."},
 		{"messageName" : "standingByReadyRequest", "message" : "{PNAME}, thanks for waiting, here we go!"},
 		{"messageName" : "readyRequest", "message" : "{PNAME}, are you ready to play?"},
 		{"messageName" : "promptRequest", "message" : "OK {PNAME}, what do you want to write about?"},

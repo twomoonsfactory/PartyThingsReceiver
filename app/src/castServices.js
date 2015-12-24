@@ -152,6 +152,11 @@ module.exports = angular.module('castServices', [])
       castMessageBus.quit.send(event.senderId, JSON.stringify({message: event.message}));
     };
 
+    //send wait message to rejoined player who has already taken current action
+    this.sendWait = function(event) {
+      castMessageBus.wait.send(event.senderId, JSON.stringify({message: event.message}));
+    };
+
     //playerId received
     castMessageBus.connected.onMessage = function(event){
       eventService.publish(gameEvents.playerIdReceived, {senderId: event.senderId, message: angular.fromJson(event.data)});
@@ -190,4 +195,4 @@ module.exports = angular.module('castServices', [])
 
 
   // })
-  .constant('messagetypes', ['connected','gamename','playername','ready','prompt','standby','thing','guess','result','quit','end','heartbeat']);
+  .constant('messagetypes', ['connected','gamename','playername','ready','prompt','standby','thing','guess','result','quit','end','wait']);

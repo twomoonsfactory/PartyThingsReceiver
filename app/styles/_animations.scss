@@ -196,3 +196,33 @@
   @extend .guessPulses;
   background-color: $unguessed;
 }
+@keyframes anim-rotate {
+    0% {
+        -moz-transform:rotate(0);
+        -webkit-transform:rotate(0);
+        transform:rotate(0);
+    }
+    100% {
+        -moz-transform: rotate(360deg);
+        -webkit-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
+}
+@keyframes anim-rotate-next {
+    0% {
+        -moz-transform:rotate(0);
+        -webkit-transform:rotate(0);
+        transform:rotate(0);
+    }
+    100% {
+        -moz-transform: rotate(360deg);
+        -webkit-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
+}
+.rotate{
+    animation: anim-rotate-next 1s normal linear;
+}
+.rotate.down{
+    animation: anim-rotate 1s normal linear;
+}

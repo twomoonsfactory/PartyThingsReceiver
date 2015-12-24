@@ -74,11 +74,11 @@ export default ngModule => {
         }
 
         scope.setCardState = ()=>{
-          if(scope.player.waitingForAction>0) elem.removeClass('supressed ready').addClass('readyToAct');
-          else if(scope.player.waitingForAction<0) elem.removeClass('readyToAct ready').addClass('supressed');
+          if(scope.player.needsAction||scope.player.writing) elem.removeClass('supressed ready').addClass('readyToAct');
+          else if(scope.player.quit||scope.player.incoming) elem.removeClass('readyToAct ready').addClass('supressed');
           else elem.removeClass('readyToAct supressed').addClass('ready');
           if(scope.player.guessed) elem.addClass('inactive');
-          else if(scope.player.checkState(playerStates.standingBy)) elem.addClass('standby');
+          else if(scope.player.standingBy) elem.addClass('standby');
           else elem.removeClass('inactive standby');
           scope.updateScreen();
         }

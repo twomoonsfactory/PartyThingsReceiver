@@ -1,6 +1,7 @@
-<div class="playingPlayerCardFront suppressed">Incoming...</div>
+<div class="playingPlayerCardFront suppressed"><i class="fa fa-mixcloud"></i>Incoming...</div>
 <div class="playingPlayerCardBack cardHue" player-guess-display="player">
   <div class="playerNameCell">
+    <i class="fa" ng-class="{'fa-comments-o':player.needsAction,'fa-commenting':player.writing,'fa-ban':player.quit,'fa-clock-o':player.standingBy}"></i>
     {{player.playerName}}
   </div>
   <div class="playerScoreCell flexRow">

@@ -145,7 +145,7 @@ export default ngModule => {
         if(playerHandler.players[player].checkState('voting'))
           votingPlayers.push(playerHandler.players[player]);
       }
-      eventService.publish(gameEvents.voteReceived, {senderId:_.sample(votingPlayers).senderId, message:{promptIndex:_.sample([1,2,3])}});
+      eventService.publish(gameEvents.voteReceived, {senderId:_.sample(votingPlayers).senderId, message:{prompt:_.sample(promptProvider.currentprompts)}});
     }
     $scope.sendResponses = ()=>{
       let writingPlayers = [];

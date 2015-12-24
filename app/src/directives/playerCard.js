@@ -5,7 +5,7 @@ export default ngModule =>{
       scope: {
         player: "=playerCard"
       },
-			template: '<div class="playerCardFront">Incoming...</div><div class="playerCardBack">{{name}}</div>',
+			template: '<div class="playerCardFront"><i class="fa fa-mixcloud fa-lg"></i>&nbsp;Incoming...</div><div class="playerCardBack">{{name}}</div>',
       link: (scope, elem, attrs) =>{
         scope.name = scope.player.playerName;
         scope.waitingForName = true;

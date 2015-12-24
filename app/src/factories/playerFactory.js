@@ -13,13 +13,18 @@ export default ngModule => {
 			player.state = this.playerStates.incoming; //playerStates.js
 			player.playerId = playerId;
 			player.guessed = false;
-			player.standingBy = false;
 			player.written = false;
-			player.waitingForAction = -1; //for ease of ngswitch -- positive means needs action. Zero does not. Negative is quit/incoming
+			player.incoming = true;
+			player.standingBy = false;
+			player.needsAction = false;
+			player.writing = false;
+			player.ready = false;
+			player.quit = false;
 
 			player.namePlayer = (name) => {
 				player.playerName = name;
-				player.waitingForAction = 0;
+				player.incoming = false;
+				player.ready = true;
 			}
 			player.addPoints = (points) => player.score = player.score + points;
 			player.addScore = (score) => player.scoreToAdd = score;
@@ -34,16 +39,29 @@ export default ngModule => {
 			};
 			player.setState = (newState) => {
 				if(_.contains(this.playerStates, newState)){
+					player.standingBy = false;
+					player.needsAction = false;
+					player.ready = false;
+					player.quit = false;
+					player.writing = false;
 					player.state = newState;
-					if(newState===this.playerStates.waiting||newState===this.playerStates.ready||newState===this.playerStates.standingBy)
-						player.waitingForAction = 0;
-					else if (newState===this.playerStates.quit||newState===this.playerStates.incoming)
-						player.waitingForAction = -1;
-					else
-						player.waitingForAction = 1;
-					if(newState===this.playerStates.standingBy)player.standingBy = true;
-					else {
-						player.standingBy = false;
+
+					switch(newState){
+						case this.playerStates.waiting||this.playerStates.ready:
+							player.ready = true;
+						break;
+						case this.playerStates.standingBy:
+							player.standingBy = true;
+						break;
+						case this.playerStates.quit:
+							player.quit = true;
+						break;
+						case this.playerStates.writing:
+							player.writing = true;
+						break;
+						default:
+							player.needsAction = true;
+						break;
 					}
 				}
 				else

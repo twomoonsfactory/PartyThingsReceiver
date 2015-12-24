@@ -11,14 +11,12 @@ export default ngModule =>{
     subscribe(eventId, subscriber){
       //handle invalid events to subscribe to
       if(!(_.contains(this.gameEvents, eventId))&&!(_.contains(this.gameStates, eventId))){
-      	this.$log.log('Invalid eventId subscribed: ' + eventId);
+      	this.$log.log('Undefined eventId subscribed: ' + eventId);
       }
-      else{
-        if(!this.subs[eventId]){
-          this.subs[eventId] = [];
-        }
-        this.subs[eventId].push(subscriber);
+      if(!this.subs[eventId]){
+        this.subs[eventId] = [];
       }
+      this.subs[eventId].push(subscriber);
     }
     //publishes a specific event, calling the arguments, if any.
     publish(eventId, args){
